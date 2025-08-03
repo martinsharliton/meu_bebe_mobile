@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 
+import '../env.dart';
 import 'interceptors/auth_interceptor.dart';
 
 final class RestClient extends DioForNative {
-  RestClient(String baseUrl)
+  RestClient()
     : super(
         BaseOptions(
-          baseUrl: baseUrl,
+          baseUrl: Env.backendBaseUrl,
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 60),
         ),

@@ -16,6 +16,16 @@ final class AppTheme {
     useMaterial3: true,
     fontFamily: 'SFProDisplay',
     scaffoldBackgroundColor: primaryColor,
+    dialogTheme: DialogThemeData(
+      insetPadding: EdgeInsets.all(10),
+      //backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      titleTextStyle: TextStyle(
+        fontSize: 21,
+        fontFamily: 'SFProDisplay',
+        color: Colors.black,
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: secondaryColor,

@@ -2,14 +2,14 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 
 import '../../core/exceptions/auth_exception.dart';
 import '../../core/fp/either.dart';
-import '../../core/restClient/rest_client.dart';
 import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final RestClient restClient;
+  final DioForNative restClient;
 
   UserRepositoryImpl({required this.restClient});
 
@@ -20,7 +20,6 @@ class UserRepositoryImpl implements UserRepository {
   ) async {
     try {
       final Response(data: {'access_token': accessToken}) = await restClient
-          .unAuth
           .post('/auth', data: {'email': email, 'password': password});
       return Right(accessToken);
     } on DioException catch (e, s) {

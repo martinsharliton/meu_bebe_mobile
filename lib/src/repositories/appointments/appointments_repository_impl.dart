@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:drift/drift.dart';
-import 'package:flutter_getit/flutter_getit.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../core/app_database.dart';
 import '../../core/exceptions/repository_exception.dart';
@@ -9,7 +9,7 @@ import '../../core/fp/either.dart';
 import './appointments_repository.dart';
 
 class AppointmentsRepositoryImpl implements AppointmentsRepository {
-  final db = Injector.get<AppDatabase>();
+  final db = Modular.get<AppDatabase>();
 
   @override
   Future<Either<RepositoryException, List<Appointment>>>

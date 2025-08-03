@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  auto_injector:
+    dependency: transitive
+    description:
+      name: auto_injector
+      sha256: "1fc2624898e92485122eb2b1698dd42511d7ff6574f84a3a8606fc4549a1e8f8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -294,14 +302,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_getit:
-    dependency: "direct main"
-    description:
-      name: flutter_getit
-      sha256: "834a5a011dbad55121777f0b871551c049ca84c7c231eb0994ee29b3cb513b03"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -310,6 +310,19 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.0"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_modular:
+    dependency: "direct main"
+    description:
+      name: flutter_modular
+      sha256: "33a63d9fe61429d12b3dfa04795ed890f17d179d3d38e988ba7969651fcd5586"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.4.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -328,14 +341,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
-  get_it:
-    dependency: transitive
-    description:
-      name: get_it
-      sha256: d85128a5dae4ea777324730dc65edd9c9f43155c109d5cc0a69cab74139fbac1
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.7.0"
   glob:
     dependency: transitive
     description:
@@ -480,6 +485,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  modular_core:
+    dependency: transitive
+    description:
+      name: modular_core
+      sha256: "1db0420a0dfb8a2c6dca846e7cbaa4ffeb778e247916dbcb27fb25aa566e5436"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.1"
   package_config:
     dependency: transitive
     description:
@@ -576,6 +589,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  result_dart:
+    dependency: transitive
+    description:
+      name: result_dart
+      sha256: "0666b21fbdf697b3bdd9986348a380aa204b3ebe7c146d8e4cdaa7ce735e6054"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -693,6 +714,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.1"
+  sprintf:
+    dependency: transitive
+    description:
+      name: sprintf
+      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   sqflite:
     dependency: "direct main"
     description:
@@ -829,6 +858,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: a5be9ef6618a7ac1e964353ef476418026db906c4facdedaa299b7a2e71690ff
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.1"
   validatorless:
     dependency: "direct main"
     description:
