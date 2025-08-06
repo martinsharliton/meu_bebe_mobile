@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_theme.dart';
+import '../theme/app_theme.dart';
 
 mixin Mensagens<T extends StatefulWidget> on State<T> {
   Future<void> showErrorWithCloseButton(String message) async {

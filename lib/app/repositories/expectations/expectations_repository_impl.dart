@@ -6,7 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../core/app_database.dart';
 import '../../core/exceptions/repository_exception.dart';
 import '../../core/fp/either.dart';
-import './expectations_repository.dart';
+import 'expectations_repository.dart';
 
 class ExpectationsRepositoryImpl implements ExpectationsRepository {
   final db = Modular.get<AppDatabase>();

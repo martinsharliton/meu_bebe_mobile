@@ -5,7 +5,7 @@ import '../../core/app_database.dart';
 import '../../core/exceptions/repository_exception.dart';
 import '../../core/fp/either.dart';
 import '../../model/gestation/pregnant_model.dart';
-import './gestation_repository.dart';
+import 'gestation_repository.dart';
 
 class GestationRepositoryImpl implements GestationRepository {
   final db = Modular.get<AppDatabase>();

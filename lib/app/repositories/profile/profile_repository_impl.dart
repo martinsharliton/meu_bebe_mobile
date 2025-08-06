@@ -6,7 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../core/app_database.dart';
 import '../../core/exceptions/repository_exception.dart';
 import '../../core/fp/either.dart';
-import './profile_repository.dart';
+import 'profile_repository.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final db = Modular.get<AppDatabase>();

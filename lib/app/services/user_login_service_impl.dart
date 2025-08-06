@@ -8,7 +8,7 @@ import '../core/exceptions/service_exception.dart';
 import '../core/fp/either.dart';
 import '../core/fp/unit.dart';
 import '../repositories/user/user_repository.dart';
-import './user_login_service.dart';
+import 'user_login_service.dart';
 
 class UserLoginServiceImpl implements UserLoginService {
   final UserRepository userRepository;
