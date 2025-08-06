@@ -28,20 +28,17 @@ class _GestationPageState extends State<GestationPage>
     color: AppTheme.secondaryColor,
     child: const SingleChildScrollView(
       child: Column(
+        spacing: 16,
         children: [
           PregnantCard(),
-          SizedBox(height: 16),
           MaternityCard(),
-          SizedBox(height: 16),
           PrenatalAppointmentCard(
-            list: ['20/12/2021', '22/12/2021', '23/12/2021', '24/12/2021'],
+            list: ['20/12/2025', '22/12/2025', '23/12/2025', '24/12/2025'],
           ),
-          SizedBox(height: 16),
           BabyDataCard(
             list: ['Luan Henrique Cardoso', 'Fernanda Silva', 'Laura Santos'],
           ),
-          SizedBox(height: 16),
-          PregnancyHistoryCard(list: ['01/05/2019']),
+          PregnancyHistoryCard(list: ['01/05/2023']),
         ],
       ),
     ),
