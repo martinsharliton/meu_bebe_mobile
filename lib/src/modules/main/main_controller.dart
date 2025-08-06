@@ -12,6 +12,9 @@ class MainController with MessageStateMixin {
   final _name = signal<String>('');
   String get name => _name();
 
+  final tabName = signal<String>('Home');
+  void setTabName(String name) => tabName.value = name;
+
   Future<void> initialize() async {
     final result = await gestationRepository.getPregnant();
 

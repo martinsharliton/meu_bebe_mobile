@@ -105,7 +105,6 @@ class FormularioPageState extends State<FormularioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFE0F2FF),
         title: const Center(
           child: Text(
             textAlign: TextAlign.center,
@@ -148,8 +147,8 @@ class FormularioPageState extends State<FormularioPage> {
                               color: isActive
                                   ? Theme.of(context).primaryColor
                                   : isCompleted
-                                      ? Colors.green.shade100
-                                      : Colors.grey.shade200,
+                                  ? Colors.green.shade100
+                                  : Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 color: isActive
@@ -171,8 +170,9 @@ class FormularioPageState extends State<FormularioPage> {
                                 Text(
                                   _getStepTitle(index),
                                   style: TextStyle(
-                                    color:
-                                        isActive ? Colors.white : Colors.black,
+                                    color: isActive
+                                        ? Colors.white
+                                        : Colors.black,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -461,8 +461,9 @@ class FormularioPageState extends State<FormularioPage> {
           const SizedBox(height: 8),
 
           SwitchListTile(
-            title:
-                const Text('Seu ambiente de trabalho é seguro para gestante?'),
+            title: const Text(
+              'Seu ambiente de trabalho é seguro para gestante?',
+            ),
             subtitle: const Text(
               'Considerando esforço físico, produtos químicos, etc.',
             ),
@@ -472,8 +473,9 @@ class FormularioPageState extends State<FormularioPage> {
           const SizedBox(height: 8),
 
           SwitchListTile(
-            title:
-                const Text('Tem pausas para descanso e alimentação adequada?'),
+            title: const Text(
+              'Tem pausas para descanso e alimentação adequada?',
+            ),
             value: temPausas,
             onChanged: (val) => setState(() => temPausas = val),
           ),
@@ -579,14 +581,8 @@ class FormularioPageState extends State<FormularioPage> {
           validator: (value) => value == null ? 'Campo obrigatório' : null,
           value: fonteAgua.isNotEmpty ? fonteAgua : null,
           items: const [
-            DropdownMenuItem(
-              value: 'Sim',
-              child: Text('Sim'),
-            ),
-            DropdownMenuItem(
-              value: 'Não',
-              child: Text('Não'),
-            ),
+            DropdownMenuItem(value: 'Sim', child: Text('Sim')),
+            DropdownMenuItem(value: 'Não', child: Text('Não')),
             DropdownMenuItem(value: 'Sim', child: Text('Sim')),
             DropdownMenuItem(value: 'Não', child: Text('Não')),
           ],
@@ -794,8 +790,9 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Exames e vacinação
         SwitchListTile(
-          title:
-              const Text('Realizou todos os exames solicitados no pré-natal?'),
+          title: const Text(
+            'Realizou todos os exames solicitados no pré-natal?',
+          ),
           value: examesPreNatalCompletos,
           onChanged: (val) => setState(() => examesPreNatalCompletos = val),
         ),
@@ -1099,8 +1096,9 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Suplementação
         SwitchListTile(
-          title:
-              const Text('Está tomando suplementos vitamínicos ou de ferro?'),
+          title: const Text(
+            'Está tomando suplementos vitamínicos ou de ferro?',
+          ),
           value: usaSuplementos,
           onChanged: (val) => setState(() => usaSuplementos = val),
         ),

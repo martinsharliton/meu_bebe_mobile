@@ -1,6 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import 'binding/application_binding.dart';
+import 'modules/core/core_module.dart';
 import 'modules/formulario/formulario_module.dart';
 import 'modules/login/login_module.dart';
 import 'modules/main/childbirth/submodules/childbirth_resume/childbirth_resume_module.dart';
@@ -14,7 +14,7 @@ import 'modules/splash/splash_module.dart';
 
 class AppModule extends Module {
   @override
-  List<Module> get imports => [ApplicationBinding()];
+  List<Module> get imports => [CoreModule()];
 
   @override
   void routes(r) {
@@ -23,11 +23,17 @@ class AppModule extends Module {
     r.module(routeForm, module: FormularioModule());
     r.module(routeTab, module: MainModule());
 
-    // Module Home
+    // Module da Tab Home
     r.module(routeConsultasExames, module: AppointmentsExamsModule());
     r.module(routeInformacoes, module: InformationModule());
     r.module(routeMedicacoes, module: MedicationModule());
     r.module(routeVacinas, module: VaccinesModule());
+
+    // Module da Tab Gestação
+
+    // Module da Tab Plano de Parto
+
+    // Module da Tab Perfil
 
     r.module(routeChildbirthResume, module: ChildbirthResumeModule());
     r.module(routeUpdateChildbirth, module: UpdateChildbirthModule());

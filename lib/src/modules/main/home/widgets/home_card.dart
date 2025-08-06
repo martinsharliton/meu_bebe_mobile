@@ -34,7 +34,7 @@ class HomeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(width: 10),
-                Icon(icon, size: 48, color: AppTheme.darkTextColor),
+                Icon(icon, size: 40, color: AppTheme.darkTextColor),
                 const SizedBox(width: 16),
                 Text(title, style: AppTheme.subTitleStyle),
               ],
