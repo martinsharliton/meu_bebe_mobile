@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/extensions/size_extension.dart';
 import '../../../core/theme/app_theme.dart';
-import 'submodules/childbirth_resume/childbirth_resume_card.dart';
-import 'update_childbirth/update_childbirth_card.dart';
+import 'widgets/childbirth_resume_card.dart';
+import 'widgets/update_childbirth_card.dart';
 
 class ChildbirthPage extends StatefulWidget {
   const ChildbirthPage({super.key});
@@ -23,11 +23,8 @@ class _ChildbirthPageState extends State<ChildbirthPage>
       padding: const EdgeInsets.all(10),
       child: const SingleChildScrollView(
         child: Column(
-          children: [
-            ChildbirthResumeCard(),
-            SizedBox(height: 16),
-            UpdateChildbirthCard(),
-          ],
+          spacing: 16,
+          children: [ChildbirthResumeCard(), UpdateChildbirthCard()],
         ),
       ),
     );

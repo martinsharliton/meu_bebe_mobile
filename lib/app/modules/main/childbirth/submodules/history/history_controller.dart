@@ -7,10 +7,9 @@ import '../../../../../core/helpers/messages.dart';
 import '../../../../../repositories/history/history_repository.dart';
 
 class HistoryController with MessageStateMixin {
-  final HistoryRepository _repository;
+  final HistoryRepository repository;
 
-  HistoryController({required HistoryRepository repository})
-    : _repository = repository;
+  HistoryController(this.repository);
 
   final _saved = signal<bool>(false);
   bool get saved => _saved();
@@ -19,7 +18,7 @@ class HistoryController with MessageStateMixin {
   PreviousPregnancy? get model => _model;
 
   Future<void> initialize() async {
-    final result = await _repository.getHistory();
+    final result = await repository.getHistory();
 
     switch (result) {
       case Left():
@@ -32,7 +31,7 @@ class HistoryController with MessageStateMixin {
   }
 
   Future<void> saveHistory(PreviousPregnancy history) async {
-    final result = await _repository.updateHistory(history);
+    final result = await repository.updateHistory(history);
 
     switch (result) {
       case Left():

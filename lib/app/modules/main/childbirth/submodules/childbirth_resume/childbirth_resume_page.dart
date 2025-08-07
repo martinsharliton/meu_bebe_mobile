@@ -5,11 +5,11 @@ import 'package:signals_flutter/signals_flutter.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../birth_expectations/birth_expectations_card.dart';
 import '../birth_moment/birth_moment_card.dart';
-import '../current_gestation/current_gestation_card.dart';
+import '../current_gestation/widgets/current_gestation_card.dart';
 import '../desires_expectations/desires_expectations_card.dart';
-import '../expectations/expectations_card.dart';
-import '../history/history_card.dart';
-import '../identification/identification_card.dart';
+import '../expectations/widgets/expectations_card.dart';
+import '../history/widgets/history_card.dart';
+import '../identification/widgets/identification_card.dart';
 import 'childbirth_resume_controller.dart';
 
 class ChildbirthResumePage extends StatefulWidget {

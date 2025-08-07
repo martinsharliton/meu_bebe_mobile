@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../../app_module.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../widgets/base_card.dart';
 
@@ -10,23 +12,21 @@ class UpdateChildbirthCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseCard(
       child: Column(
+        spacing: 10,
         children: [
           const Text(
             'Atualize seu plano de parto',
             style: AppTheme.titleSmallStyle,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           Row(
             children: [
               _buildButton('Identificação', () {
-                Navigator.pushNamed(
-                  context,
-                  '/update-childbirth/identification',
-                );
+                Modular.to.pushNamed(routeIndetificacao);
               }),
               const SizedBox(width: 10),
               _buildButton('História', () {
-                Navigator.pushNamed(context, '/update-childbirth/history');
+                Modular.to.pushNamed(routeHistoria);
               }),
             ],
           ),
@@ -34,11 +34,11 @@ class UpdateChildbirthCard extends StatelessWidget {
           Row(
             children: [
               _buildButton('Gravidez atual', () {
-                Navigator.pushNamed(context, '/update-childbirth/current');
+                Modular.to.pushNamed(routeGravidezAtual);
               }),
               const SizedBox(width: 10),
               _buildButton('Expectativas', () {
-                Navigator.pushNamed(context, '/update-childbirth/expectations');
+                Modular.to.pushNamed(routeExpectativa);
               }),
             ],
           ),

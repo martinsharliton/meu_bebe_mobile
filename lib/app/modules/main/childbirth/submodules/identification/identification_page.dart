@@ -31,9 +31,7 @@ class _IdentificationPageState extends State<IdentificationPage>
     });
     messageListener(_controller);
     effect(() {
-      if (_controller.saved) {
-        Navigator.pop(context);
-      }
+      if (_controller.saved) return Modular.to.pop();
     });
   }
 

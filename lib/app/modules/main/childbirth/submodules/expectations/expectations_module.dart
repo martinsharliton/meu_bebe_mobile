@@ -5,11 +5,11 @@ import '../../../../../repositories/expectations/expectations_repository_impl.da
 import 'expectations_controller.dart';
 import 'expectations_page.dart';
 
-class ExpectationsRouter extends Module {
+class ExpectationsModule extends Module {
   @override
   void binds(i) {
-    i.addSingleton<ExpectationsRepository>(() => ExpectationsRepositoryImpl());
-    i.addSingleton(() => ExpectationsController(repository: i()));
+    i.addSingleton<ExpectationsRepository>(ExpectationsRepositoryImpl.new);
+    i.addSingleton(ExpectationsController.new);
   }
 
   @override

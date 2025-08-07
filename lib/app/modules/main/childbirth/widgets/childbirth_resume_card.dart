@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../../core/theme/app_theme.dart';
-import '../../../widgets/base_card.dart';
-import '../../../widgets/custom_item_tile.dart';
+import '../../../../app_module.dart';
+import '../../../../core/theme/app_theme.dart';
+import '../../widgets/base_card.dart';
+import '../../widgets/custom_item_tile.dart';
 
 class ChildbirthResumeCard extends StatelessWidget {
   const ChildbirthResumeCard({super.key});
@@ -64,7 +66,7 @@ class ChildbirthResumeCard extends StatelessWidget {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/resume');
+                      Modular.to.pushNamed(routeVisualizarResumo);
                     },
                     child: const Text('Visualizar'),
                   ),

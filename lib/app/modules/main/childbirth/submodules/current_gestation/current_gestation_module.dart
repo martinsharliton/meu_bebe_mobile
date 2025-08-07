@@ -5,13 +5,13 @@ import '../../../../../repositories/current_gestation/current_gestation_reposito
 import 'current_gestation_controller.dart';
 import 'current_gestation_page.dart';
 
-class CurrentGestationRouter extends Module {
+class CurrentGestationModule extends Module {
   @override
   void binds(i) {
     i.addSingleton<CurrentGestationRepository>(
-      () => CurrentGestationRepositoryImpl(),
+      CurrentGestationRepositoryImpl.new,
     );
-    i.addSingleton(() => CurrentGestationController(repository: i()));
+    i.addSingleton(CurrentGestationController.new);
   }
 
   @override

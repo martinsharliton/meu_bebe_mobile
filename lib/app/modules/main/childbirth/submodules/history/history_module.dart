@@ -5,11 +5,11 @@ import '../../../../../repositories/history/history_repository_impl.dart';
 import 'history_controller.dart';
 import 'history_page.dart';
 
-class HistoryRouter extends Module {
+class HistoryModule extends Module {
   @override
   void binds(i) {
-    i.addSingleton<HistoryRepository>(() => HistoryRepositoryImpl());
-    i.addSingleton(() => HistoryController(repository: i()));
+    i.addSingleton<HistoryRepository>(HistoryRepositoryImpl.new);
+    i.addSingleton(HistoryController.new);
   }
 
   @override

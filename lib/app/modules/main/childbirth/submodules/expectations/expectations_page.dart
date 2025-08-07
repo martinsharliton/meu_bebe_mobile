@@ -29,15 +29,22 @@ class _ExpectationsPageState extends State<ExpectationsPage>
   @override
   void initState() {
     super.initState();
+
     _controller.initialize().then((_) {
-      setState(() {
-        initializeForm(_controller.expectation);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            initializeForm(_controller.expectation);
+          });
+        }
       });
     });
+
     messageListener(_controller);
+
     effect(() {
       if (_controller.saved) {
-        Navigator.pop(context);
+        Modular.to.pop();
       }
     });
   }

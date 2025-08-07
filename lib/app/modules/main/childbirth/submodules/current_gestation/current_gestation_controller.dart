@@ -6,10 +6,9 @@ import '../../../../../core/helpers/messages.dart';
 import '../../../../../repositories/current_gestation/current_gestation_repository.dart';
 
 class CurrentGestationController with MessageStateMixin {
-  final CurrentGestationRepository _repository;
+  final CurrentGestationRepository repository;
 
-  CurrentGestationController({required CurrentGestationRepository repository})
-    : _repository = repository;
+  CurrentGestationController(this.repository);
 
   final _saved = signal<bool>(false);
   bool get saved => _saved();
@@ -18,7 +17,7 @@ class CurrentGestationController with MessageStateMixin {
   CurrentPregnancyData? get model => _model;
 
   Future<void> initialize() async {
-    final result = await _repository.getGestation();
+    final result = await repository.getGestation();
 
     switch (result) {
       case Left():
@@ -31,7 +30,7 @@ class CurrentGestationController with MessageStateMixin {
   }
 
   Future<void> saveGestation(CurrentPregnancyData current) async {
-    final result = await _repository.updateGestation(current);
+    final result = await repository.updateGestation(current);
 
     switch (result) {
       case Left():

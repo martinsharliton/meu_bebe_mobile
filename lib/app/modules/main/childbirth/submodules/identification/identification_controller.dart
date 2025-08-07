@@ -6,10 +6,9 @@ import '../../../../../model/gestation/pregnant_model.dart';
 import '../../../../../repositories/gestation/gestation_repository.dart';
 
 class IdentificationController with MessageStateMixin {
-  final GestationRepository _repository;
+  final GestationRepository repository;
 
-  IdentificationController({required GestationRepository repository})
-    : _repository = repository;
+  IdentificationController(this.repository);
 
   final _saved = signal<bool>(false);
   bool get saved => _saved();
@@ -18,7 +17,7 @@ class IdentificationController with MessageStateMixin {
   PregnantModel? get model => _model;
 
   Future<void> initialize() async {
-    final result = await _repository.getPregnant();
+    final result = await repository.getPregnant();
 
     switch (result) {
       case Left():
@@ -40,7 +39,7 @@ class IdentificationController with MessageStateMixin {
   }
 
   Future<void> saveIdentification(PregnantModel model) async {
-    final result = await _repository.updatePregnant(model);
+    final result = await repository.updatePregnant(model);
 
     switch (result) {
       case Left():

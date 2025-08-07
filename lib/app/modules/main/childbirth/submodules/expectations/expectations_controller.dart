@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:signals_flutter/signals_core.dart';
@@ -10,10 +9,9 @@ import '../../../../../model/birth_plan/expectations_model.dart';
 import '../../../../../repositories/expectations/expectations_repository.dart';
 
 class ExpectationsController with MessageStateMixin {
-  final ExpectationsRepository _repository;
+  final ExpectationsRepository repository;
 
-  ExpectationsController({required ExpectationsRepository repository})
-    : _repository = repository;
+  ExpectationsController(this.repository);
 
   final _saved = signal<bool>(false);
   bool get saved => _saved();
@@ -22,7 +20,7 @@ class ExpectationsController with MessageStateMixin {
   Expectation? get expectation => _expectations;
 
   Future<void> initialize() async {
-    final result = await _repository.getExpectations();
+    final result = await repository.getExpectations();
 
     switch (result) {
       case Left():
@@ -45,7 +43,7 @@ class ExpectationsController with MessageStateMixin {
   }
 
   Future<void> saveExpectations(Expectation expectations) async {
-    final result = await _repository.updateExpectations(expectations);
+    final result = await repository.updateExpectations(expectations);
 
     switch (result) {
       case Left():
