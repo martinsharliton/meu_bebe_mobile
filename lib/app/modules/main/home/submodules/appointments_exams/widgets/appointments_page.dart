@@ -46,7 +46,7 @@ class _AppointmentsPageState extends State<AppointmentsPage>
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Watch(
         (_) => Visibility(
           visible: !_controller.updated,

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
 final class AppTheme {
-  static const primaryColor = Color(0xFFE0F2FF);
-  static const secondaryColor = Color(0xFFB3E5FC);
-  static const darkTextColor = Color(0xFF1A4E80);
-  static const textColor = Color(0xFF4A90E2);
+  static const primaryColor = Color(
+    0xFFD6F0FF,
+  ); // Azul bebê bem suave, quase pastel
+  static const secondaryColor = Color(
+    0xFFBEE8FF,
+  ); // Azul clarinho para fundos e destaques sutis
+  static const darkTextColor = Color(
+    0xFF3B7C9E,
+  ); // Azul mais escuro para texto, bom contraste
+  static const textColor = Color(
+    0xFF6FB8D8,
+  ); // Azul médio delicado para textos e ícones
 
   static final _defaultInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
@@ -46,7 +54,7 @@ final class AppTheme {
         backgroundColor: Colors.white,
         side: const BorderSide(color: darkTextColor),
         foregroundColor: darkTextColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         textStyle: _buttonTextStyle,
       ),
     ),
@@ -54,7 +62,7 @@ final class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: darkTextColor,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         textStyle: _buttonTextStyle,
       ),
     ),

@@ -34,7 +34,10 @@ class _VaccinesPageState extends State<VaccinesPage> {
               children: [
                 // Corpo principal
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 20,
+                  ),
                   child: Watch((context) {
                     if (controller.vaccines.isEmpty) {
                       return const Center(

@@ -22,36 +22,55 @@ class _HomePageState extends State<HomePage> with MessageViewMixin {
       color: AppTheme.secondaryColor,
       padding: const EdgeInsets.all(10),
       child: Column(
+        spacing: 10,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          HomeCard(
-            icon: Icons.assignment_add,
-            title: 'Consultas e exames',
-            onTap: () {
-              Modular.to.pushNamed(routeConsultasExames);
-            },
+          Row(
+            spacing: 10,
+            children: [
+              Expanded(
+                child: HomeCard(
+                  icon: Icons.assignment_add,
+                  title: 'Consultas e exames',
+                  onTap: () {
+                    Modular.to.pushNamed(routeConsultasExames);
+                  },
+                ),
+              ),
+              Expanded(
+                child: HomeCard(
+                  icon: Icons.vaccines,
+                  title: 'Minhas vacinas',
+                  onTap: () {
+                    Modular.to.pushNamed(routeVacinas);
+                  },
+                ),
+              ),
+            ],
           ),
-          HomeCard(
-            icon: Icons.vaccines,
-            title: 'Minhas vacinas',
-            onTap: () {
-              Modular.to.pushNamed(routeVacinas);
-            },
-          ),
-          HomeCard(
-            icon: Icons.medication_outlined,
-            title: 'Meus medicamentos',
-            onTap: () {
-              Modular.to.pushNamed(routeMedicacoes);
-            },
-          ),
-          HomeCard(
-            icon: Icons.info_outline,
-            title: 'Informações básicas',
-            onTap: () {
-              Modular.to.pushNamed(routeInformacoes);
-            },
+          Row(
+            spacing: 10,
+            children: [
+              Expanded(
+                child: HomeCard(
+                  icon: Icons.medication_outlined,
+                  title: 'Meus medicamentos',
+                  onTap: () {
+                    Modular.to.pushNamed(routeMedicacoes);
+                  },
+                ),
+              ),
+              Expanded(
+                child: HomeCard(
+                  icon: Icons.info_outline,
+                  title: 'Informações básicas',
+                  onTap: () {
+                    Modular.to.pushNamed(routeInformacoes);
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),

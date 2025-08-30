@@ -19,7 +19,7 @@ import 'home/submodules/medication/medication_controller.dart';
 import 'home/submodules/vaccines/vaccines_controller.dart';
 import 'main_controller.dart';
 import 'main_page.dart';
-import 'profile/profile_data/profile_data_controller.dart';
+import 'profile/submodules/profile_data/profile_data_controller.dart';
 
 class MainModule extends Module {
   @override

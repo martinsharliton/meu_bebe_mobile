@@ -57,7 +57,7 @@ class _CurrentGestationPageState extends State<CurrentGestationPage>
 
   Widget get _buildBody {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: SingleChildScrollView(
         child: BaseCard(
           child: Form(

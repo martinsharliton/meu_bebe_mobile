@@ -24,7 +24,10 @@ class _GestationPageState extends State<GestationPage>
 
   Widget get _content => Container(
     width: context.screenWidth,
-    padding: const EdgeInsets.all(10),
+    padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 20,
+                ),
     color: AppTheme.secondaryColor,
     child: const SingleChildScrollView(
       child: Column(

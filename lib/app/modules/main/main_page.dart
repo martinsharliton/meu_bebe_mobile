@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_flutter.dart';
@@ -20,9 +21,15 @@ class _MainPageState extends State<MainPage> {
   final controller = Modular.get<MainController>();
 
   List<Widget> get _tabs => [
-    Tab(icon: Icon(Icons.home_rounded, size: 40), text: 'Home'),
-    Tab(icon: Icon(Icons.pregnant_woman, size: 40), text: 'Gestação'),
-    Tab(icon: Icon(Icons.assignment_rounded, size: 40), text: 'Plano de Parto'),
+    const Tab(icon: Icon(CupertinoIcons.house_fill, size: 32), text: 'Home'),
+    const Tab(
+      icon: Icon(CupertinoIcons.heart_fill, size: 32),
+      text: 'Gestação',
+    ),
+    const Tab(
+      icon: Icon(CupertinoIcons.doc_text_fill, size: 32),
+      text: 'Parto',
+    ),
     Tab(icon: Icon(Icons.person_rounded, size: 40), text: 'Perfil'),
   ];
 
@@ -75,8 +82,7 @@ class _MainPageState extends State<MainPage> {
               },
               indicatorSize: TabBarIndicatorSize.tab,
               unselectedLabelColor: AppTheme.darkTextColor,
-              tabAlignment: TabAlignment.center,
-              isScrollable: true,
+              tabAlignment: TabAlignment.fill,
               tabs: _tabs,
             ),
           ),

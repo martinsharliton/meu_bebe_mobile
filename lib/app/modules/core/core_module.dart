@@ -2,7 +2,7 @@ import 'package:dio/io.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../core/app_database.dart';
-import '../../core/restClient/rest_client.dart';
+import '../../core/rest_client/rest_client.dart';
 
 class CoreModule extends Module {
   @override

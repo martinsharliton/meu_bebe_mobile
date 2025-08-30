@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/app_database.dart';
+import '../../../../../core/app_database.dart';
 import 'profile_data_page.dart';
 
 mixin ProfileFormController on State<ProfileDataPage> {

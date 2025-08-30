@@ -29,19 +29,17 @@ class HomeCard extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Row(
+            child: Column(
+              spacing: 10,
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(width: 10),
                 Icon(icon, size: 40, color: AppTheme.darkTextColor),
-                const SizedBox(width: 16),
                 Text(title, style: AppTheme.subTitleStyle),
               ],
             ),
           ),
         ),
-        if (spacer) const SizedBox(height: 16),
       ],
     );
   }

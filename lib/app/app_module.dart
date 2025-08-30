@@ -13,6 +13,7 @@ import 'modules/main/home/submodules/information/information_module.dart';
 import 'modules/main/home/submodules/medication/medication_module.dart';
 import 'modules/main/home/submodules/vaccines/vaccines_module.dart';
 import 'modules/main/main_module.dart';
+import 'modules/main/profile/submodules/profile_data/profile_data_module.dart';
 import 'modules/splash/splash_module.dart';
 
 class AppModule extends Module {
@@ -42,8 +43,7 @@ class AppModule extends Module {
     r.module(routeVisualizarResumo, module: ChildbirthResumeModule());
 
     // Module da Tab Perfil
-
-    //r.module(routeUpdateChildbirth, module: UpdateChildbirthModule());
+    r.module(routeDadosPerfil, module: ProfileDataModule());
   }
 }
 
@@ -60,6 +60,8 @@ const routeIndetificacao = '/indetificacao/';
 const routeHistoria = '/historia/';
 const routeExpectativa = '/expectativa/';
 const routeGravidezAtual = '/gravizez_atual/';
-
 const routeVisualizarResumo = '/visualizar_resumo/';
+
+const routeDadosPerfil = '/dados_perfil/';
+
 const routeUpdateChildbirth = '/update_childbirth/';

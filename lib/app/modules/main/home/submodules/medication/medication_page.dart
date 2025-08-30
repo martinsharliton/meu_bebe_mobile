@@ -52,7 +52,7 @@ class _MedicationPageState extends State<MedicationPage> with MessageViewMixin {
   );
 
   Widget get _buildBody => Container(
-    padding: const EdgeInsets.all(20),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
     child: Watch(
       (_) => Visibility(
         visible: !controller.updated,

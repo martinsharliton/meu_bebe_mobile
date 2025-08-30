@@ -3,28 +3,24 @@ import 'dart:developer';
 
 import 'package:signals_flutter/signals_flutter.dart';
 
-import '../../../../core/app_database.dart';
-import '../../../../core/fp/either.dart';
-import '../../../../core/helpers/messages.dart';
-import '../../../../model/gestation/pregnant_model.dart';
-import '../../../../repositories/gestation/gestation_repository.dart';
-import '../../../../repositories/profile/profile_repository.dart';
+import '../../../../../core/app_database.dart';
+import '../../../../../core/fp/either.dart';
+import '../../../../../core/helpers/messages.dart';
+import '../../../../../model/gestation/pregnant_model.dart';
+import '../../../../../repositories/gestation/gestation_repository.dart';
+import '../../../../../repositories/profile/profile_repository.dart';
 
 class ProfileDataController with MessageStateMixin {
-  final GestationRepository _gestationRepository;
-  final ProfileRepository _profileRepository;
+  final GestationRepository gestationRepository;
+  final ProfileRepository profileRepository;
+
+  ProfileDataController(this.profileRepository, this.gestationRepository);
 
   PregnantData? _pregnant;
   PregnantData? get pregnant => _pregnant;
 
   UserData? _user;
   UserData? get user => _user;
-
-  ProfileDataController({
-    required GestationRepository gestationRepository,
-    required ProfileRepository profileRepository,
-  }) : _gestationRepository = gestationRepository,
-       _profileRepository = profileRepository;
 
   final _formEnabled = signal<bool>(false);
   bool get formEnabled => _formEnabled();
@@ -39,7 +35,7 @@ class ProfileDataController with MessageStateMixin {
   }
 
   Future<void> getGestationElements() async {
-    final result = await _gestationRepository.getPregnant();
+    final result = await gestationRepository.getPregnant();
 
     switch (result) {
       case Left():
@@ -50,7 +46,7 @@ class ProfileDataController with MessageStateMixin {
   }
 
   Future<void> getUserElements() async {
-    final result = await _profileRepository.getUser();
+    final result = await profileRepository.getUser();
 
     switch (result) {
       case Left():
@@ -74,7 +70,7 @@ class ProfileDataController with MessageStateMixin {
   }
 
   Future<bool> _saveGestation(PregnantModel pregnant) async {
-    final result = await _gestationRepository.updatePregnant(pregnant);
+    final result = await gestationRepository.updatePregnant(pregnant);
 
     switch (result) {
       case Left():
@@ -85,7 +81,7 @@ class ProfileDataController with MessageStateMixin {
   }
 
   Future<bool> _saveUser(UserData user) async {
-    final result = await _profileRepository.updateUser(user);
+    final result = await profileRepository.updateUser(user);
 
     switch (result) {
       case Left():

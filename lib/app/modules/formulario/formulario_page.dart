@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_theme.dart';
+
 class FormularioPage extends StatefulWidget {
   const FormularioPage({super.key});
 
@@ -104,86 +106,76 @@ class FormularioPageState extends State<FormularioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text(
-            textAlign: TextAlign.center,
-            'Formulário',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 35),
-          ),
-        ),
-      ),
+      appBar: AppBar(title: const Center(child: Text('Formulário'))),
       body: Form(
         key: _formKey,
         child: Column(
           children: [
             // Stepper horizontal personalizado
             Container(
-              height: 72,
+              height: 80,
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: [
-                    const SizedBox(width: 8),
-                    ...List.generate(6, (index) {
-                      final isActive = index == _currentStep;
-                      final isCompleted = index < _currentStep;
+                  children: List.generate(6, (index) {
+                    final isActive = index == _currentStep;
+                    final isCompleted = index < _currentStep;
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: InkWell(
-                          onTap: () {
-                            //if (_formKey.currentState!.validate()) {
-                            setState(() => _currentStep = index);
-                            //}
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isActive
-                                  ? Theme.of(context).primaryColor
-                                  : isCompleted
-                                  ? Colors.green.shade100
-                                  : Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: isActive
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ), // espaçamento entre passos
+                      child: InkWell(
+                        onTap: () {
+                          setState(() => _currentStep = index);
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: isCompleted
+                                    ? AppTheme.textColor
+                                    : isActive
                                     ? Theme.of(context).primaryColor
-                                    : Colors.grey.shade400,
+                                    : Colors.grey.shade300,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: isActive
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.grey.shade400,
+                                ),
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                if (isCompleted)
-                                  const Padding(
-                                    padding: EdgeInsets.only(right: 4),
-                                    child: Icon(
+                              child: isCompleted
+                                  ? const Icon(
                                       Icons.check,
                                       size: 16,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                Text(
-                                  _getStepTitle(index),
-                                  style: TextStyle(
-                                    color: isActive
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
+                                      color: Colors.white,
+                                    )
+                                  : null,
                             ),
-                          ),
+                            const SizedBox(height: 4),
+                            Text(
+                              _getStepTitle(index),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: isActive
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.black54,
+                                fontWeight: isActive
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
                         ),
-                      );
-                    }),
-                    const SizedBox(width: 8),
-                  ],
+                      ),
+                    );
+                  }),
                 ),
               ),
             ),

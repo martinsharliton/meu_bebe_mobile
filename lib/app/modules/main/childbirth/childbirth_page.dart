@@ -20,7 +20,7 @@ class _ChildbirthPageState extends State<ChildbirthPage>
       width: context.screenWidth,
       height: double.infinity,
       color: AppTheme.secondaryColor,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: const SingleChildScrollView(
         child: Column(
           spacing: 16,

@@ -19,7 +19,7 @@ class _InformationPageState extends State<InformationPage> {
         centerTitle: true,
       ),
       body: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Column(
           children: [
             InformationCard(

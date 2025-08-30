@@ -7,10 +7,9 @@ mixin Mensagens<T extends StatefulWidget> on State<T> {
     _showSnackbarCustom(
       message: message,
       textAlign: TextAlign.justify,
-      padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-      foregroundColor: const Color(0xFFC62828),
-      backgroundColor: const Color(0xFFFFEBEE),
-      borderColor: const Color(0xFFFFCDD2),
+      padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+      foregroundColor: const Color(0xFFB02E2E), // Vermelho infantil suave
+      backgroundColor: const Color(0xFFFFE8E8), // Fundo rosa claro suave
       duration: const Duration(seconds: 25),
       closeButton: true,
     );
@@ -19,36 +18,32 @@ mixin Mensagens<T extends StatefulWidget> on State<T> {
   Future<void> showError(String message) async {
     _showSnackbarCustom(
       message: message,
-      foregroundColor: const Color(0xFFC62828),
-      backgroundColor: const Color(0xFFFFEBEE),
-      borderColor: const Color(0xFFFFCDD2),
+      foregroundColor: const Color(0xFFB02E2E),
+      backgroundColor: const Color(0xFFFFE8E8),
     );
   }
 
   Future<void> showWarning(String message) async {
     _showSnackbarCustom(
       message: message,
-      foregroundColor: const Color(0xFFEF6C00),
-      backgroundColor: const Color(0xFFFFF8E1),
-      borderColor: const Color(0xFFFFE0B2),
+      foregroundColor: const Color(0xFFCC7A00), // Laranja pastel
+      backgroundColor: const Color(0xFFFFF4E0), // Amarelo-clarinho suave
     );
   }
 
   Future<void> showInfo(String message) async {
     _showSnackbarCustom(
       message: message,
-      foregroundColor: AppTheme.darkTextColor,
-      backgroundColor: AppTheme.primaryColor,
-      borderColor: AppTheme.secondaryColor,
+      foregroundColor: AppTheme.darkTextColor, // Azul petróleo ameno
+      backgroundColor: AppTheme.primaryColor, // Azul bebê clarinho
     );
   }
 
   Future<void> showSuccess(String message) async {
     _showSnackbarCustom(
       message: message,
-      foregroundColor: const Color(0xFF2E7D32),
-      backgroundColor: const Color(0xFFE6F4EA),
-      borderColor: const Color(0xFFA5D6A7),
+      foregroundColor: const Color(0xFF2A7D54), // Verde água suave
+      backgroundColor: const Color(0xFFE0F8F2), // Verde bebê clarinho
     );
   }
 
@@ -56,7 +51,6 @@ mixin Mensagens<T extends StatefulWidget> on State<T> {
     required String message,
     required Color backgroundColor,
     required Color foregroundColor,
-    required Color borderColor,
     EdgeInsetsGeometry padding = const EdgeInsets.all(10),
     Duration duration = const Duration(seconds: 5),
     bool closeButton = false,
@@ -68,10 +62,7 @@ mixin Mensagens<T extends StatefulWidget> on State<T> {
         dismissDirection: DismissDirection.horizontal,
         elevation: 5,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7),
-          side: BorderSide(color: borderColor, width: 1.25),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
         duration: duration,
         backgroundColor: backgroundColor,
         content: Padding(

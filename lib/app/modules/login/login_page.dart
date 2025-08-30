@@ -155,7 +155,9 @@ class LoginPageState extends State<LoginPage> with MessageViewMixin, Mensagens {
   Widget get _loginButton => SizedBox(
     height: 48,
     child: ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.textColor),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.titleStyle.color,
+      ),
       onPressed: () {
         // final valid = formKey.currentState?.validate() ?? false;
         // if (valid) {
