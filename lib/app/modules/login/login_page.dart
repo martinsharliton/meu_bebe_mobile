@@ -74,7 +74,7 @@ class LoginPageState extends State<LoginPage> with MessageViewMixin, Mensagens {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Center(
-                child: Image.asset('assets/images/baby_2.png', height: 120),
+                child: Image.asset('assets/images/logo_app.png', height: 120),
               ),
               const SizedBox(height: 24),
               const Text(

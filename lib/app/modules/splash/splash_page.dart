@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage>
         child: FadeTransition(
           opacity: _animation,
           child: Image.asset(
-            'assets/images/baby_2.png',
+            'assets/images/logo_app.png',
             width: 150,
             height: 150,
           ),

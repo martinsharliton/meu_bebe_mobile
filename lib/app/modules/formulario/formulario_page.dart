@@ -191,7 +191,7 @@ class FormularioPageState extends State<FormularioPage> {
                   image: DecorationImage(
                     opacity: .05,
                     fit: BoxFit.contain,
-                    image: AssetImage('assets/images/baby_2.png'),
+                    image: AssetImage('assets/images/logo_app.png'),
                   ),
                 ),
                 child: SingleChildScrollView(
@@ -385,23 +385,29 @@ class FormularioPageState extends State<FormularioPage> {
               ),
               Column(
                 children: [
-                  RadioListTile<String>(
-                    title: const Text('Com carteira assinada'),
-                    value: 'CLT',
+                  RadioGroup(
                     groupValue: tipoEmprego,
                     onChanged: (val) => setState(() => tipoEmprego = val ?? ''),
+                    child: RadioListTile<String>(
+                      title: const Text('Autônoma'),
+                      value: 'Autônoma',
+                    ),
                   ),
-                  RadioListTile<String>(
-                    title: const Text('Autônoma'),
-                    value: 'Autônoma',
+                  RadioGroup(
                     groupValue: tipoEmprego,
                     onChanged: (val) => setState(() => tipoEmprego = val ?? ''),
+                    child: RadioListTile<String>(
+                      title: const Text('Autônoma'),
+                      value: 'Autônoma',
+                    ),
                   ),
-                  RadioListTile<String>(
-                    title: const Text('Informal'),
-                    value: 'Informal',
+                  RadioGroup(
                     groupValue: tipoEmprego,
                     onChanged: (val) => setState(() => tipoEmprego = val ?? ''),
+                    child: RadioListTile<String>(
+                      title: const Text('Informal'),
+                      value: 'Informal',
+                    ),
                   ),
                 ],
               ),
@@ -415,7 +421,7 @@ class FormularioPageState extends State<FormularioPage> {
               labelText: 'Qual sua faixa de renda mensal?',
               border: OutlineInputBorder(),
             ),
-            value: faixaRenda.isEmpty ? null : faixaRenda,
+            initialValue: faixaRenda.isEmpty ? null : faixaRenda,
             items: const [
               DropdownMenuItem(
                 value: 'Até 1 salário mínimo',
@@ -547,7 +553,7 @@ class FormularioPageState extends State<FormularioPage> {
             border: OutlineInputBorder(),
           ),
           validator: (value) => value == null ? 'Campo obrigatório' : null,
-          value: fonteAgua.isNotEmpty ? fonteAgua : null,
+          initialValue: fonteAgua.isNotEmpty ? fonteAgua : null,
           items: const [
             DropdownMenuItem(
               value: 'Rede pública',
@@ -571,7 +577,7 @@ class FormularioPageState extends State<FormularioPage> {
             border: OutlineInputBorder(),
           ),
           validator: (value) => value == null ? 'Campo obrigatório' : null,
-          value: fonteAgua.isNotEmpty ? fonteAgua : null,
+          initialValue: fonteAgua.isNotEmpty ? fonteAgua : null,
           items: const [
             DropdownMenuItem(value: 'Sim', child: Text('Sim')),
             DropdownMenuItem(value: 'Não', child: Text('Não')),
@@ -592,37 +598,42 @@ class FormularioPageState extends State<FormularioPage> {
             const SizedBox(height: 8),
             Column(
               children: [
-                RadioListTile<String>(
-                  title: const Text('Rede coletora'),
-                  value: 'Rede coletora',
+                RadioGroup(
                   groupValue: destinoEsgoto,
                   onChanged: (val) => setState(() => destinoEsgoto = val ?? ''),
+                  child: const RadioListTile<String>(
+                    title: Text('Rede coletora'),
+                    value: 'Rede coletora',
+                  ),
                 ),
-                RadioListTile<String>(
-                  title: const Text('Céu aberto/rio'),
-                  value: 'Céu aberto',
+                RadioGroup(
                   groupValue: destinoEsgoto,
                   onChanged: (val) => setState(() => destinoEsgoto = val ?? ''),
+                  child: const RadioListTile<String>(
+                    title: Text('Céu aberto/rio'),
+                    value: 'Céu aberto',
+                  ),
                 ),
-                RadioListTile<String>(
-                  title: const Text('Outro'),
-                  value: 'Outro',
+                RadioGroup(
                   groupValue: destinoEsgoto,
                   onChanged: (val) => setState(() => destinoEsgoto = val ?? ''),
+                  child: const RadioListTile<String>(
+                    title: Text('Outro'),
+                    value: 'Outro',
+                  ),
                 ),
               ],
             ),
           ],
         ),
         const SizedBox(height: 16),
-
         // Coleta de lixo (Dropdown)
         DropdownButtonFormField<String>(
           decoration: const InputDecoration(
             labelText: 'Como é feita a coleta de lixo na sua comunidade?',
             border: OutlineInputBorder(),
           ),
-          value: coletaLixo.isNotEmpty ? coletaLixo : null,
+          initialValue: coletaLixo.isNotEmpty ? coletaLixo : null,
           items: const [
             DropdownMenuItem(
               value: 'Coleta regular',
@@ -682,7 +693,7 @@ class FormularioPageState extends State<FormularioPage> {
             border: OutlineInputBorder(),
           ),
           validator: (value) => value == null ? 'Campo obrigatório' : null,
-          value: tipoMoradia.isNotEmpty ? tipoMoradia : null,
+          initialValue: tipoMoradia.isNotEmpty ? tipoMoradia : null,
           items: const [
             DropdownMenuItem(
               value: 'Casa de alvenaria',
@@ -721,7 +732,7 @@ class FormularioPageState extends State<FormularioPage> {
             border: OutlineInputBorder(),
           ),
           validator: (value) => value == null ? 'Campo obrigatório' : null,
-          value: tipoMoradia.isNotEmpty ? tipoMoradia : null,
+          initialValue: tipoMoradia.isNotEmpty ? tipoMoradia : null,
           items: const [
             DropdownMenuItem(
               value: 'Casa de alvenaria',
@@ -762,19 +773,23 @@ class FormularioPageState extends State<FormularioPage> {
             CheckboxListTile(
               title: const Text('Consulta médica regular'),
               value: preNatalMedico,
-              onChanged: (val) => setState(() => preNatalMedico = val ?? false),
+              onChanged: (val) {
+                setState(() => preNatalMedico = val ?? false);
+              },
             ),
             CheckboxListTile(
               title: const Text('Consulta com enfermeiro'),
               value: preNatalEnfermagem,
-              onChanged: (val) =>
-                  setState(() => preNatalEnfermagem = val ?? false),
+              onChanged: (val) {
+                setState(() => preNatalEnfermagem = val ?? false);
+              },
             ),
             CheckboxListTile(
               title: const Text('Grupo de gestantes'),
               value: participaGrupoGestantes,
-              onChanged: (val) =>
-                  setState(() => participaGrupoGestantes = val ?? false),
+              onChanged: (val) {
+                setState(() => participaGrupoGestantes = val ?? false);
+              },
             ),
           ],
         ),
@@ -804,7 +819,7 @@ class FormularioPageState extends State<FormularioPage> {
             labelText: 'Como avalia o atendimento de pré-natal?',
             border: OutlineInputBorder(),
           ),
-          value: avaliacaoPreNatal.isNotEmpty ? avaliacaoPreNatal : null,
+          initialValue: avaliacaoPreNatal.isNotEmpty ? avaliacaoPreNatal : null,
           items: const [
             DropdownMenuItem(value: 'Excelente', child: Text('Excelente')),
             DropdownMenuItem(value: 'Bom', child: Text('Bom')),
@@ -845,7 +860,7 @@ class FormularioPageState extends State<FormularioPage> {
             hintText: 'Selecione o tipo de residência',
           ),
           validator: (value) => value == null ? 'Campo obrigatório' : null,
-          value: tipoMoradia.isNotEmpty ? tipoMoradia : null,
+          initialValue: tipoMoradia.isNotEmpty ? tipoMoradia : null,
           items: const [
             DropdownMenuItem(
               value: 'Casa de alvenaria',
@@ -933,7 +948,7 @@ class FormularioPageState extends State<FormularioPage> {
             border: OutlineInputBorder(),
           ),
           validator: (value) => value == null ? 'Campo obrigatório' : null,
-          value: tipoMoradia.isNotEmpty ? tipoMoradia : null,
+          initialValue: tipoMoradia.isNotEmpty ? tipoMoradia : null,
           items: const [
             DropdownMenuItem(
               value: 'Casa de alvenaria',
@@ -994,26 +1009,26 @@ class FormularioPageState extends State<FormularioPage> {
             ),
             Column(
               children: [
-                RadioListTile<int>(
-                  title: const Text('1-2 refeições'),
-                  value: 1,
+                RadioGroup(
                   groupValue: refeicoesPorDia,
-                  onChanged: (val) =>
-                      setState(() => refeicoesPorDia = val ?? 0),
+                  onChanged: (val) {
+                    setState(() => refeicoesPorDia = val ?? 0);
+                  },
+                  child: Text('1-2 refeições'),
                 ),
-                RadioListTile<int>(
-                  title: const Text('3 refeições'),
-                  value: 3,
+                RadioGroup(
                   groupValue: refeicoesPorDia,
-                  onChanged: (val) =>
-                      setState(() => refeicoesPorDia = val ?? 0),
+                  onChanged: (val) {
+                    setState(() => refeicoesPorDia = val ?? 0);
+                  },
+                  child: Text('3 refeições'),
                 ),
-                RadioListTile<int>(
-                  title: const Text('4 ou mais refeições'),
-                  value: 4,
+                RadioGroup(
                   groupValue: refeicoesPorDia,
-                  onChanged: (val) =>
-                      setState(() => refeicoesPorDia = val ?? 0),
+                  onChanged: (val) {
+                    setState(() => refeicoesPorDia = val ?? 0);
+                  },
+                  child: Text('4 ou mais refeições'),
                 ),
               ],
             ),
@@ -1065,7 +1080,7 @@ class FormularioPageState extends State<FormularioPage> {
             labelText: 'De onde vem os alimentos que você consome?',
             border: OutlineInputBorder(),
           ),
-          value: avaliacaoPreNatal.isNotEmpty ? avaliacaoPreNatal : null,
+          initialValue: avaliacaoPreNatal.isNotEmpty ? avaliacaoPreNatal : null,
           items: const [
             DropdownMenuItem(value: 'Excelente', child: Text('Excelente')),
             DropdownMenuItem(value: 'Bom', child: Text('Bom')),
@@ -1106,35 +1121,47 @@ class FormularioPageState extends State<FormularioPage> {
             ),
             Column(
               children: [
-                RadioListTile<String>(
-                  title: const Text(
-                    'Muito boa - atende todas minhas necessidades',
+                RadioGroup(
+                  groupValue: avaliacaoAlimentacao,
+                  onChanged: (val) {
+                    setState(() => avaliacaoAlimentacao = val ?? '');
+                  },
+                  child: RadioListTile<String>(
+                    title: const Text(
+                      'Muito boa - atende todas minhas necessidades',
+                    ),
+                    value: 'Muito boa',
                   ),
-                  value: 'Muito boa',
-                  groupValue: avaliacaoAlimentacao,
-                  onChanged: (val) =>
-                      setState(() => avaliacaoAlimentacao = val ?? ''),
                 ),
-                RadioListTile<String>(
-                  title: const Text('Boa - com algumas limitações'),
-                  value: 'Boa',
+                RadioGroup(
                   groupValue: avaliacaoAlimentacao,
-                  onChanged: (val) =>
-                      setState(() => avaliacaoAlimentacao = val ?? ''),
+                  onChanged: (val) {
+                    setState(() => avaliacaoAlimentacao = val ?? '');
+                  },
+                  child: RadioListTile<String>(
+                    title: const Text('Boa - com algumas limitações'),
+                    value: 'Boa',
+                  ),
                 ),
-                RadioListTile<String>(
-                  title: const Text('Regular - poderia ser melhor'),
-                  value: 'Regular',
+                RadioGroup(
                   groupValue: avaliacaoAlimentacao,
-                  onChanged: (val) =>
-                      setState(() => avaliacaoAlimentacao = val ?? ''),
+                  onChanged: (val) {
+                    setState(() => avaliacaoAlimentacao = val ?? '');
+                  },
+                  child: RadioListTile<String>(
+                    title: const Text('Regular - poderia ser melhor'),
+                    value: 'Regular',
+                  ),
                 ),
-                RadioListTile<String>(
-                  title: const Text('Ruim - não atende minhas necessidades'),
-                  value: 'Ruim',
+                RadioGroup(
                   groupValue: avaliacaoAlimentacao,
-                  onChanged: (val) =>
-                      setState(() => avaliacaoAlimentacao = val ?? ''),
+                  onChanged: (val) {
+                    setState(() => avaliacaoAlimentacao = val ?? '');
+                  },
+                  child: RadioListTile<String>(
+                    title: const Text('Ruim - não atende minhas necessidades'),
+                    value: 'Ruim',
+                  ),
                 ),
               ],
             ),
