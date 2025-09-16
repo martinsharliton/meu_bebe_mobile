@@ -18,7 +18,7 @@ import '../model/home/medications_model.dart';
 import '../model/home/vaccine_model.dart';
 import '../model/user/user_model.dart';
 
-part 'app_database.g.dart';
+part 'database.g.dart';
 
 @DriftDatabase(
   tables: [
@@ -40,8 +40,8 @@ part 'app_database.g.dart';
     Vaccine,
   ],
 )
-class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+class Database extends _$Database {
+  Database() : super(_openConnection());
 
   static QueryExecutor _openConnection() {
     return SqfliteQueryExecutor.inDatabaseFolder(path: 'db.sqlite');

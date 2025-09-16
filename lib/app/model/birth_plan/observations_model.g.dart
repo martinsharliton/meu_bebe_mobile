@@ -7,11 +7,7 @@ part of 'observations_model.dart';
 // **************************************************************************
 
 ObservationsModel _$ObservationsModelFromJson(Map<String, dynamic> json) =>
-    ObservationsModel(
-      observations: json['observations'] as String,
-    );
+    ObservationsModel(observations: json['observations'] as String);
 
 Map<String, dynamic> _$ObservationsModelToJson(ObservationsModel instance) =>
-    <String, dynamic>{
-      'observations': instance.observations,
-    };
+    <String, dynamic>{'observations': instance.observations};

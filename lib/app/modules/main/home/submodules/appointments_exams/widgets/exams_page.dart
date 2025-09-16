@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../../../../core/app_database.dart';
 import '../../../../../../core/extensions/size_extension.dart';
 import '../../../../../../core/theme/app_theme.dart';
+import '../../../../../../database/database.dart';
 import '../appointments_exams_controller.dart';
 import '../text_controllers/exams_text_controller.dart';
 import 'card_with_date.dart';

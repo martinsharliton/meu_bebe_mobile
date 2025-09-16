@@ -27,7 +27,7 @@ class _AppWidgetState extends State<AppWidget> {
     return MaterialApp.router(
       title: 'Meu Bebê',
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      // darkTheme: AppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
       routerConfig: Modular.routerConfig,
       localizationsDelegates: const [

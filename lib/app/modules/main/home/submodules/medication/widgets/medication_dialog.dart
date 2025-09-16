@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../../../../core/app_database.dart';
 import '../../../../../../core/extensions/size_extension.dart';
 import '../../../../../../core/theme/app_theme.dart';
+import '../../../../../../database/database.dart';
 import '../medication_controller.dart';
 import 'custom_text_form_field.dart';
 

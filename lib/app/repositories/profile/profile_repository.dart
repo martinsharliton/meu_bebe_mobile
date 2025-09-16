@@ -1,6 +1,6 @@
-import '../../core/app_database.dart';
 import '../../core/exceptions/repository_exception.dart';
 import '../../core/fp/either.dart';
+import '../../database/database.dart';
 
 abstract interface class ProfileRepository {
   Future<Either<RepositoryException, UserData>> getUser();

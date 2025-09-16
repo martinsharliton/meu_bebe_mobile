@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/app_database.dart';
+import '../../../../../database/database.dart';
 import 'expectations_page.dart';
 
 mixin ExpectationsFormController on State<ExpectationsPage> {
@@ -25,16 +25,16 @@ mixin ExpectationsFormController on State<ExpectationsPage> {
   void initializeForm(Expectation? expectations) {
     if (expectations != null) {
       companionEC.text = expectations.companion.index.toString();
-      shaveIntimateHairEC.text =
-          expectations.shaveIntimateHair.index.toString();
-      bowelWashOrSuppositoryEC.text =
-          expectations.bowelWashOrSuppository.index.toString();
-      lowLightEnvironmentEC.text =
-          expectations.lowLightEnvironment.index.toString();
+      shaveIntimateHairEC.text = expectations.shaveIntimateHair.index
+          .toString();
+      bowelWashOrSuppositoryEC.text = expectations.bowelWashOrSuppository.index
+          .toString();
+      lowLightEnvironmentEC.text = expectations.lowLightEnvironment.index
+          .toString();
       listenToMusicEC.text = expectations.listenToMusic.index.toString();
       drinkLiquidsEC.text = expectations.drinkLiquids.index.toString();
-      recordPhotosOrVideosEC.text =
-          expectations.recordPhotosOrVideos.index.toString();
+      recordPhotosOrVideosEC.text = expectations.recordPhotosOrVideos.index
+          .toString();
     } else {
       companionEC.text = '0';
       shaveIntimateHairEC.text = '0';

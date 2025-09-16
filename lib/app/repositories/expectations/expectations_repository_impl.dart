@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:drift/drift.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../core/app_database.dart';
 import '../../core/exceptions/repository_exception.dart';
 import '../../core/fp/either.dart';
+import '../../database/database.dart';
 import 'expectations_repository.dart';
 
 class ExpectationsRepositoryImpl implements ExpectationsRepository {
-  final db = Modular.get<AppDatabase>();
+  final db = Modular.get<Database>();
 
   @override
   Future<Either<RepositoryException, Expectation>> getExpectations() async {

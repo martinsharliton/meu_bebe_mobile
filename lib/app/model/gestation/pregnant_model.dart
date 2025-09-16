@@ -1,8 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:drift/drift.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../core/app_database.dart';
+import '../../database/database.dart';
 
 part 'pregnant_model.g.dart';
 

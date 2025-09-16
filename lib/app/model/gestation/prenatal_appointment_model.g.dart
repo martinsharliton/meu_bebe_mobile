@@ -7,15 +7,15 @@ part of 'prenatal_appointment_model.dart';
 // **************************************************************************
 
 PrenatalAppointmentModel _$PrenatalAppointmentModelFromJson(
-        Map<String, dynamic> json) =>
-    PrenatalAppointmentModel(
-      appointmentDate: DateTime.parse(json['appointmentDate'] as String),
-      observations: json['observations'] as String,
-    );
+  Map<String, dynamic> json,
+) => PrenatalAppointmentModel(
+  appointmentDate: DateTime.parse(json['appointmentDate'] as String),
+  observations: json['observations'] as String,
+);
 
 Map<String, dynamic> _$PrenatalAppointmentModelToJson(
-        PrenatalAppointmentModel instance) =>
-    <String, dynamic>{
-      'appointmentDate': instance.appointmentDate.toIso8601String(),
-      'observations': instance.observations,
-    };
+  PrenatalAppointmentModel instance,
+) => <String, dynamic>{
+  'appointmentDate': instance.appointmentDate.toIso8601String(),
+  'observations': instance.observations,
+};

@@ -42,10 +42,7 @@ Map<String, dynamic> _$BabyDataModelToJson(BabyDataModel instance) =>
       'inducedLabor': instance.inducedLabor,
     };
 
-const _$BabySexEnumMap = {
-  BabySex.female: 'female',
-  BabySex.male: 'male',
-};
+const _$BabySexEnumMap = {BabySex.female: 'female', BabySex.male: 'male'};
 
 const _$BirthTypeEnumMap = {
   BirthType.vaginal: 'vaginal',

@@ -1,8 +1,8 @@
 import 'package:signals_flutter/signals_core.dart';
 
-import '../../../../../core/app_database.dart';
 import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
+import '../../../../../database/database.dart';
 import '../../../../../repositories/medication/medication_repository.dart';
 
 class MedicationController with MessageStateMixin {

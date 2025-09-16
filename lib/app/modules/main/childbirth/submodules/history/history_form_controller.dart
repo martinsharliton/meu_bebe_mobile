@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/app_database.dart';
+import '../../../../../database/database.dart';
 import 'history_page.dart';
 
 mixin HistoryFormController on State<HistoryPage> {

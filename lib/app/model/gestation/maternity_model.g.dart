@@ -13,7 +13,4 @@ MaternityModel _$MaternityModelFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$MaternityModelToJson(MaternityModel instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'shareData': instance.shareData,
-    };
+    <String, dynamic>{'name': instance.name, 'shareData': instance.shareData};

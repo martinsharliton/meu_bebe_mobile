@@ -7,15 +7,19 @@ part of 'birth_model.dart';
 // **************************************************************************
 
 BirthModel _$BirthModelFromJson(Map<String, dynamic> json) => BirthModel(
-      whoCut: $enumDecode(_$WhoCutUmbilicalCordEnumMap, json['whoCut']),
-      collectStemCells: json['collectStemCells'] as bool,
-      skinBabyContact:
-          $enumDecode(_$SkinBabyContactEnumMap, json['skinBabyContact']),
-      breastfeedFirstHour: $enumDecode(
-          _$BreastfeedFirstHourEnumMap, json['breastfeedFirstHour']),
-      breastfeedRestrictions: json['breastfeedRestrictions'] as bool,
-      firstBath: $enumDecode(_$FirstBathEnumMap, json['firstBath']),
-    );
+  whoCut: $enumDecode(_$WhoCutUmbilicalCordEnumMap, json['whoCut']),
+  collectStemCells: json['collectStemCells'] as bool,
+  skinBabyContact: $enumDecode(
+    _$SkinBabyContactEnumMap,
+    json['skinBabyContact'],
+  ),
+  breastfeedFirstHour: $enumDecode(
+    _$BreastfeedFirstHourEnumMap,
+    json['breastfeedFirstHour'],
+  ),
+  breastfeedRestrictions: json['breastfeedRestrictions'] as bool,
+  firstBath: $enumDecode(_$FirstBathEnumMap, json['firstBath']),
+);
 
 Map<String, dynamic> _$BirthModelToJson(BirthModel instance) =>
     <String, dynamic>{

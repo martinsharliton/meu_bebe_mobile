@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/app_database.dart';
+import '../../../../../database/database.dart';
 import 'birth_moment_page.dart';
 
 mixin BirthMomentFormController on State<BirthMomentPage> {
@@ -24,8 +24,8 @@ mixin BirthMomentFormController on State<BirthMomentPage> {
     vaginalCutEC.text = birthMoment.vaginalCut.index.toString();
     birthMoment.preferredPosition == null
         ? preferredPositionEC.clear()
-        : preferredPositionEC.text =
-            birthMoment.preferredPosition!.index.toString();
+        : preferredPositionEC.text = birthMoment.preferredPosition!.index
+              .toString();
     birthMoment.otherPosition == null
         ? otherPositionEC.clear()
         : otherPositionEC.text = birthMoment.otherPosition!;

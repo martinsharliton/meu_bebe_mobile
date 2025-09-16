@@ -11,8 +11,10 @@ BirthMomentModel _$BirthMomentModelFromJson(Map<String, dynamic> json) =>
       birthWay: $enumDecode(_$BirthWayEnumMap, json['birthWay']),
       anesthesia: $enumDecode(_$AnesthesiaEnumMap, json['anesthesia']),
       vaginalCut: $enumDecode(_$VaginalCutEnumMap, json['vaginalCut']),
-      preferredPosition:
-          $enumDecode(_$PositionsEnumMap, json['preferredPosition']),
+      preferredPosition: $enumDecode(
+        _$PositionsEnumMap,
+        json['preferredPosition'],
+      ),
       otherPosition: json['otherPosition'] as String?,
     );
 
