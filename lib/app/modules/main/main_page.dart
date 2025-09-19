@@ -22,15 +22,9 @@ class _MainPageState extends State<MainPage> {
 
   List<Widget> get _tabs => [
     const Tab(icon: Icon(CupertinoIcons.house_fill, size: 32), text: 'Home'),
-    const Tab(
-      icon: Icon(CupertinoIcons.heart_fill, size: 32),
-      text: 'Gestação',
-    ),
-    const Tab(
-      icon: Icon(CupertinoIcons.doc_text_fill, size: 32),
-      text: 'Parto',
-    ),
-    Tab(icon: Icon(Icons.person_rounded, size: 40), text: 'Perfil'),
+    const Tab(icon: Icon(CupertinoIcons.heart_fill, size: 32), text: 'Gestação'),
+    const Tab(icon: Icon(CupertinoIcons.doc_text_fill, size: 32), text: 'Parto'),
+    const Tab(icon: Icon(Icons.person_rounded, size: 40), text: 'Perfil'),
   ];
 
   String nome = 'Home';
@@ -55,12 +49,7 @@ class _MainPageState extends State<MainPage> {
         ),
         body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            HomePage(),
-            GestationPage(),
-            ChildbirthPage(),
-            ProfilePage(),
-          ],
+          children: const [HomePage(), GestationPage(), ChildbirthPage(), ProfilePage()],
         ),
         bottomNavigationBar: SafeArea(
           child: Container(
@@ -68,11 +57,7 @@ class _MainPageState extends State<MainPage> {
             decoration: BoxDecoration(
               color: AppTheme.primaryColor,
               boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.5),
-                  offset: const Offset(0, -1),
-                  blurRadius: 4,
-                ),
+                BoxShadow(color: Colors.black.withValues(alpha: 0.5), offset: const Offset(0, -1), blurRadius: 4),
               ],
             ),
             child: TabBar(

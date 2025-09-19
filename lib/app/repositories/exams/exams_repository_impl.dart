@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:drift/drift.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../core/exceptions/repository_exception.dart';
+import '../../core/exceptions/failure.dart';
 import '../../core/fp/either.dart';
 import '../../database/database.dart';
 import 'exams_repository.dart';
@@ -12,17 +12,17 @@ class ExamsRepositoryImpl implements ExamsRepository {
   final db = Modular.get<Database>();
 
   @override
-  Future<Either<RepositoryException, List<Exam>>> getExams() async {
+  Future<Either<Failure, List<Exam>>> getExams() async {
     try {
       final exams = await db.select(db.exams).get();
       return Right(exams);
     } catch (e) {
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 
   @override
-  Future<Either<RepositoryException, List<Exam>>> saveExams(Exam exam) async {
+  Future<Either<Failure, List<Exam>>> saveExams(Exam exam) async {
     try {
       log(db.exams.actualTableName);
       await db
@@ -38,12 +38,12 @@ class ExamsRepositoryImpl implements ExamsRepository {
       return Right(saved);
     } catch (e) {
       log(e.toString());
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 
   @override
-  Future<Either<RepositoryException, List<Exam>>> deleteExams(int id) async {
+  Future<Either<Failure, List<Exam>>> deleteExams(int id) async {
     try {
       await (db.delete(db.exams)..where((exam) => exam.id.equals(id))).go();
 
@@ -51,7 +51,7 @@ class ExamsRepositoryImpl implements ExamsRepository {
       return Right(list);
     } catch (e) {
       log(e.toString());
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 }

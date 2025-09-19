@@ -90,4 +90,9 @@ class ProfileDataController {
         return false;
     }
   }
+
+  /// Importante: liberar signals
+  void dispose() {
+    _formEnabled.dispose();
+  }
 }

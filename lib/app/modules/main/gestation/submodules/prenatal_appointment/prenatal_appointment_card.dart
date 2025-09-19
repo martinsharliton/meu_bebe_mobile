@@ -15,23 +15,13 @@ class PrenatalAppointmentCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
-            children: [
-              ItemTileWithList(
-                title: 'Consultas de pré-natal',
-                list: list,
-              ),
-            ],
+            children: [ItemTileWithList(title: 'Consultas de pré-natal', list: list)],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           SizedBox(
             width: double.infinity,
             height: 48,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Adicionar consulta'),
-            ),
+            child: ElevatedButton(onPressed: () {}, child: const Text('Adicionar consulta')),
           ),
         ],
       ),

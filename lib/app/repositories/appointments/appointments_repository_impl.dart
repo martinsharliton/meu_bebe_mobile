@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:drift/drift.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../core/exceptions/repository_exception.dart';
+import '../../core/exceptions/failure.dart';
 import '../../core/fp/either.dart';
 import '../../database/database.dart';
 import 'appointments_repository.dart';
@@ -12,20 +12,17 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
   final db = Modular.get<Database>();
 
   @override
-  Future<Either<RepositoryException, List<Appointment>>>
-  getAppointments() async {
+  Future<Either<Failure, List<Appointment>>> getAppointments() async {
     try {
       final appointments = await db.select(db.appointments).get();
       return Right(appointments);
     } catch (e) {
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 
   @override
-  Future<Either<RepositoryException, List<Appointment>>> saveAppointments(
-    Appointment appointment,
-  ) async {
+  Future<Either<Failure, List<Appointment>>> saveAppointments(Appointment appointment) async {
     try {
       log(db.appointments.actualTableName);
       await db
@@ -41,24 +38,20 @@ class AppointmentsRepositoryImpl implements AppointmentsRepository {
       return Right(saved);
     } catch (e) {
       log(e.toString());
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 
   @override
-  Future<Either<RepositoryException, List<Appointment>>> deleteAppointments(
-    int id,
-  ) async {
+  Future<Either<Failure, List<Appointment>>> deleteAppointments(int id) async {
     try {
-      await (db.delete(
-        db.appointments,
-      )..where((appointment) => appointment.id.equals(id))).go();
+      await (db.delete(db.appointments)..where((appointment) => appointment.id.equals(id))).go();
 
       final list = await db.select(db.appointments).get();
       return Right(list);
     } catch (e) {
       log(e.toString());
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 }

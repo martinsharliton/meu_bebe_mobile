@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:drift/drift.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../core/exceptions/repository_exception.dart';
+import '../../core/exceptions/failure.dart';
 import '../../core/fp/either.dart';
 import '../../database/database.dart';
 import 'profile_repository.dart';
@@ -12,19 +12,17 @@ class ProfileRepositoryImpl implements ProfileRepository {
   final db = Modular.get<Database>();
 
   @override
-  Future<Either<RepositoryException, UserData>> getUser() async {
+  Future<Either<Failure, UserData>> getUser() async {
     try {
-      final user = await (db.select(
-        db.user,
-      )..where((p) => p.id.equals(1))).getSingle();
+      final user = await (db.select(db.user)..where((p) => p.id.equals(1))).getSingle();
       return Right(user);
     } catch (e) {
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 
   @override
-  Future<Either<RepositoryException, UserData>> saveUser(UserData user) async {
+  Future<Either<Failure, UserData>> saveUser(UserData user) async {
     try {
       await db
           .into(db.user)
@@ -37,20 +35,16 @@ class ProfileRepositoryImpl implements ProfileRepository {
               familyIncome: Value(user.familyIncome),
             ),
           );
-      final saved = await (db.select(
-        db.user,
-      )..where((p) => p.id.equals(1))).getSingle();
+      final saved = await (db.select(db.user)..where((p) => p.id.equals(1))).getSingle();
       return Right(saved);
     } catch (e) {
       log(e.toString());
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 
   @override
-  Future<Either<RepositoryException, UserData>> updateUser(
-    UserData user,
-  ) async {
+  Future<Either<Failure, UserData>> updateUser(UserData user) async {
     try {
       await (db.update(db.user)..where((p) => p.id.equals(1))).write(
         UserCompanion(
@@ -60,15 +54,13 @@ class ProfileRepositoryImpl implements ProfileRepository {
           familyIncome: Value(user.familyIncome),
         ),
       );
-      final updated = await (db.select(
-        db.user,
-      )..where((p) => p.id.equals(1))).getSingle();
+      final updated = await (db.select(db.user)..where((p) => p.id.equals(1))).getSingle();
       return Right(updated);
     } catch (e) {
       if (e.toString().contains('No element')) {
         return saveUser(user);
       }
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 }

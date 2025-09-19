@@ -1,10 +1,11 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_core.dart';
 
 import '../../core/fp/either.dart';
 import '../../core/helpers/messages.dart';
 import '../../repositories/gestation/gestation_repository.dart';
 
-class MainController {
+class MainController implements Disposable {
   final GestationRepository gestationRepository;
 
   MainController(this.gestationRepository);
@@ -24,5 +25,11 @@ class MainController {
       case Right(value: final pregnant):
         _name.value = pregnant.name;
     }
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    tabName.dispose();
   }
 }

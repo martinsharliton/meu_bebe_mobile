@@ -1,16 +1,12 @@
-import '../../core/exceptions/repository_exception.dart';
+import '../../core/exceptions/failure.dart';
 import '../../core/fp/either.dart';
 import '../../database/database.dart';
 import '../../model/gestation/pregnant_model.dart';
 
 abstract interface class GestationRepository {
-  Future<Either<RepositoryException, PregnantData>> getPregnant();
+  Future<Either<Failure, PregnantData>> getPregnant();
 
-  Future<Either<RepositoryException, PregnantData>> savePregnant(
-    PregnantModel model,
-  );
+  Future<Either<Failure, PregnantData>> savePregnant(PregnantModel model);
 
-  Future<Either<RepositoryException, PregnantData>> updatePregnant(
-    PregnantModel model,
-  );
+  Future<Either<Failure, PregnantData>> updatePregnant(PregnantModel model);
 }

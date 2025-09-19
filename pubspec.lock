@@ -477,6 +477,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  multiple_result:
+    dependency: "direct main"
+    description:
+      name: multiple_result
+      sha256: "7a1f3c2ee7de44a545fffbad0eefa3f3ac64641932316cd5663bb3cdcf53399b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.0"
   package_config:
     dependency: transitive
     description:
@@ -537,10 +545,10 @@ packages:
     dependency: transitive
     description:
       name: pool
-      sha256: "20fe868b6314b322ea036ba325e6fc0711a22948856475e2c2b6306e8ab39c2a"
+      sha256: "978783255c543aa3586a1b3c21f6e9d720eb315376a915872c61ef8b5c20177d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.5.1"
+    version: "1.5.2"
   preact_signals:
     dependency: transitive
     description:

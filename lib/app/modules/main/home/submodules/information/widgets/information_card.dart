@@ -8,13 +8,7 @@ class InformationCard extends StatelessWidget {
   final VoidCallback onTap;
   final bool spacer;
 
-  const InformationCard({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.onTap,
-    this.spacer = true,
-  });
+  const InformationCard({super.key, required this.icon, required this.title, required this.onTap, this.spacer = true});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +19,7 @@ class InformationCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,

@@ -26,20 +26,11 @@ class ItemTileWithList extends StatelessWidget {
                 if (index < list.length) {
                   return Container(
                     width: (context.screenWidth - 70) / 2,
-                    margin: index == list.length - 1
-                        ? null
-                        : const EdgeInsets.only(right: 10),
+                    margin: index == list.length - 1 ? null : const EdgeInsets.only(right: 10),
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    decoration: BoxDecoration(
-                      color: AppTheme.secondaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    decoration: BoxDecoration(color: AppTheme.secondaryColor, borderRadius: BorderRadius.circular(10)),
                     child: Center(
-                      child: Text(
-                        list[index],
-                        style: AppTheme.textStyle,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      child: Text(list[index], style: AppTheme.textStyle, overflow: TextOverflow.ellipsis),
                     ),
                   );
                 }

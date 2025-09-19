@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:drift/drift.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../core/exceptions/repository_exception.dart';
+import '../../core/exceptions/failure.dart';
 import '../../core/fp/either.dart';
 import '../../database/database.dart';
 import 'medication_repository.dart';
@@ -12,19 +12,17 @@ class MedicationRepositoryImpl implements MedicationRepository {
   final db = Modular.get<Database>();
 
   @override
-  Future<Either<RepositoryException, List<Medication>>> getMedications() async {
+  Future<Either<Failure, List<Medication>>> getMedications() async {
     try {
       final medications = await db.select(db.medications).get();
       return Right(medications);
     } catch (e) {
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 
   @override
-  Future<Either<RepositoryException, List<Medication>>> saveMedication(
-    Medication medication,
-  ) async {
+  Future<Either<Failure, List<Medication>>> saveMedication(Medication medication) async {
     try {
       await db
           .into(db.medications)
@@ -39,24 +37,20 @@ class MedicationRepositoryImpl implements MedicationRepository {
       return Right(saved);
     } catch (e) {
       log(e.toString());
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 
   @override
-  Future<Either<RepositoryException, List<Medication>>> deleteMedication(
-    int id,
-  ) async {
+  Future<Either<Failure, List<Medication>>> deleteMedication(int id) async {
     try {
-      await (db.delete(
-        db.medications,
-      )..where((medication) => medication.id.equals(id))).go();
+      await (db.delete(db.medications)..where((medication) => medication.id.equals(id))).go();
 
       final list = await db.select(db.medications).get();
       return Right(list);
     } catch (e) {
       log(e.toString());
-      return Left(RepositoryException());
+      return Left(Failure());
     }
   }
 }

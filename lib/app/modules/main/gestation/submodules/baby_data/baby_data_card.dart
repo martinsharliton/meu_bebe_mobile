@@ -15,23 +15,13 @@ class BabyDataCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
-            children: [
-              ItemTileWithList(
-                title: 'Dados sobre o nascimento',
-                list: list,
-              ),
-            ],
+            children: [ItemTileWithList(title: 'Dados sobre o nascimento', list: list)],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           SizedBox(
             width: double.infinity,
             height: 48,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Adicionar nascimento'),
-            ),
+            child: ElevatedButton(onPressed: () {}, child: const Text('Adicionar nascimento')),
           ),
         ],
       ),

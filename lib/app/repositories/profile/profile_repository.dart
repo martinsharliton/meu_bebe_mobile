@@ -1,11 +1,11 @@
-import '../../core/exceptions/repository_exception.dart';
+import '../../core/exceptions/failure.dart';
 import '../../core/fp/either.dart';
 import '../../database/database.dart';
 
 abstract interface class ProfileRepository {
-  Future<Either<RepositoryException, UserData>> getUser();
+  Future<Either<Failure, UserData>> getUser();
 
-  Future<Either<RepositoryException, UserData>> saveUser(UserData user);
+  Future<Either<Failure, UserData>> saveUser(UserData user);
 
-  Future<Either<RepositoryException, UserData>> updateUser(UserData user);
+  Future<Either<Failure, UserData>> updateUser(UserData user);
 }

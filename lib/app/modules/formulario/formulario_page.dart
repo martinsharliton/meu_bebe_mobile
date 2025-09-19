@@ -123,9 +123,7 @@ class FormularioPageState extends State<FormularioPage> {
                     final isCompleted = index < _currentStep;
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                      ), // espaçamento entre passos
+                      padding: const EdgeInsets.symmetric(horizontal: 12), // espaçamento entre passos
                       child: InkWell(
                         onTap: () {
                           setState(() => _currentStep = index);
@@ -144,30 +142,18 @@ class FormularioPageState extends State<FormularioPage> {
                                     : Colors.grey.shade300,
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: isActive
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.grey.shade400,
+                                  color: isActive ? Theme.of(context).primaryColor : Colors.grey.shade400,
                                 ),
                               ),
-                              child: isCompleted
-                                  ? const Icon(
-                                      Icons.check,
-                                      size: 16,
-                                      color: Colors.white,
-                                    )
-                                  : null,
+                              child: isCompleted ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
                             ),
                             const SizedBox(height: 4),
                             Text(
                               _getStepTitle(index),
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: isActive
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.black54,
-                                fontWeight: isActive
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
+                                color: isActive ? Theme.of(context).primaryColor : Colors.black54,
+                                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                                 fontSize: 15,
                               ),
                             ),
@@ -194,10 +180,7 @@ class FormularioPageState extends State<FormularioPage> {
                     image: AssetImage('assets/images/logo_app.png'),
                   ),
                 ),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
-                  child: _buildCurrentStepContent(),
-                ),
+                child: SingleChildScrollView(padding: const EdgeInsets.all(16), child: _buildCurrentStepContent()),
               ),
             ),
 
@@ -245,14 +228,7 @@ class FormularioPageState extends State<FormularioPage> {
   }
 
   String _getStepTitle(int index) {
-    final titles = [
-      'Educação',
-      'Trabalho',
-      'Saneamento',
-      'Saúde',
-      'Habitação',
-      'Alimentação',
-    ];
+    final titles = ['Educação', 'Trabalho', 'Saneamento', 'Saúde', 'Habitação', 'Alimentação'];
     return titles[index];
   }
 
@@ -296,16 +272,13 @@ class FormularioPageState extends State<FormularioPage> {
             border: OutlineInputBorder(),
             hintText: 'Ex: Ensino Médio Completo',
           ),
-          validator: (value) =>
-              value?.isEmpty ?? true ? 'Campo obrigatório' : null,
+          validator: (value) => value?.isEmpty ?? true ? 'Campo obrigatório' : null,
           onChanged: (val) => escolaridade = val,
         ),
         const SizedBox(height: 16),
 
         SwitchListTile(
-          title: const Text(
-            'Já teve que interromper os estudos por causa da gestação?',
-          ),
+          title: const Text('Já teve que interromper os estudos por causa da gestação?'),
           value: estuda,
           onChanged: (val) => setState(() => estuda = val),
         ),
@@ -325,9 +298,7 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Educação especial
         SwitchListTile(
-          title: const Text(
-            'Você consegue entender bem as orientações dos profissionais de saúde?',
-          ),
+          title: const Text('Você consegue entender bem as orientações dos profissionais de saúde?'),
           value: false,
           onChanged: (val) => setState(() {}),
         ),
@@ -379,35 +350,23 @@ class FormularioPageState extends State<FormularioPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Qual o tipo do seu emprego?',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
+              const Text('Qual o tipo do seu emprego?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
               Column(
                 children: [
                   RadioGroup(
                     groupValue: tipoEmprego,
                     onChanged: (val) => setState(() => tipoEmprego = val ?? ''),
-                    child: RadioListTile<String>(
-                      title: const Text('Autônoma'),
-                      value: 'Autônoma',
-                    ),
+                    child: RadioListTile<String>(title: const Text('Autônoma'), value: 'Autônoma'),
                   ),
                   RadioGroup(
                     groupValue: tipoEmprego,
                     onChanged: (val) => setState(() => tipoEmprego = val ?? ''),
-                    child: RadioListTile<String>(
-                      title: const Text('Autônoma'),
-                      value: 'Autônoma',
-                    ),
+                    child: RadioListTile<String>(title: const Text('Autônoma'), value: 'Autônoma'),
                   ),
                   RadioGroup(
                     groupValue: tipoEmprego,
                     onChanged: (val) => setState(() => tipoEmprego = val ?? ''),
-                    child: RadioListTile<String>(
-                      title: const Text('Informal'),
-                      value: 'Informal',
-                    ),
+                    child: RadioListTile<String>(title: const Text('Informal'), value: 'Informal'),
                   ),
                 ],
               ),
@@ -423,26 +382,11 @@ class FormularioPageState extends State<FormularioPage> {
             ),
             initialValue: faixaRenda.isEmpty ? null : faixaRenda,
             items: const [
-              DropdownMenuItem(
-                value: 'Até 1 salário mínimo',
-                child: Text('Até 1 salário mínimo'),
-              ),
-              DropdownMenuItem(
-                value: '1-2 salários',
-                child: Text('1-2 salários mínimos'),
-              ),
-              DropdownMenuItem(
-                value: '2-3 salários',
-                child: Text('2-3 salários mínimos'),
-              ),
-              DropdownMenuItem(
-                value: 'Mais de 3 salários',
-                child: Text('Mais de 3 salários mínimos'),
-              ),
-              DropdownMenuItem(
-                value: 'Prefiro não informar',
-                child: Text('Prefiro não informar'),
-              ),
+              DropdownMenuItem(value: 'Até 1 salário mínimo', child: Text('Até 1 salário mínimo')),
+              DropdownMenuItem(value: '1-2 salários', child: Text('1-2 salários mínimos')),
+              DropdownMenuItem(value: '2-3 salários', child: Text('2-3 salários mínimos')),
+              DropdownMenuItem(value: 'Mais de 3 salários', child: Text('Mais de 3 salários mínimos')),
+              DropdownMenuItem(value: 'Prefiro não informar', child: Text('Prefiro não informar')),
             ],
             onChanged: (val) => setState(() => faixaRenda = val ?? ''),
           ),
@@ -450,57 +394,43 @@ class FormularioPageState extends State<FormularioPage> {
 
           // Condições de trabalho
           SwitchListTile(
-            title: const Text(
-              'Seu trabalho permite ir às consultas de pré-natal?',
-            ),
+            title: const Text('Seu trabalho permite ir às consultas de pré-natal?'),
             value: permitePreNatal,
             onChanged: (val) => setState(() => permitePreNatal = val),
           ),
           const SizedBox(height: 8),
 
           SwitchListTile(
-            title: const Text(
-              'Seu ambiente de trabalho é seguro para gestante?',
-            ),
-            subtitle: const Text(
-              'Considerando esforço físico, produtos químicos, etc.',
-            ),
+            title: const Text('Seu ambiente de trabalho é seguro para gestante?'),
+            subtitle: const Text('Considerando esforço físico, produtos químicos, etc.'),
             value: ambienteSeguro,
             onChanged: (val) => setState(() => ambienteSeguro = val),
           ),
           const SizedBox(height: 8),
 
           SwitchListTile(
-            title: const Text(
-              'Tem pausas para descanso e alimentação adequada?',
-            ),
+            title: const Text('Tem pausas para descanso e alimentação adequada?'),
             value: temPausas,
             onChanged: (val) => setState(() => temPausas = val),
           ),
           const SizedBox(height: 16),
 
           // Benefícios (Checkbox)
-          const Text(
-            'Quais benefícios você recebe?',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
+          const Text('Quais benefícios você recebe?', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
           CheckboxListTile(
             title: const Text('Auxílio-maternidade'),
             value: recebeAuxilioMaternidade,
-            onChanged: (val) =>
-                setState(() => recebeAuxilioMaternidade = val ?? false),
+            onChanged: (val) => setState(() => recebeAuxilioMaternidade = val ?? false),
           ),
           CheckboxListTile(
             title: const Text('Vale-transporte'),
             value: recebeValeTransporte,
-            onChanged: (val) =>
-                setState(() => recebeValeTransporte = val ?? false),
+            onChanged: (val) => setState(() => recebeValeTransporte = val ?? false),
           ),
           CheckboxListTile(
             title: const Text('Vale-alimentação/refeição'),
             value: recebeValeAlimentacao,
-            onChanged: (val) =>
-                setState(() => recebeValeAlimentacao = val ?? false),
+            onChanged: (val) => setState(() => recebeValeAlimentacao = val ?? false),
           ),
         ],
 
@@ -555,14 +485,8 @@ class FormularioPageState extends State<FormularioPage> {
           validator: (value) => value == null ? 'Campo obrigatório' : null,
           initialValue: fonteAgua.isNotEmpty ? fonteAgua : null,
           items: const [
-            DropdownMenuItem(
-              value: 'Rede pública',
-              child: Text('Rede pública'),
-            ),
-            DropdownMenuItem(
-              value: 'Poço/Nascente',
-              child: Text('Poço ou nascente'),
-            ),
+            DropdownMenuItem(value: 'Rede pública', child: Text('Rede pública')),
+            DropdownMenuItem(value: 'Poço/Nascente', child: Text('Poço ou nascente')),
             DropdownMenuItem(value: 'Cisterna', child: Text('Cisterna')),
             DropdownMenuItem(value: 'Carro-pipa', child: Text('Carro-pipa')),
             DropdownMenuItem(value: 'Outra', child: Text('Outra fonte')),
@@ -601,26 +525,17 @@ class FormularioPageState extends State<FormularioPage> {
                 RadioGroup(
                   groupValue: destinoEsgoto,
                   onChanged: (val) => setState(() => destinoEsgoto = val ?? ''),
-                  child: const RadioListTile<String>(
-                    title: Text('Rede coletora'),
-                    value: 'Rede coletora',
-                  ),
+                  child: const RadioListTile<String>(title: Text('Rede coletora'), value: 'Rede coletora'),
                 ),
                 RadioGroup(
                   groupValue: destinoEsgoto,
                   onChanged: (val) => setState(() => destinoEsgoto = val ?? ''),
-                  child: const RadioListTile<String>(
-                    title: Text('Céu aberto/rio'),
-                    value: 'Céu aberto',
-                  ),
+                  child: const RadioListTile<String>(title: Text('Céu aberto/rio'), value: 'Céu aberto'),
                 ),
                 RadioGroup(
                   groupValue: destinoEsgoto,
                   onChanged: (val) => setState(() => destinoEsgoto = val ?? ''),
-                  child: const RadioListTile<String>(
-                    title: Text('Outro'),
-                    value: 'Outro',
-                  ),
+                  child: const RadioListTile<String>(title: Text('Outro'), value: 'Outro'),
                 ),
               ],
             ),
@@ -635,19 +550,10 @@ class FormularioPageState extends State<FormularioPage> {
           ),
           initialValue: coletaLixo.isNotEmpty ? coletaLixo : null,
           items: const [
-            DropdownMenuItem(
-              value: 'Coleta regular',
-              child: Text('Coleta regular'),
-            ),
-            DropdownMenuItem(
-              value: 'Coleta irregular',
-              child: Text('Coleta irregular'),
-            ),
+            DropdownMenuItem(value: 'Coleta regular', child: Text('Coleta regular')),
+            DropdownMenuItem(value: 'Coleta irregular', child: Text('Coleta irregular')),
             DropdownMenuItem(value: 'Queima', child: Text('Queima do lixo')),
-            DropdownMenuItem(
-              value: 'Terreno baldio',
-              child: Text('Joga em terreno baldio'),
-            ),
+            DropdownMenuItem(value: 'Terreno baldio', child: Text('Joga em terreno baldio')),
             DropdownMenuItem(value: 'Outro', child: Text('Outro método')),
           ],
           onChanged: (val) => setState(() => coletaLixo = val ?? ''),
@@ -656,10 +562,7 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Pergunta específica para gestantes
         SwitchListTile(
-          title: const Text(
-            textAlign: TextAlign.justify,
-            'Já teve algum problema de saúde por conta da água?',
-          ),
+          title: const Text(textAlign: TextAlign.justify, 'Já teve algum problema de saúde por conta da água?'),
           value: preocupacaoAgua,
           onChanged: (val) => setState(() => preocupacaoAgua = val),
         ),
@@ -688,26 +591,14 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Tipo de moradia (Dropdown)
         DropdownButtonFormField<String>(
-          decoration: const InputDecoration(
-            labelText: 'Há uma UBS próxima da sua casa?',
-            border: OutlineInputBorder(),
-          ),
+          decoration: const InputDecoration(labelText: 'Há uma UBS próxima da sua casa?', border: OutlineInputBorder()),
           validator: (value) => value == null ? 'Campo obrigatório' : null,
           initialValue: tipoMoradia.isNotEmpty ? tipoMoradia : null,
           items: const [
-            DropdownMenuItem(
-              value: 'Casa de alvenaria',
-              child: Text('Casa de alvenaria'),
-            ),
-            DropdownMenuItem(
-              value: 'Casa de madeira',
-              child: Text('Casa de madeira'),
-            ),
+            DropdownMenuItem(value: 'Casa de alvenaria', child: Text('Casa de alvenaria')),
+            DropdownMenuItem(value: 'Casa de madeira', child: Text('Casa de madeira')),
             DropdownMenuItem(value: 'Apartamento', child: Text('Apartamento')),
-            DropdownMenuItem(
-              value: 'Cômodo único',
-              child: Text('Cômodo único'),
-            ),
+            DropdownMenuItem(value: 'Cômodo único', child: Text('Cômodo único')),
             DropdownMenuItem(value: 'Outro', child: Text('Outro tipo')),
           ],
           onChanged: (val) => setState(() => tipoMoradia = val ?? ''),
@@ -727,26 +618,14 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Tipo de moradia (Dropdown)
         DropdownButtonFormField<String>(
-          decoration: const InputDecoration(
-            labelText: 'Como você costuma chegar a UBS?',
-            border: OutlineInputBorder(),
-          ),
+          decoration: const InputDecoration(labelText: 'Como você costuma chegar a UBS?', border: OutlineInputBorder()),
           validator: (value) => value == null ? 'Campo obrigatório' : null,
           initialValue: tipoMoradia.isNotEmpty ? tipoMoradia : null,
           items: const [
-            DropdownMenuItem(
-              value: 'Casa de alvenaria',
-              child: Text('Casa de alvenaria'),
-            ),
-            DropdownMenuItem(
-              value: 'Casa de madeira',
-              child: Text('Casa de madeira'),
-            ),
+            DropdownMenuItem(value: 'Casa de alvenaria', child: Text('Casa de alvenaria')),
+            DropdownMenuItem(value: 'Casa de madeira', child: Text('Casa de madeira')),
             DropdownMenuItem(value: 'Apartamento', child: Text('Apartamento')),
-            DropdownMenuItem(
-              value: 'Cômodo único',
-              child: Text('Cômodo único'),
-            ),
+            DropdownMenuItem(value: 'Cômodo único', child: Text('Cômodo único')),
             DropdownMenuItem(value: 'Outro', child: Text('Outro tipo')),
           ],
           onChanged: (val) => setState(() => tipoMoradia = val ?? ''),
@@ -797,9 +676,7 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Exames e vacinação
         SwitchListTile(
-          title: const Text(
-            'Realizou todos os exames solicitados no pré-natal?',
-          ),
+          title: const Text('Realizou todos os exames solicitados no pré-natal?'),
           value: examesPreNatalCompletos,
           onChanged: (val) => setState(() => examesPreNatalCompletos = val),
         ),
@@ -862,19 +739,10 @@ class FormularioPageState extends State<FormularioPage> {
           validator: (value) => value == null ? 'Campo obrigatório' : null,
           initialValue: tipoMoradia.isNotEmpty ? tipoMoradia : null,
           items: const [
-            DropdownMenuItem(
-              value: 'Casa de alvenaria',
-              child: Text('Casa de alvenaria'),
-            ),
-            DropdownMenuItem(
-              value: 'Casa de madeira',
-              child: Text('Casa de madeira'),
-            ),
+            DropdownMenuItem(value: 'Casa de alvenaria', child: Text('Casa de alvenaria')),
+            DropdownMenuItem(value: 'Casa de madeira', child: Text('Casa de madeira')),
             DropdownMenuItem(value: 'Apartamento', child: Text('Apartamento')),
-            DropdownMenuItem(
-              value: 'Cômodo único',
-              child: Text('Cômodo único'),
-            ),
+            DropdownMenuItem(value: 'Cômodo único', child: Text('Cômodo único')),
             DropdownMenuItem(value: 'Outro', child: Text('Outro tipo')),
           ],
           onChanged: (val) => setState(() => tipoMoradia = val ?? ''),
@@ -886,23 +754,16 @@ class FormularioPageState extends State<FormularioPage> {
           children: [
             Expanded(
               child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Nº de pessoas na casa',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(labelText: 'Nº de pessoas na casa', border: OutlineInputBorder()),
                 keyboardType: TextInputType.number,
-                validator: (value) =>
-                    value!.isEmpty ? 'Campo obrigatório' : null,
+                validator: (value) => value!.isEmpty ? 'Campo obrigatório' : null,
                 onChanged: (val) => pessoasPorComodo = int.tryParse(val) ?? 0,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Nº de cômodos',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(labelText: 'Nº de cômodos', border: OutlineInputBorder()),
                 keyboardType: TextInputType.number,
                 onChanged: (val) => numeroComodos = int.tryParse(val) ?? 0,
               ),
@@ -923,8 +784,7 @@ class FormularioPageState extends State<FormularioPage> {
             CheckboxListTile(
               title: const Text('Água encanada'),
               value: temAguaEncanada,
-              onChanged: (val) =>
-                  setState(() => temAguaEncanada = val ?? false),
+              onChanged: (val) => setState(() => temAguaEncanada = val ?? false),
             ),
             CheckboxListTile(
               title: const Text('Banheiro dentro da casa'),
@@ -934,8 +794,7 @@ class FormularioPageState extends State<FormularioPage> {
             CheckboxListTile(
               title: const Text('Cozinha separada'),
               value: temCozinhaSeparada,
-              onChanged: (val) =>
-                  setState(() => temCozinhaSeparada = val ?? false),
+              onChanged: (val) => setState(() => temCozinhaSeparada = val ?? false),
             ),
           ],
         ),
@@ -950,19 +809,10 @@ class FormularioPageState extends State<FormularioPage> {
           validator: (value) => value == null ? 'Campo obrigatório' : null,
           initialValue: tipoMoradia.isNotEmpty ? tipoMoradia : null,
           items: const [
-            DropdownMenuItem(
-              value: 'Casa de alvenaria',
-              child: Text('Casa de alvenaria'),
-            ),
-            DropdownMenuItem(
-              value: 'Casa de madeira',
-              child: Text('Casa de madeira'),
-            ),
+            DropdownMenuItem(value: 'Casa de alvenaria', child: Text('Casa de alvenaria')),
+            DropdownMenuItem(value: 'Casa de madeira', child: Text('Casa de madeira')),
             DropdownMenuItem(value: 'Apartamento', child: Text('Apartamento')),
-            DropdownMenuItem(
-              value: 'Cômodo único',
-              child: Text('Cômodo único'),
-            ),
+            DropdownMenuItem(value: 'Cômodo único', child: Text('Cômodo único')),
             DropdownMenuItem(value: 'Outro', child: Text('Outro tipo')),
           ],
           onChanged: (val) => setState(() => tipoMoradia = val ?? ''),
@@ -982,9 +832,7 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Acesso a serviços básicos
         SwitchListTile(
-          title: const Text(
-            'Tem fácil acesso a serviços de saúde a partir da sua residência?',
-          ),
+          title: const Text('Tem fácil acesso a serviços de saúde a partir da sua residência?'),
           value: facilAcessoSaude,
           onChanged: (val) => setState(() => facilAcessoSaude = val),
         ),
@@ -1038,9 +886,7 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Segurança alimentar
         SwitchListTile(
-          title: const Text(
-            'Nos últimos 3 meses, deixou de comer por falta de dinheiro?',
-          ),
+          title: const Text('Nos últimos 3 meses, deixou de comer por falta de dinheiro?'),
           value: insegurancaAlimentar,
           onChanged: (val) => setState(() => insegurancaAlimentar = val),
         ),
@@ -1054,8 +900,7 @@ class FormularioPageState extends State<FormularioPage> {
         CheckboxListTile(
           title: const Text('Frutas e verduras'),
           value: consomeFrutasVerduras,
-          onChanged: (val) =>
-              setState(() => consomeFrutasVerduras = val ?? false),
+          onChanged: (val) => setState(() => consomeFrutasVerduras = val ?? false),
         ),
         CheckboxListTile(
           title: const Text('Carnes (vermelha, frango ou peixe)'),
@@ -1103,9 +948,7 @@ class FormularioPageState extends State<FormularioPage> {
 
         // Suplementação
         SwitchListTile(
-          title: const Text(
-            'Está tomando suplementos vitamínicos ou de ferro?',
-          ),
+          title: const Text('Está tomando suplementos vitamínicos ou de ferro?'),
           value: usaSuplementos,
           onChanged: (val) => setState(() => usaSuplementos = val),
         ),
@@ -1127,9 +970,7 @@ class FormularioPageState extends State<FormularioPage> {
                     setState(() => avaliacaoAlimentacao = val ?? '');
                   },
                   child: RadioListTile<String>(
-                    title: const Text(
-                      'Muito boa - atende todas minhas necessidades',
-                    ),
+                    title: const Text('Muito boa - atende todas minhas necessidades'),
                     value: 'Muito boa',
                   ),
                 ),
@@ -1138,20 +979,14 @@ class FormularioPageState extends State<FormularioPage> {
                   onChanged: (val) {
                     setState(() => avaliacaoAlimentacao = val ?? '');
                   },
-                  child: RadioListTile<String>(
-                    title: const Text('Boa - com algumas limitações'),
-                    value: 'Boa',
-                  ),
+                  child: RadioListTile<String>(title: const Text('Boa - com algumas limitações'), value: 'Boa'),
                 ),
                 RadioGroup(
                   groupValue: avaliacaoAlimentacao,
                   onChanged: (val) {
                     setState(() => avaliacaoAlimentacao = val ?? '');
                   },
-                  child: RadioListTile<String>(
-                    title: const Text('Regular - poderia ser melhor'),
-                    value: 'Regular',
-                  ),
+                  child: RadioListTile<String>(title: const Text('Regular - poderia ser melhor'), value: 'Regular'),
                 ),
                 RadioGroup(
                   groupValue: avaliacaoAlimentacao,
@@ -1174,22 +1009,15 @@ class FormularioPageState extends State<FormularioPage> {
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
-      style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: Colors.blue,
-      ),
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
     );
   }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Formulário enviado com sucesso!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Formulário enviado com sucesso!'), backgroundColor: Colors.green));
 
       // Mostrar resumo dos dados
       _showSummaryDialog();
@@ -1212,19 +1040,11 @@ class FormularioPageState extends State<FormularioPage> {
               _buildSummaryItem('Empregado', empregado ? 'Sim' : 'Não'),
               _buildSummaryItem('Fonte de água', fonteAgua),
               _buildSummaryItem('Tipo de moradia', tipoMoradia),
-              _buildSummaryItem(
-                'Refeições por dia',
-                refeicoesPorDia.toString(),
-              ),
+              _buildSummaryItem('Refeições por dia', refeicoesPorDia.toString()),
             ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK'))],
       ),
     );
   }

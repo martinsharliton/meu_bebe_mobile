@@ -2,7 +2,7 @@
 
 import 'package:signals_flutter/signals_core.dart';
 
-import '../../core/exceptions/service_exception.dart';
+import '../../core/exceptions/failure.dart';
 import '../../core/fp/either.dart';
 import '../../core/helpers/messages.dart';
 import '../../services/user_login_service.dart';
@@ -24,7 +24,7 @@ class LoginController {
     final loginResult = await loginService.execute(email, password);
 
     switch (loginResult) {
-      case Left(value: ServiceException(:final message)):
+      case Left(value: Failure(:final message)):
         Messages.showError(message);
       case Right(value: _):
         _logged.value = true;
