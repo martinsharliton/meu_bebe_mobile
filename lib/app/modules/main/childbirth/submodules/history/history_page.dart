@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_core.dart';
 
-import '../../../../../core/helpers/messages.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../../../../../database/database.dart';
 import '../../../widgets/base_card.dart';
@@ -17,8 +16,7 @@ class HistoryPage extends StatefulWidget {
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage>
-    with HistoryFormController, MessageViewMixin {
+class _HistoryPageState extends State<HistoryPage> with HistoryFormController {
   final formKey = GlobalKey<FormState>();
   final _controller = Modular.get<HistoryController>();
 
@@ -28,7 +26,7 @@ class _HistoryPageState extends State<HistoryPage>
     _controller.initialize().then((_) {
       initializeForm(_controller.model!);
     });
-    messageListener(_controller);
+
     effect(() {
       if (_controller.saved) {
         Navigator.pop(context);

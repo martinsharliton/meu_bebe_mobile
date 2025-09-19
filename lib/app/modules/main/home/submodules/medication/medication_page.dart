@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
-import '../../../../../core/helpers/messages.dart';
 import '../../../../../core/theme/app_theme.dart';
 import 'medication_controller.dart';
 import 'widgets/medication_dialog.dart';
@@ -15,14 +14,14 @@ class MedicationPage extends StatefulWidget {
   State<MedicationPage> createState() => _MedicationPageState();
 }
 
-class _MedicationPageState extends State<MedicationPage> with MessageViewMixin {
+class _MedicationPageState extends State<MedicationPage> {
   final controller = Modular.get<MedicationController>();
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    messageListener(controller);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       effect(() {
         if (controller.updated == true) {

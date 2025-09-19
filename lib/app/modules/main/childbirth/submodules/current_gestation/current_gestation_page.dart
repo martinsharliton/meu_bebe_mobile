@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_core.dart';
 
-import '../../../../../core/helpers/messages.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../../../../../database/database.dart';
 import '../../../widgets/base_card.dart';
@@ -19,7 +18,7 @@ class CurrentGestationPage extends StatefulWidget {
 }
 
 class _CurrentGestationPageState extends State<CurrentGestationPage>
-    with CurrentGestationFormController, MessageViewMixin {
+    with CurrentGestationFormController {
   final formKey = GlobalKey<FormState>();
   final _controller = Modular.get<CurrentGestationController>();
 
@@ -29,7 +28,7 @@ class _CurrentGestationPageState extends State<CurrentGestationPage>
     _controller.initialize().then((_) {
       initializeForm(_controller.model!);
     });
-    messageListener(_controller);
+    
     effect(() {
       if (_controller.saved) {
         Navigator.pop(context);

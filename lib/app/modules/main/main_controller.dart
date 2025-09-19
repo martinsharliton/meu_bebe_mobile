@@ -4,7 +4,7 @@ import '../../core/fp/either.dart';
 import '../../core/helpers/messages.dart';
 import '../../repositories/gestation/gestation_repository.dart';
 
-class MainController with MessageStateMixin {
+class MainController {
   final GestationRepository gestationRepository;
 
   MainController(this.gestationRepository);
@@ -20,7 +20,7 @@ class MainController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao buscar nome de usuário');
+        Messages.showError('Falha ao buscar nome de usuário');
       case Right(value: final pregnant):
         _name.value = pregnant.name;
     }

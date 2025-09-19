@@ -58,5 +58,5 @@ class Database extends _$Database {
   );
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 1;
 }

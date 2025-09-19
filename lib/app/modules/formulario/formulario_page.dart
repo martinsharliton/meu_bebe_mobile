@@ -106,7 +106,7 @@ class FormularioPageState extends State<FormularioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Center(child: Text('Formulário'))),
+      appBar: AppBar(title: Text('Formulário')),
       body: Form(
         key: _formKey,
         child: Column(

@@ -3,7 +3,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../app_module.dart';
 import '../../../core/extensions/size_extension.dart';
-import '../../../core/helpers/messages.dart';
 import '../../../core/theme/app_theme.dart';
 import 'widgets/home_card.dart';
 
@@ -14,7 +13,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with MessageViewMixin {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(

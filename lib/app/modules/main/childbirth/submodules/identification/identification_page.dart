@@ -5,7 +5,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_core.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../../../core/helpers/messages.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../../../widgets/base_card.dart';
 import 'identification_controller.dart';
@@ -19,7 +18,7 @@ class IdentificationPage extends StatefulWidget {
 }
 
 class _IdentificationPageState extends State<IdentificationPage>
-    with IdentificationFormController, MessageViewMixin {
+    with IdentificationFormController {
   final formKey = GlobalKey<FormState>();
   final _controller = Modular.get<IdentificationController>();
 
@@ -29,7 +28,7 @@ class _IdentificationPageState extends State<IdentificationPage>
     _controller.initialize().then((_) {
       initializeForm(_controller.model);
     });
-    messageListener(_controller);
+
     effect(() {
       if (_controller.saved) return Modular.to.pop();
     });

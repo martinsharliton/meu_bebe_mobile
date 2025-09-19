@@ -3,7 +3,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
 import '../../../app_module.dart';
-import '../../../core/helpers/messages.dart';
 import '../../../core/theme/app_theme.dart';
 import '../main_controller.dart';
 import 'widgets/tile_button.dart';
@@ -15,7 +14,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> with MessageViewMixin {
+class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final controller = Modular.get<MainController>();
 
@@ -37,10 +36,7 @@ class _ProfilePageState extends State<ProfilePage> with MessageViewMixin {
             final firstLetter = name.isNotEmpty ? name[0].toUpperCase() : '';
 
             return Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 20,
-                ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

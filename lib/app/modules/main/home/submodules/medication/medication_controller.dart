@@ -5,7 +5,7 @@ import '../../../../../core/helpers/messages.dart';
 import '../../../../../database/database.dart';
 import '../../../../../repositories/medication/medication_repository.dart';
 
-class MedicationController with MessageStateMixin {
+class MedicationController {
   final MedicationRepository repository;
 
   MedicationController(this.repository);
@@ -26,7 +26,7 @@ class MedicationController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao buscar as medicações');
+        Messages.showError('Falha ao buscar as medicações');
       case Right(value: final medications):
         _medications.clear();
         _medications.addAll(medications);
@@ -39,13 +39,13 @@ class MedicationController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao salvar o medicamento');
+        Messages.showError('Falha ao salvar o medicamento');
       case Right(value: final medication):
         _medications.clear();
         _medications.addAll(medication);
         _sortMedications();
         _updated.value = true;
-        showSuccess('Medicamento salvo');
+        Messages.showSuccess('Medicamento salvo');
     }
   }
 
@@ -54,13 +54,13 @@ class MedicationController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao remover o medicamento');
+        Messages.showError('Falha ao remover o medicamento');
       case Right(value: final medication):
         _medications.clear();
         _medications.addAll(medication);
         _sortMedications();
         _updated.value = true;
-        showSuccess('Medicamento deletado');
+        Messages.showSuccess('Medicamento deletado');
     }
   }
 

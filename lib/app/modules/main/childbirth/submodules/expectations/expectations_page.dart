@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
-import '../../../../../core/helpers/messages.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../../../../../database/database.dart';
 import '../../../../../model/birth_plan/expectations_model.dart';
@@ -20,7 +19,7 @@ class ExpectationsPage extends StatefulWidget {
 }
 
 class _ExpectationsPageState extends State<ExpectationsPage>
-    with ExpectationsFormController, MessageViewMixin {
+    with ExpectationsFormController {
   final formKey = GlobalKey<FormState>();
   final _controller = Modular.get<ExpectationsController>();
 
@@ -39,8 +38,6 @@ class _ExpectationsPageState extends State<ExpectationsPage>
         }
       });
     });
-
-    messageListener(_controller);
 
     effect(() {
       if (_controller.saved) {

@@ -6,7 +6,6 @@ import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../../../core/extensions/size_extension.dart';
-import '../../../../../core/helpers/messages.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../../../../../database/database.dart';
 import '../../../../../model/gestation/pregnant_model.dart';
@@ -25,7 +24,7 @@ class ProfileDataPage extends StatefulWidget {
 }
 
 class _ProfileDataPageState extends State<ProfileDataPage>
-    with ProfileFormController, MessageViewMixin {
+    with ProfileFormController {
   final formKey = GlobalKey<FormState>();
 
   final _controller = Modular.get<ProfileDataController>();
@@ -33,7 +32,6 @@ class _ProfileDataPageState extends State<ProfileDataPage>
   @override
   void initState() {
     super.initState();
-    if (mounted) messageListener(_controller);
     _controller.initialize().then((_) {
       initializeForm(_controller.pregnant, _controller.user);
     });

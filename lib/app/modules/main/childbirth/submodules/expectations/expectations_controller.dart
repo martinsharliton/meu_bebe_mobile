@@ -8,7 +8,7 @@ import '../../../../../database/database.dart';
 import '../../../../../model/birth_plan/expectations_model.dart';
 import '../../../../../repositories/expectations/expectations_repository.dart';
 
-class ExpectationsController with MessageStateMixin {
+class ExpectationsController {
   final ExpectationsRepository repository;
 
   ExpectationsController(this.repository);
@@ -24,7 +24,7 @@ class ExpectationsController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Erro ao pegar dados das expectativas');
+        Messages.showError('Erro ao pegar dados das expectativas');
       case Right(value: final expectations):
         _expectations = expectations;
     }
@@ -47,9 +47,9 @@ class ExpectationsController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Erro ao salvar dados');
+        Messages.showError('Erro ao salvar dados');
       case Right(value: final updated):
-        showSuccess('Dados salvos com sucesso');
+        Messages.showSuccess('Dados salvos com sucesso');
         _expectations = updated;
         _saved.value = true;
     }

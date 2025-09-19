@@ -25,6 +25,7 @@ class GlobalContext {
         content: const Text('Login Expirado, faça login novamente'),
       ),
     );
+
     Modular.to.navigate(Modular.initialRoute);
   }
 }

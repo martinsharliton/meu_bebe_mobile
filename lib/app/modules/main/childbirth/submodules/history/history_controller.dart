@@ -6,7 +6,7 @@ import '../../../../../core/helpers/messages.dart';
 import '../../../../../database/database.dart';
 import '../../../../../repositories/history/history_repository.dart';
 
-class HistoryController with MessageStateMixin {
+class HistoryController {
   final HistoryRepository repository;
 
   HistoryController(this.repository);
@@ -22,7 +22,7 @@ class HistoryController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Erro ao pegar dados de gravidez anteriores');
+        Messages.showError('Erro ao pegar dados de gravidez anteriores');
       case Right(value: final history):
         _model = history;
     }
@@ -35,9 +35,9 @@ class HistoryController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Erro ao salvar os dados');
+        Messages.showError('Erro ao salvar os dados');
       case Right(value: final updated):
-        showSuccess('Dados salvos com sucesso');
+        Messages.showSuccess('Dados salvos com sucesso');
         _model = updated;
         _saved.value = true;
     }

@@ -5,7 +5,7 @@ import '../../../../../core/helpers/messages.dart';
 import '../../../../../model/gestation/pregnant_model.dart';
 import '../../../../../repositories/gestation/gestation_repository.dart';
 
-class IdentificationController with MessageStateMixin {
+class IdentificationController {
   final GestationRepository repository;
 
   IdentificationController(this.repository);
@@ -21,7 +21,7 @@ class IdentificationController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Erro ao pegar dados da gestante');
+        Messages.showError('Erro ao pegar dados da gestante');
       case Right(value: final pregnant):
         _model = PregnantModel.fromData(pregnant);
     }
@@ -43,9 +43,9 @@ class IdentificationController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Erro ao salvar os dados');
+        Messages.showError('Erro ao salvar os dados');
       case Right(value: final pregnant):
-        showSuccess('Dados salvos com sucesso');
+        Messages.showSuccess('Dados salvos com sucesso');
         _model = PregnantModel.fromData(pregnant);
         _saved.value = true;
     }

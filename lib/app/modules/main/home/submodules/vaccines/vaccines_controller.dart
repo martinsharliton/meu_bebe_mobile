@@ -7,7 +7,7 @@ import '../../../../../core/helpers/messages.dart';
 import '../../../../../database/database.dart';
 import '../../../../../repositories/vaccines/vaccines_repository.dart';
 
-class VaccinesController with MessageStateMixin {
+class VaccinesController {
   final VaccinesRepository repository;
 
   VaccinesController(this.repository);
@@ -28,7 +28,7 @@ class VaccinesController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Erro ao buscar as vacinas');
+        Messages.showError('Erro ao buscar as vacinas');
       case Right(value: final vaccines):
         if (vaccines.isEmpty) {
           _setVaccines();
@@ -45,7 +45,7 @@ class VaccinesController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao salvar a vacina');
+        Messages.showError('Falha ao salvar a vacina');
       case Right():
         log('Vacina ${vaccine.name} salva');
     }
@@ -68,7 +68,7 @@ class VaccinesController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao atualizar a vacina');
+        Messages.showError('Falha ao atualizar a vacina');
       case Right(value: final vaccines):
         _vaccines.clear();
         _vaccines.addAll(vaccines);

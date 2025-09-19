@@ -20,6 +20,10 @@ final class AppTheme {
   );
 
   static final lightTheme = ThemeData(
+    appBarTheme: AppBarThemeData(
+      titleTextStyle: AppTheme.titleStyle,
+      iconTheme: IconThemeData(color: darkTextColor),
+    ),
     colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
     useMaterial3: true,
     fontFamily: 'SFProDisplay',
@@ -28,11 +32,7 @@ final class AppTheme {
       insetPadding: EdgeInsets.all(10),
       //backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      titleTextStyle: TextStyle(
-        fontSize: 21,
-        fontFamily: 'SFProDisplay',
-        color: Colors.black,
-      ),
+      titleTextStyle: AppTheme.titleStyle,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,

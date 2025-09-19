@@ -7,7 +7,7 @@ import '../../core/fp/either.dart';
 import '../../core/helpers/messages.dart';
 import '../../services/user_login_service.dart';
 
-class LoginController with MessageStateMixin {
+class LoginController {
   final UserLoginService loginService;
 
   LoginController(this.loginService);
@@ -25,11 +25,11 @@ class LoginController with MessageStateMixin {
 
     switch (loginResult) {
       case Left(value: ServiceException(:final message)):
-        showError(message);
+        Messages.showError(message);
       case Right(value: _):
         _logged.value = true;
       default:
-        showError('Erro ao realizar login');
+        Messages.showError('Erro ao realizar login');
     }
   }
 
@@ -38,10 +38,10 @@ class LoginController with MessageStateMixin {
   }
 
   void forgotMyPassword() {
-    showInfo('Ainda não implementado');
+    Messages.showInfo('Ainda não implementado');
   }
 
   void createAccount() {
-    showInfo('Ainda não implementado');
+    Messages.showInfo('Ainda não implementado');
   }
 }

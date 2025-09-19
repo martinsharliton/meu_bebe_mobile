@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'core/global_context.dart';
+import 'core/helpers/messages.dart';
 import 'core/theme/app_theme.dart';
 
 class AppWidget extends StatefulWidget {
@@ -26,8 +27,8 @@ class _AppWidgetState extends State<AppWidget> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Meu Bebê',
+      scaffoldMessengerKey: Messages.messengerKey,
       theme: AppTheme.lightTheme,
-      // darkTheme: AppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
       routerConfig: Modular.routerConfig,
       localizationsDelegates: const [

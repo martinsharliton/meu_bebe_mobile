@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
-import '../../../../../core/helpers/messages.dart';
 import '../../../../../core/theme/app_theme.dart';
 import '../../../widgets/base_card.dart';
 import '../expectations/expectations_controller.dart';
@@ -18,7 +17,7 @@ class BirthMomentPage extends StatefulWidget {
 }
 
 class _BirthMomentPageState extends State<BirthMomentPage>
-    with BirthMomentFormController, MessageViewMixin {
+    with BirthMomentFormController {
   final formKey = GlobalKey<FormState>();
   final _controller = Modular.get<ExpectationsController>();
 
@@ -27,12 +26,7 @@ class _BirthMomentPageState extends State<BirthMomentPage>
   @override
   void initState() {
     super.initState();
-    _controller.initialize().then((_) {
-      setState(() {
-        // initializeForm(_controller.expectation);
-      });
-    });
-    messageListener(_controller);
+
     effect(() {
       if (_controller.saved) {
         Navigator.pop(context);

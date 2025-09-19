@@ -43,15 +43,42 @@ class _SplashPageState extends State<SplashPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.primaryColor,
-      body: Center(
-        child: FadeTransition(
-          opacity: _animation,
-          child: Image.asset(
-            'assets/images/logo_app.png',
-            width: 150,
-            height: 150,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: AppTheme.primaryColor,
+        body: Container(
+          decoration: const BoxDecoration(color: Colors.white),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                FadeTransition(
+                  opacity: _animation,
+                  child: Image.asset(
+                    'assets/images/logo_app.png',
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(height: 40),
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: CircularProgressIndicator.adaptive(strokeWidth: 4),
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  'Carregando. Por favor, aguarde...',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                    color: AppTheme.darkTextColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

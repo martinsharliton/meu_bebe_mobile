@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../../core/helpers/messages.dart';
 import '../../../../../core/theme/app_theme.dart';
 import 'appointments_exams_controller.dart';
 import 'widgets/appointments_page.dart';
@@ -14,14 +13,12 @@ class AppointmentsExamsPage extends StatefulWidget {
   State<AppointmentsExamsPage> createState() => _AppointmentsExamsPageState();
 }
 
-class _AppointmentsExamsPageState extends State<AppointmentsExamsPage>
-    with MessageViewMixin {
+class _AppointmentsExamsPageState extends State<AppointmentsExamsPage> {
   final _controller = Modular.get<AppointmentsExamsController>();
 
   @override
   void initState() {
     super.initState();
-    messageListener(_controller);
   }
 
   @override

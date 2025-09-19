@@ -10,7 +10,7 @@ import '../../../../../model/gestation/pregnant_model.dart';
 import '../../../../../repositories/gestation/gestation_repository.dart';
 import '../../../../../repositories/profile/profile_repository.dart';
 
-class ProfileDataController with MessageStateMixin {
+class ProfileDataController {
   final GestationRepository gestationRepository;
   final ProfileRepository profileRepository;
 
@@ -61,10 +61,10 @@ class ProfileDataController with MessageStateMixin {
     hasError[0] = await _saveGestation(pregnant);
     hasError[1] = await _saveUser(user);
     if (hasError[0] || hasError[1]) {
-      showError('Falha ao salvar os dados');
+      Messages.showError('Falha ao salvar os dados');
       return false;
     } else {
-      showSuccess('Dados salvos');
+      Messages.showSuccess('Dados salvos');
       return true;
     }
   }

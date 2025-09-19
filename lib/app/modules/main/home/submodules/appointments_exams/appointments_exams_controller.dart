@@ -6,7 +6,7 @@ import '../../../../../database/database.dart';
 import '../../../../../repositories/appointments/appointments_repository.dart';
 import '../../../../../repositories/exams/exams_repository.dart';
 
-class AppointmentsExamsController with MessageStateMixin {
+class AppointmentsExamsController {
   final AppointmentsRepository appointmentsRepository;
   final ExamsRepository examsRepository;
 
@@ -35,7 +35,7 @@ class AppointmentsExamsController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao buscar as consultas');
+        Messages.showError('Falha ao buscar as consultas');
       case Right(value: final appointments):
         _appointments.clear();
         _appointments.addAll(appointments);
@@ -48,7 +48,7 @@ class AppointmentsExamsController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao buscar os exames');
+        Messages.showError('Falha ao buscar os exames');
       case Right(value: final exams):
         _exams.clear();
         _exams.addAll(exams);
@@ -61,13 +61,13 @@ class AppointmentsExamsController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao salvar consulta');
+        Messages.showError('Falha ao salvar consulta');
       case Right(value: final appointments):
         _appointments.clear();
         _appointments.addAll(appointments);
         _sortAppointmentsList();
         _updated.value = true;
-        showSuccess('Consulta salva');
+        Messages.showSuccess('Consulta salva');
     }
   }
 
@@ -76,13 +76,13 @@ class AppointmentsExamsController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao salvar o exame');
+        Messages.showError('Falha ao salvar o exame');
       case Right(value: final exams):
         _exams.clear();
         _exams.addAll(exams);
         _sortExamsList();
         _updated.value = true;
-        showSuccess('Exame salvo');
+        Messages.showSuccess('Exame salvo');
     }
   }
 
@@ -91,13 +91,13 @@ class AppointmentsExamsController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao deletar consulta');
+        Messages.showError('Falha ao deletar consulta');
       case Right(value: final appointments):
         _appointments.clear();
         _appointments.addAll(appointments);
         _sortAppointmentsList();
         _updated.value = true;
-        showSuccess('Consulta deletada');
+        Messages.showSuccess('Consulta deletada');
     }
   }
 
@@ -106,13 +106,13 @@ class AppointmentsExamsController with MessageStateMixin {
 
     switch (result) {
       case Left():
-        showError('Falha ao deletar o exame');
+        Messages.showError('Falha ao deletar o exame');
       case Right(value: final exams):
         _exams.clear();
         _exams.addAll(exams);
         _sortExamsList();
         _updated.value = true;
-        showSuccess('Exame deletado');
+        Messages.showSuccess('Exame deletado');
     }
   }
 
