@@ -11,25 +11,12 @@ class VaccineInfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'Sobre a vacina',
-        textAlign: TextAlign.center,
-        style: AppTheme.titleSmallStyle,
-      ),
+      title: const Text('Sobre a vacina'),
       content: SizedBox(
         width: context.screenWidth,
-        child: Text(
-          _getInfo(index),
-          textAlign: TextAlign.justify,
-          style: AppTheme.textStyle,
-        ),
+        child: Text(_getInfo(index), textAlign: TextAlign.justify, style: AppTheme.textStyle),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Voltar'),
-        ),
-      ],
+      actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Voltar'))],
     );
   }
 

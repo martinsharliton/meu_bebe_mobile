@@ -26,16 +26,9 @@ class MedicineCard extends StatelessWidget {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text(
-                  'Deseja excluir esse medicamento?',
-                  style: AppTheme.titleSmallStyle,
-                  textAlign: TextAlign.center,
-                ),
+                title: const Text('Deseja excluir esse medicamento?'),
                 actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Não'),
-                  ),
+                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não')),
                   TextButton(
                     onPressed: () {
                       onTap();
@@ -54,11 +47,7 @@ class MedicineCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      name,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTheme.subTitleStyle,
-                    ),
+                    Text(name, overflow: TextOverflow.ellipsis, style: AppTheme.subTitleStyle),
                     Text(dose, style: AppTheme.textStyle),
                   ],
                 ),

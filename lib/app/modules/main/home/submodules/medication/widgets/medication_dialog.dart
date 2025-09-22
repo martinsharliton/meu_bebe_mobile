@@ -12,11 +12,7 @@ class MedicationDialog extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final MedicationController controller;
 
-  const MedicationDialog({
-    super.key,
-    required this.formKey,
-    required this.controller,
-  });
+  const MedicationDialog({super.key, required this.formKey, required this.controller});
 
   @override
   State<MedicationDialog> createState() => _MedicationDialogState();
@@ -38,11 +34,7 @@ class _MedicationDialogState extends State<MedicationDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'Adicionar medicamento',
-        style: AppTheme.titleSmallStyle,
-        textAlign: TextAlign.center,
-      ),
+      title: const Text('Adicionar medicamento'),
       content: SizedBox(
         width: context.screenWidth,
         child: Column(
@@ -79,12 +71,7 @@ class _MedicationDialogState extends State<MedicationDialog> {
             final valid = widget.formKey.currentState?.validate() ?? false;
             if (valid) {
               widget.controller.saveMedication(
-                Medication(
-                  id: 0,
-                  name: nameEC.text,
-                  dose: doseEC.text,
-                  medicationTime: medicationTimeEC.text,
-                ),
+                Medication(id: 0, name: nameEC.text, dose: doseEC.text, medicationTime: medicationTimeEC.text),
               );
               clearControllers();
               Modular.to.pop();

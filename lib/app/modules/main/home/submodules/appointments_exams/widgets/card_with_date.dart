@@ -26,16 +26,9 @@ class CardWithDate extends StatelessWidget {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text(
-                  'Deseja excluir?',
-                  style: AppTheme.titleSmallStyle,
-                  textAlign: TextAlign.center,
-                ),
+                title: const Text('Deseja excluir?'),
                 actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Não'),
-                  ),
+                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não')),
                   TextButton(
                     onPressed: () {
                       onTap();
@@ -55,11 +48,7 @@ class CardWithDate extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      title,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTheme.subTitleStyle,
-                    ),
+                    Text(title, overflow: TextOverflow.ellipsis, style: AppTheme.subTitleStyle),
                     Text(date, style: AppTheme.textStyle),
                   ],
                 ),

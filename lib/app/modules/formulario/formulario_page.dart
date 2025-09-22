@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../core/extensions/size_extension.dart';
+import '../../core/helpers/messages.dart';
 import '../../core/theme/app_theme.dart';
 
 class FormularioPage extends StatefulWidget {
@@ -1015,33 +1017,33 @@ class FormularioPageState extends State<FormularioPage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Formulário enviado com sucesso!'), backgroundColor: Colors.green));
+      Messages.showSuccess('Formulário enviado com sucesso!');
 
-      // Mostrar resumo dos dados
-      _showSummaryDialog();
+      showSummaryDialog(); // Mostrar resumo dos dados
     }
   }
 
-  void _showSummaryDialog() {
+  void showSummaryDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Resumo do Formulário'),
         content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildSummaryItem('Escolaridade', escolaridade),
-              _buildSummaryItem('Estuda atualmente', estuda ? 'Sim' : 'Não'),
-              _buildSummaryItem('Profissão', profissao),
-              _buildSummaryItem('Empregado', empregado ? 'Sim' : 'Não'),
-              _buildSummaryItem('Fonte de água', fonteAgua),
-              _buildSummaryItem('Tipo de moradia', tipoMoradia),
-              _buildSummaryItem('Refeições por dia', refeicoesPorDia.toString()),
-            ],
+          child: SizedBox(
+            width: context.screenWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildSummaryItem('Escolaridade', escolaridade),
+                _buildSummaryItem('Estuda atualmente', estuda ? 'Sim' : 'Não'),
+                _buildSummaryItem('Profissão', profissao),
+                _buildSummaryItem('Empregado', empregado ? 'Sim' : 'Não'),
+                _buildSummaryItem('Fonte de água', fonteAgua),
+                _buildSummaryItem('Tipo de moradia', tipoMoradia),
+                _buildSummaryItem('Refeições por dia', refeicoesPorDia.toString()),
+              ],
+            ),
           ),
         ),
         actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK'))],

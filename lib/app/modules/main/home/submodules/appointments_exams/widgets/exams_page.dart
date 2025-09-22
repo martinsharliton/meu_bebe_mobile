@@ -54,10 +54,7 @@ class _ExamsPageState extends State<ExamsPage> with ExamsTextController {
               SizedBox(
                 width: double.infinity,
                 height: 48,
-                child: ElevatedButton(
-                  onPressed: () => addExamDialog(),
-                  child: const Text('Adicionar exame'),
-                ),
+                child: ElevatedButton(onPressed: () => addExamDialog(), child: const Text('Adicionar exame')),
               ),
               const SizedBox(height: 16),
               _controller.exams.isNotEmpty
@@ -79,12 +76,7 @@ class _ExamsPageState extends State<ExamsPage> with ExamsTextController {
                     )
                   : const Expanded(
                       child: SizedBox(
-                        child: Center(
-                          child: Text(
-                            'Não foram encontrados exames',
-                            style: AppTheme.subTitleStyle,
-                          ),
-                        ),
+                        child: Center(child: Text('Não foram encontrados exames', style: AppTheme.subTitleStyle)),
                       ),
                     ),
             ],
@@ -100,11 +92,7 @@ class _ExamsPageState extends State<ExamsPage> with ExamsTextController {
       builder: (context) => Form(
         key: formKey,
         child: AlertDialog(
-          title: const Text(
-            'Adicionar exame',
-            textAlign: TextAlign.center,
-            style: AppTheme.titleSmallStyle,
-          ),
+          title: const Text('Adicionar exame'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -116,23 +104,13 @@ class _ExamsPageState extends State<ExamsPage> with ExamsTextController {
                 final valid = formKey.currentState?.validate() ?? false;
                 if (valid) {
                   _controller.saveExam(
-                    Exam(
-                      id: 0,
-                      title: nameEC.text,
-                      examDate: dateEC.text,
-                      description: descriptionEC.text,
-                    ),
+                    Exam(id: 0, title: nameEC.text, examDate: dateEC.text, description: descriptionEC.text),
                   );
                   clearControllers();
                   Navigator.pop(context);
                 }
               },
-              child: Text(
-                'Salvar',
-                style: AppTheme.subTitleStyle.copyWith(
-                  color: AppTheme.textColor,
-                ),
-              ),
+              child: Text('Salvar', style: AppTheme.subTitleStyle.copyWith(color: AppTheme.textColor)),
             ),
           ],
           content: SizedBox(
@@ -140,28 +118,17 @@ class _ExamsPageState extends State<ExamsPage> with ExamsTextController {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _buildTextField(
-                  nameEC,
-                  'Nome do exame',
-                  validator: Validatorless.required('Nome obrigatório'),
-                ),
+                _buildTextField(nameEC, 'Nome do exame', validator: Validatorless.required('Nome obrigatório')),
                 const SizedBox(height: 10),
                 _buildTextField(
                   dateEC,
                   'Data do exame',
                   validator: Validatorless.required('Data obrigatória'),
                   keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    DataInputFormatter(),
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, DataInputFormatter()],
                 ),
                 const SizedBox(height: 10),
-                _buildTextField(
-                  descriptionEC,
-                  'Descrição',
-                  validator: Validatorless.required('Descrição obrigatória'),
-                ),
+                _buildTextField(descriptionEC, 'Descrição', validator: Validatorless.required('Descrição obrigatória')),
               ],
             ),
           ),

@@ -24,7 +24,7 @@ final class AppTheme {
     dialogTheme: DialogThemeData(
       insetPadding: EdgeInsets.all(10),
       //backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(23)),
       titleTextStyle: AppTheme.titleStyle,
     ),
     inputDecorationTheme: InputDecorationTheme(

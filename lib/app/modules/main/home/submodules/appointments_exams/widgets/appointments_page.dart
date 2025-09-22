@@ -20,8 +20,7 @@ class AppointmentsPage extends StatefulWidget {
   State<AppointmentsPage> createState() => _AppointmentsPageState();
 }
 
-class _AppointmentsPageState extends State<AppointmentsPage>
-    with AppointmentsTextController {
+class _AppointmentsPageState extends State<AppointmentsPage> with AppointmentsTextController {
   AppointmentsExamsController get _controller => widget.controller;
   final formKey = GlobalKey<FormState>();
 
@@ -55,10 +54,7 @@ class _AppointmentsPageState extends State<AppointmentsPage>
               SizedBox(
                 width: double.infinity,
                 height: 48,
-                child: ElevatedButton(
-                  onPressed: () => addAppointmentDialog(),
-                  child: const Text('Adicionar consulta'),
-                ),
+                child: ElevatedButton(onPressed: () => addAppointmentDialog(), child: const Text('Adicionar consulta')),
               ),
               const SizedBox(height: 16),
               _controller.appointments.isNotEmpty
@@ -80,12 +76,7 @@ class _AppointmentsPageState extends State<AppointmentsPage>
                     )
                   : const Expanded(
                       child: SizedBox(
-                        child: Center(
-                          child: Text(
-                            'Não foram encontradas consultas',
-                            style: AppTheme.subTitleStyle,
-                          ),
-                        ),
+                        child: Center(child: Text('Não foram encontradas consultas', style: AppTheme.subTitleStyle)),
                       ),
                     ),
             ],
@@ -101,11 +92,7 @@ class _AppointmentsPageState extends State<AppointmentsPage>
       builder: (context) => Form(
         key: formKey,
         child: AlertDialog(
-          title: const Text(
-            'Adicionar consulta',
-            textAlign: TextAlign.center,
-            style: AppTheme.titleSmallStyle,
-          ),
+          title: const Text('Adicionar consulta'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -128,12 +115,7 @@ class _AppointmentsPageState extends State<AppointmentsPage>
                   Navigator.pop(context);
                 }
               },
-              child: Text(
-                'Salvar',
-                style: AppTheme.subTitleStyle.copyWith(
-                  color: AppTheme.textColor,
-                ),
-              ),
+              child: Text('Salvar', style: AppTheme.subTitleStyle.copyWith(color: AppTheme.textColor)),
             ),
           ],
           content: SizedBox(
@@ -141,28 +123,17 @@ class _AppointmentsPageState extends State<AppointmentsPage>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _buildTextField(
-                  nameEC,
-                  'Nome da consulta',
-                  validator: Validatorless.required('Nome obrigatório'),
-                ),
+                _buildTextField(nameEC, 'Nome da consulta', validator: Validatorless.required('Nome obrigatório')),
                 const SizedBox(height: 10),
                 _buildTextField(
                   dateEC,
                   'Data da consulta',
                   validator: Validatorless.required('Data obrigatória'),
                   keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    DataInputFormatter(),
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, DataInputFormatter()],
                 ),
                 const SizedBox(height: 10),
-                _buildTextField(
-                  descriptionEC,
-                  'Descrição',
-                  validator: Validatorless.required('Descrição obrigatória'),
-                ),
+                _buildTextField(descriptionEC, 'Descrição', validator: Validatorless.required('Descrição obrigatória')),
               ],
             ),
           ),
