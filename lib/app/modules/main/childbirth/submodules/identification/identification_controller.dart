@@ -1,53 +1,66 @@
-import 'package:signals_flutter/signals_core.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
-import '../../../../../model/gestation/pregnant_model.dart';
-import '../../../../../repositories/gestation/gestation_repository.dart';
+import '../../../../../model/pregnant_data.dart';
+import '../../../../../repositories/gestation/gestation_repository_impl.dart';
 
-class IdentificationController {
-  final GestationRepository repository;
+part 'identification_controller.g.dart';
 
-  IdentificationController(this.repository);
+class IdentificationController = IdentificationControllerBase with _$IdentificationController;
 
-  final _saved = signal<bool>(false);
-  bool get saved => _saved();
+abstract class IdentificationControllerBase with Store {
+  final GestationRepositoryImpl repository;
 
-  PregnantModel? _model;
-  PregnantModel? get model => _model;
+  IdentificationControllerBase(this.repository);
 
+  @observable
+  bool _saved = false;
+
+  @computed
+  bool get saved => _saved;
+
+  @observable
+  PregnantData? _model;
+
+  @computed
+  PregnantData? get model => _model;
+
+  @action
   Future<void> initialize() async {
     final result = await repository.getPregnant();
 
     switch (result) {
-      case Left():
+      case Error():
         Messages.showError('Erro ao pegar dados da gestante');
-      case Right(value: final pregnant):
-        _model = PregnantModel.fromData(pregnant);
+      case Success():
+        _model = result.success;
     }
 
-    _model ??= PregnantModel(
+    _model ??= PregnantData(
+      id: 0,
       name: '',
       socialName: '',
       birthDate: '',
       cpf: '',
-      nationalHealthCardNumber: '',
-      preNatalPlace: '',
-      profissionalName: '',
+      nationalHealthCard: '',
+      prenatalPlace: '',
+      professionalName: '',
       prenatalPlaceContact: '',
     );
   }
 
-  Future<void> saveIdentification(PregnantModel model) async {
-    final result = await repository.updatePregnant(model);
+  @action
+  Future<void> saveIdentification(PregnantData model) async {
+    final result = await repository.updatePregnant(pregnant: model);
 
     switch (result) {
-      case Left():
+      case Error():
         Messages.showError('Erro ao salvar os dados');
-      case Right(value: final pregnant):
+      case Success():
         Messages.showSuccess('Dados salvos com sucesso');
-        _model = PregnantModel.fromData(pregnant);
-        _saved.value = true;
+        _model = result.success;
+        _saved = true;
     }
   }
 }

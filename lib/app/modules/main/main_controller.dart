@@ -1,35 +1,36 @@
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_core.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../core/fp/either.dart';
 import '../../core/helpers/messages.dart';
-import '../../repositories/gestation/gestation_repository.dart';
+import '../../repositories/gestation/gestation_repository_impl.dart';
 
-class MainController implements Disposable {
-  final GestationRepository gestationRepository;
+part 'main_controller.g.dart';
 
-  MainController(this.gestationRepository);
+class MainController = MainControllerBase with _$MainController;
 
-  final _name = signal<String>('');
-  String get name => _name();
+abstract class MainControllerBase with Store {
+  final GestationRepositoryImpl gestationRepository;
 
-  final tabName = signal<String>('Home');
-  void setTabName(String name) => tabName.value = name;
+  @observable
+  String name = '';
 
+  @observable
+  String tabName = 'Home';
+
+  @action
+  void setTabName(String name) => tabName = name;
+
+  MainControllerBase(this.gestationRepository);
+
+  @action
   Future<void> initialize() async {
     final result = await gestationRepository.getPregnant();
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao buscar nome de usuário');
-      case Right(value: final pregnant):
-        _name.value = pregnant.name;
+      case Error():
+        Messages.showError('Falha ao buscar nome de usuário: ${result.error}');
+      case Success():
+        name = result.success?.name ?? 'Sem Nome';
     }
-  }
-
-  @override
-  void dispose() {
-    _name.dispose();
-    tabName.dispose();
   }
 }

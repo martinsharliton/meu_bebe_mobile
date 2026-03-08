@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../database/database.dart';
+import '../../../../../model/expectation.dart';
 import 'expectations_page.dart';
 
 mixin ExpectationsFormController on State<ExpectationsPage> {

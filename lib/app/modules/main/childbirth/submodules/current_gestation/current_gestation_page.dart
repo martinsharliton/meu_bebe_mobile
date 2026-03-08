@@ -2,10 +2,10 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_core.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../../../../core/theme/app_theme.dart';
-import '../../../../../database/database.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
+import '../../../../../model/current_pregnancy_data.dart';
 import '../../../widgets/base_card.dart';
 import 'current_gestation_controller.dart';
 import 'current_gestation_form_controller.dart';
@@ -28,12 +28,6 @@ class _CurrentGestationPageState extends State<CurrentGestationPage>
     _controller.initialize().then((_) {
       initializeForm(_controller.model!);
     });
-    
-    effect(() {
-      if (_controller.saved) {
-        Navigator.pop(context);
-      }
-    });
   }
 
   @override
@@ -44,7 +38,16 @@ class _CurrentGestationPageState extends State<CurrentGestationPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar, body: _buildBody);
+    return Observer(
+      builder: (_) {
+        if (_controller.saved) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pop(context);
+          });
+        }
+        return Scaffold(appBar: _buildAppBar, body: _buildBody);
+      },
+    );
   }
 
   AppBar get _buildAppBar {

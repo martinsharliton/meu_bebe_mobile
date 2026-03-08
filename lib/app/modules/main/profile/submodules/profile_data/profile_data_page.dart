@@ -1,16 +1,14 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../../../core/extensions/size_extension.dart';
-import '../../../../../core/theme/app_theme.dart';
-import '../../../../../database/database.dart';
-import '../../../../../model/gestation/pregnant_model.dart';
-import '../../../../../model/user/user_model.dart';
-import '../../../widgets/base_card.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
+import '../../../../../model/pregnant_data.dart';
+import '../../../../../model/user_data.dart';
 import 'profile_data_controller.dart';
 import 'profile_form_controller.dart';
 import 'widgets/custom_drop_down.dart';
@@ -24,8 +22,8 @@ class ProfileDataPage extends StatefulWidget {
 }
 
 class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormController {
-  late final GlobalKey<FormState> formKey;
   late final ProfileDataController controller;
+  late final GlobalKey<FormState> formKey;
 
   @override
   void initState() {
@@ -46,62 +44,65 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar(), body: _buildBody());
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      centerTitle: true,
-      title: Watch(
-        (_) => Text(controller.formEnabled ? 'Alterar Dados' : 'Meus Dados', style: AppTheme.titleSmallStyle),
-      ),
-    );
-  }
-
-  Widget _buildBody() {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            width: context.screenWidth,
-            alignment: Alignment.topCenter,
-            color: AppTheme.secondaryColor,
-            child: Column(children: [_buildForm()]),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Observer(
+          builder: (_) {
+            return Text(controller.formEnabled ? 'Alterar Dados' : 'Meus Dados', style: AppTheme.titleSmallStyle);
+          },
         ),
-      ],
-    );
-  }
-
-  Widget _buildForm() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child: SingleChildScrollView(
-          child: BaseCard(
-            child: Form(
-              key: formKey,
-              child: Watch(
-                (_) => Column(
-                  spacing: 12.5,
-                  children: [
-                    _nameField(),
-                    _socialNameField(),
-                    _birthDateField(),
-                    _cpfField(),
-                    _emailField(),
-                    _cnsField(),
-                    _prenatalPlaceField(),
-                    _maritalStatusField(),
-                    _educationField(),
-                    _incomeField(),
-                    controller.formEnabled ? _saveButton() : _editButton(),
-                  ],
-                ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              width: context.screenWidth,
+              alignment: Alignment.topCenter,
+              color: AppTheme.secondaryColor,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            spacing: 12.5,
+                            children: [
+                              _nameField(),
+                              _socialNameField(),
+                              _birthDateField(),
+                              _cpfField(),
+                              _emailField(),
+                              _cnsField(),
+                              _prenatalPlaceField(),
+                              _maritalStatusField(),
+                              _educationField(),
+                              _incomeField(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Observer(
+                    builder: (context) {
+                      return Container(
+                        color: AppTheme.secondaryColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+                          child: controller.formEnabled ? _saveButton() : _editButton(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -179,22 +180,22 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
       if (!valid) return;
 
       final success = await controller.saveProfile(
-        PregnantModel(
+        PregnantData(
+          id: controller.pregnant?.id ?? 0,
           name: nameEC.text,
           socialName: socialNameEC.text,
           birthDate: birthdayEC.text,
           cpf: cpfEC.text,
-          nationalHealthCardNumber: nationalHealthCardEC.text,
-          preNatalPlace: prenatalPlaceEC.text,
-          profissionalName: controller.pregnant?.profissionalName,
+          nationalHealthCard: nationalHealthCardEC.text,
+          prenatalPlace: prenatalPlaceEC.text,
+          professionalName: controller.pregnant?.professionalName,
           prenatalPlaceContact: controller.pregnant?.prenatalPlaceContact,
         ),
         UserData(
-          id: 0,
+          id: controller.user?.id ?? 0,
+          name: controller.user?.name ?? '',
           email: emailEC.text,
-          maritalStatus: maritalStatusEC.text.isEmpty ? null : MaritalStatus.values[int.parse(maritalStatusEC.text)],
-          education: educationEC.text.isEmpty ? null : Education.values[int.parse(educationEC.text)],
-          familyIncome: incomeEC.text.isEmpty ? null : FamilyIncome.values[int.parse(incomeEC.text)],
+          phone: controller.user?.phone,
         ),
       );
 

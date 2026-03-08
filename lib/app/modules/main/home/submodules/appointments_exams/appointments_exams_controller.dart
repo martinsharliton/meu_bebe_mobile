@@ -1,131 +1,143 @@
-import 'package:signals_flutter/signals_core.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
-import '../../../../../database/database.dart';
-import '../../../../../repositories/appointments/appointments_repository.dart';
-import '../../../../../repositories/exams/exams_repository.dart';
+import '../../../../../model/appointment.dart';
+import '../../../../../model/exam.dart';
+import '../../../../../repositories/appointments/appointments_repository_sqlite.dart';
+import '../../../../../repositories/exams/exams_repository_sqlite.dart';
 
-class AppointmentsExamsController {
-  final AppointmentsRepository appointmentsRepository;
-  final ExamsRepository examsRepository;
+part 'appointments_exams_controller.g.dart';
 
-  AppointmentsExamsController(
-    this.appointmentsRepository,
-    this.examsRepository,
-  );
+class AppointmentsExamsController = AppointmentsExamsControllerBase with _$AppointmentsExamsController;
 
-  final _updated = signal<bool>(false);
-  bool get updated => _updated();
-  void resetUpdated() => _updated.value = false;
+abstract class AppointmentsExamsControllerBase with Store {
+  final AppointmentsRepositoryImpl appointmentsRepository;
+  final ExamsRepositoryImpl examsRepository;
 
-  final List<Appointment> _appointments = [];
-  List<Appointment> get appointments => _appointments;
+  @observable
+  bool updated = false;
 
-  final List<Exam> _exams = [];
-  List<Exam> get exams => _exams;
+  @observable
+  var appointments = ObservableList<Appointment>();
+
+  @observable
+  var exams = ObservableList<Exam>();
 
   Future<void> initialize() async {
     await _getAppointments();
     await _getExams();
   }
 
+  @action
+  void resetUpdated() => updated = false;
+
+  AppointmentsExamsControllerBase(this.appointmentsRepository, this.examsRepository);
+
+  @action
   Future<void> _getAppointments() async {
     final result = await appointmentsRepository.getAppointments();
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao buscar as consultas');
-      case Right(value: final appointments):
-        _appointments.clear();
-        _appointments.addAll(appointments);
+      case Success():
+        appointments.clear();
+        appointments.addAll(result.success);
         _sortAppointmentsList();
+      case Error():
+        Messages.showError(result.error.message);
     }
   }
 
+  @action
   Future<void> _getExams() async {
     final result = await examsRepository.getExams();
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao buscar os exames');
-      case Right(value: final exams):
-        _exams.clear();
-        _exams.addAll(exams);
+      case Success():
+        exams.clear();
+        exams.addAll(result.success);
         _sortExamsList();
+      case Error():
+        Messages.showError(result.error.message);
     }
   }
 
+  @action
   Future<void> saveAppointment(Appointment appointment) async {
-    final result = await appointmentsRepository.saveAppointments(appointment);
+    final result = await appointmentsRepository.saveAppointment(appointment: appointment);
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao salvar consulta');
-      case Right(value: final appointments):
-        _appointments.clear();
-        _appointments.addAll(appointments);
+      case Success():
+        appointments.add(result.success);
         _sortAppointmentsList();
-        _updated.value = true;
+        updated = true;
         Messages.showSuccess('Consulta salva');
+      case Error():
+        Messages.showError(result.error.message);
     }
   }
 
+  @action
   Future<void> saveExam(Exam exam) async {
-    final result = await examsRepository.saveExams(exam);
+    final result = await examsRepository.saveExam(exam: exam);
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao salvar o exame');
-      case Right(value: final exams):
-        _exams.clear();
-        _exams.addAll(exams);
+      case Success():
+        exams.add(result.success);
         _sortExamsList();
-        _updated.value = true;
+        updated = true;
         Messages.showSuccess('Exame salvo');
+      case Error():
+        Messages.showError(result.error.message);
     }
   }
 
+  @action
   Future<void> deleteAppointment(int id) async {
-    final result = await appointmentsRepository.deleteAppointments(id);
+    final result = await appointmentsRepository.deleteAppointment(id: id);
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao deletar consulta');
-      case Right(value: final appointments):
-        _appointments.clear();
-        _appointments.addAll(appointments);
-        _sortAppointmentsList();
-        _updated.value = true;
-        Messages.showSuccess('Consulta deletada');
+      case Success():
+        if (result.success) {
+          appointments.removeWhere((appointment) => appointment.id == id);
+          _sortAppointmentsList();
+          updated = true;
+          Messages.showSuccess('Consulta deletada');
+        }
+      case Error(error: final failure):
+        Messages.showError(failure.message);
     }
   }
 
+  @action
   Future<void> deleteExam(int id) async {
-    final result = await examsRepository.deleteExams(id);
+    final result = await examsRepository.deleteExam(id: id);
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao deletar o exame');
-      case Right(value: final exams):
-        _exams.clear();
-        _exams.addAll(exams);
-        _sortExamsList();
-        _updated.value = true;
-        Messages.showSuccess('Exame deletado');
+      case Success():
+        if (result.success) {
+          exams.removeWhere((exam) => exam.id == id);
+          _sortExamsList();
+          updated = true;
+          Messages.showSuccess('Exame deletado');
+        }
+      case Error(error: final failure):
+        Messages.showError(failure.message);
     }
   }
 
+  @action
   void _sortAppointmentsList() {
-    _appointments.sort((a, b) {
+    appointments.sort((a, b) {
       final dateA = DateTime.parse(_transformDate(a.appointmentDate));
       final dateB = DateTime.parse(_transformDate(b.appointmentDate));
       return dateA.compareTo(dateB);
     });
   }
 
+  @action
   void _sortExamsList() {
-    _exams.sort((a, b) {
+    exams.sort((a, b) {
       final dateA = DateTime.parse(_transformDate(a.examDate));
       final dateB = DateTime.parse(_transformDate(b.examDate));
       return dateA.compareTo(dateB);
@@ -133,8 +145,7 @@ class AppointmentsExamsController {
   }
 
   String _transformDate(String date) {
-    final formatted =
-        '${date.substring(6, 10)}-${date.substring(3, 5)}-${date.substring(0, 2)}';
+    final formatted = '${date.substring(6, 10)}-${date.substring(3, 5)}-${date.substring(0, 2)}';
     return formatted;
   }
 }

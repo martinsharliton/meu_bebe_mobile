@@ -1,32 +1,37 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
-import 'package:signals_flutter/signals_flutter.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
-import '../../../../../database/database.dart';
-import '../../../../../model/gestation/pregnant_model.dart';
-import '../../../../../repositories/gestation/gestation_repository.dart';
-import '../../../../../repositories/profile/profile_repository.dart';
+import '../../../../../model/pregnant_data.dart';
+import '../../../../../model/user_data.dart';
+import '../../../../../repositories/gestation/gestation_repository_impl.dart';
+import '../../../../../repositories/profile/profile_repository_impl.dart';
 
-class ProfileDataController {
-  final GestationRepository gestationRepository;
-  final ProfileRepository profileRepository;
+part 'profile_data_controller.g.dart';
 
-  ProfileDataController(this.profileRepository, this.gestationRepository);
+class ProfileDataController = ProfileDataControllerBase with _$ProfileDataController;
 
-  PregnantData? _pregnant;
-  PregnantData? get pregnant => _pregnant;
+abstract class ProfileDataControllerBase with Store {
+  final GestationRepositoryImpl gestationRepository;
+  final ProfileRepositoryImpl profileRepository;
 
-  UserData? _user;
-  UserData? get user => _user;
+  ProfileDataControllerBase(this.gestationRepository, this.profileRepository);
 
-  final _formEnabled = signal<bool>(false);
-  bool get formEnabled => _formEnabled();
+  @observable
+  PregnantData? pregnant;
 
+  @observable
+  UserData? user;
+
+  @observable
+  bool formEnabled = false;
+
+  @action
   void setFormEnabled(bool enabled) {
-    _formEnabled.value = enabled;
+    formEnabled = enabled;
   }
 
   Future<void> initialize() async {
@@ -34,65 +39,71 @@ class ProfileDataController {
     await getUserElements();
   }
 
+  @action
   Future<void> getGestationElements() async {
     final result = await gestationRepository.getPregnant();
 
     switch (result) {
-      case Left():
+      case Error():
         log('Falha ao buscar dados');
-      case Right(value: final gestation):
-        _pregnant = gestation;
+      case Success():
+        pregnant = result.success;
     }
   }
 
+  @action
   Future<void> getUserElements() async {
     final result = await profileRepository.getUser();
 
     switch (result) {
-      case Left():
+      case Error():
         log('Falha ao buscar dados');
-      case Right(value: final user):
-        _user = user;
+      case Success():
+        user = result.success;
     }
   }
 
-  Future<bool> saveProfile(PregnantModel pregnant, UserData user) async {
-    final List<bool> hasError = [false, false];
-    hasError[0] = await _saveGestation(pregnant);
-    hasError[1] = await _saveUser(user);
-    if (hasError[0] || hasError[1]) {
+  Future<bool> saveProfile(PregnantData pregnant, UserData user) async {
+    final hasSucessGestacion = await _saveGestation(pregnant);
+    final hasSucessUser = await _saveUser(user);
+
+    log('G: $hasSucessGestacion');
+    log('U: $hasSucessUser');
+
+    if (hasSucessGestacion && hasSucessUser) {
+      Messages.showSuccess('Dados salvos');
+      Modular.to.pop();
+      return true;
+    } else {
       Messages.showError('Falha ao salvar os dados');
       return false;
-    } else {
-      Messages.showSuccess('Dados salvos');
-      return true;
     }
   }
 
-  Future<bool> _saveGestation(PregnantModel pregnant) async {
-    final result = await gestationRepository.updatePregnant(pregnant);
+  Future<bool> _saveGestation(PregnantData pregnant) async {
+    final result = await gestationRepository.updatePregnant(pregnant: pregnant);
 
     switch (result) {
-      case Left():
+      case Success():
+        log('${result.success.name} salvo');
         return true;
-      case Right():
+      case Error():
+        log(result.error.message);
         return false;
     }
   }
 
   Future<bool> _saveUser(UserData user) async {
-    final result = await profileRepository.updateUser(user);
+    final result = await profileRepository.updateUser(user: user);
 
     switch (result) {
-      case Left():
+      case Success():
+        log(result.success.name);
+
         return true;
-      case Right():
+      case Error():
+        log(result.error.message);
         return false;
     }
-  }
-
-  /// Importante: liberar signals
-  void dispose() {
-    _formEnabled.dispose();
   }
 }

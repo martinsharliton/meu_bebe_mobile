@@ -1,11 +1,11 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_core.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../../../core/theme/app_theme.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
 import '../../../widgets/base_card.dart';
 import 'identification_controller.dart';
 import 'identification_form_controller.dart';
@@ -17,8 +17,7 @@ class IdentificationPage extends StatefulWidget {
   State<IdentificationPage> createState() => _IdentificationPageState();
 }
 
-class _IdentificationPageState extends State<IdentificationPage>
-    with IdentificationFormController {
+class _IdentificationPageState extends State<IdentificationPage> with IdentificationFormController {
   final formKey = GlobalKey<FormState>();
   final _controller = Modular.get<IdentificationController>();
 
@@ -27,10 +26,6 @@ class _IdentificationPageState extends State<IdentificationPage>
     super.initState();
     _controller.initialize().then((_) {
       initializeForm(_controller.model);
-    });
-
-    effect(() {
-      if (_controller.saved) return Modular.to.pop();
     });
   }
 
@@ -42,14 +37,20 @@ class _IdentificationPageState extends State<IdentificationPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar, body: _buildBody);
+    return Observer(
+      builder: (_) {
+        if (_controller.saved) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Modular.to.pop();
+          });
+        }
+        return Scaffold(appBar: _buildAppBar, body: _buildBody);
+      },
+    );
   }
 
   AppBar get _buildAppBar {
-    return AppBar(
-      title: const Text('Gestante', style: AppTheme.titleSmallStyle),
-      centerTitle: true,
-    );
+    return AppBar(title: const Text('Gestante', style: AppTheme.titleSmallStyle), centerTitle: true);
   }
 
   Widget get _buildBody {
@@ -61,10 +62,8 @@ class _IdentificationPageState extends State<IdentificationPage>
             key: formKey,
             child: Column(
               children: [
-                const Text(
-                  'Dados da gestante',
-                  style: AppTheme.titleSmallStyle,
-                ),
+                const Text('Dados da Gestante', style: AppTheme.titleSmallStyle),
+                SizedBox(height: 10),
                 _buildTextField(
                   nameEC,
                   'Nome',
@@ -72,23 +71,14 @@ class _IdentificationPageState extends State<IdentificationPage>
                   captalization: TextCapitalization.words,
                 ),
                 const SizedBox(height: 10),
-                _buildTextField(
-                  socialNameEC,
-                  'Nome social',
-                  captalization: TextCapitalization.words,
-                ),
+                _buildTextField(socialNameEC, 'Nome social', captalization: TextCapitalization.words),
                 const SizedBox(height: 10),
                 _buildTextField(
                   birthdayEC,
                   'Data de nascimento',
-                  validator: Validatorless.required(
-                    'Data de nascimento obrigatória',
-                  ),
+                  validator: Validatorless.required('Data de nascimento obrigatória'),
                   keyboardType: TextInputType.datetime,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    DataInputFormatter(),
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, DataInputFormatter()],
                 ),
                 const SizedBox(height: 10),
                 _buildTextField(
@@ -96,10 +86,7 @@ class _IdentificationPageState extends State<IdentificationPage>
                   'CPF',
                   validator: Validatorless.required('CPF obrigatório'),
                   keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    CpfInputFormatter(),
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, CpfInputFormatter()],
                 ),
                 const SizedBox(height: 10),
                 _buildTextField(
@@ -108,25 +95,15 @@ class _IdentificationPageState extends State<IdentificationPage>
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10),
-                _buildTextField(
-                  prenatalPlaceEC,
-                  'Local que realiza o pré-natal',
-                ),
+                _buildTextField(prenatalPlaceEC, 'Local que realiza o pré-natal'),
                 const SizedBox(height: 10),
-                _buildTextField(
-                  profissionalEC,
-                  'Nome do profissional',
-                  captalization: TextCapitalization.words,
-                ),
+                _buildTextField(profissionalEC, 'Nome do profissional', captalization: TextCapitalization.words),
                 const SizedBox(height: 10),
                 _buildTextField(
                   prenatalPlaceContactEC,
                   'Contato do local',
                   keyboardType: TextInputType.phone,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    TelefoneInputFormatter(),
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, TelefoneInputFormatter()],
                 ),
                 const SizedBox(height: 16),
                 _saveButton(),

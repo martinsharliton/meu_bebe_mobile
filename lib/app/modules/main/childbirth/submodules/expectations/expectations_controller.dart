@@ -1,35 +1,37 @@
-import 'dart:developer';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import 'package:signals_flutter/signals_core.dart';
-
-import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
-import '../../../../../database/database.dart';
-import '../../../../../model/birth_plan/expectations_model.dart';
-import '../../../../../repositories/expectations/expectations_repository.dart';
+import '../../../../../model/expectation.dart';
+import '../../../../../repositories/expectations/expectations_repository_impl.dart';
 
-class ExpectationsController {
-  final ExpectationsRepository repository;
+part 'expectations_controller.g.dart';
 
-  ExpectationsController(this.repository);
+class ExpectationsController = ExpectationsControllerBase with _$ExpectationsController;
 
-  final _saved = signal<bool>(false);
-  bool get saved => _saved();
+abstract class ExpectationsControllerBase with Store {
+  final ExpectationsRepositoryImpl repository;
 
-  Expectation? _expectations;
-  Expectation? get expectation => _expectations;
+  @observable
+  bool saved = false;
 
+  @observable
+  Expectation? expectations;
+
+  ExpectationsControllerBase(this.repository);
+
+  @action
   Future<void> initialize() async {
     final result = await repository.getExpectations();
 
     switch (result) {
-      case Left():
+      case Error():
         Messages.showError('Erro ao pegar dados das expectativas');
-      case Right(value: final expectations):
-        _expectations = expectations;
+      case Success():
+        expectations = result.success;
     }
 
-    _expectations ??= const Expectation(
+    expectations ??= const Expectation(
       id: 0,
       companion: Alternatives.no,
       shaveIntimateHair: Alternatives.no,
@@ -39,19 +41,19 @@ class ExpectationsController {
       drinkLiquids: Alternatives.no,
       recordPhotosOrVideos: Alternatives.no,
     );
-    log('teste');
   }
 
+  @action
   Future<void> saveExpectations(Expectation expectations) async {
-    final result = await repository.updateExpectations(expectations);
+    final result = await repository.updateExpectations(expectation: expectations);
 
     switch (result) {
-      case Left():
+      case Error():
         Messages.showError('Erro ao salvar dados');
-      case Right(value: final updated):
+      case Success():
         Messages.showSuccess('Dados salvos com sucesso');
-        _expectations = updated;
-        _saved.value = true;
+        expectations = result.success;
+        saved = true;
     }
   }
 }

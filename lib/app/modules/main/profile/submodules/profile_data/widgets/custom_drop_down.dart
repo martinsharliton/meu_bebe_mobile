@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/theme/app_theme.dart';
+import '../../../../../../core/ui/theme/app_theme.dart';
 import '../profile_data_controller.dart';
 
 class CustomDropDown extends StatelessWidget {
@@ -19,54 +19,16 @@ class CustomDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: AppTheme.secondaryColor,
-        border: controller.formEnabled
-            ? null
-            : Border.all(color: AppTheme.darkTextColor),
-      ),
-      child: DropdownMenu<int>(
-        enabled: controller.formEnabled,
-        initialSelection: int.tryParse(textController.text),
-        expandedInsets: EdgeInsets.zero,
-        textStyle: AppTheme.textStyle,
-        inputDecorationTheme: const InputDecorationTheme(
-          hintStyle: AppTheme.textStyle,
-          border: null,
-          disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent),
-          ),
-        ),
-        menuStyle: MenuStyle(
-          backgroundColor: const WidgetStatePropertyAll(
-            AppTheme.secondaryColor,
-          ),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          ),
-        ),
-        label: textController.text.isEmpty
-            ? Text(label)
-            : Container(
-                padding: const EdgeInsets.all(3),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [.5, .5],
-                    colors: [Colors.white, AppTheme.secondaryColor],
-                  ),
-                ),
-                child: Text(label),
-              ),
-        onSelected: (value) {
-          textController.text = value.toString();
-        },
-        dropdownMenuEntries: _chooseDropList(type),
-      ),
+    return DropdownMenu<int>(
+      dropdownMenuEntries: _chooseDropList(type),
+      enabled: controller.formEnabled,
+      initialSelection: int.tryParse(textController.text),
+      expandedInsets: EdgeInsets.zero,
+      textStyle: AppTheme.textStyle,
+      label: Text(label),
+      onSelected: (value) {
+        textController.text = value.toString();
+      },
     );
   }
 

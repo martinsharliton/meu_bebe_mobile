@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/theme/app_theme.dart';
-import '../../../../../../database/database.dart';
+import '../../../../../../core/ui/theme/app_theme.dart';
+import '../../../../../../model/previous_pregnancy.dart';
 import '../../../../widgets/base_card.dart';
 import '../../../../widgets/custom_item_tile.dart';
 
@@ -21,35 +21,17 @@ class HistoryCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              CustomItemTile(
-                flex: 1,
-                title: 'Gestações',
-                content: getData(history?.pregnancyNumber.toString()),
-              ),
+              CustomItemTile(flex: 1, title: 'Gestações', content: getData(history?.pregnancyNumber.toString())),
               const SizedBox(width: 10),
-              CustomItemTile(
-                flex: 1,
-                title: 'Partos',
-                content: getData(history?.givenBirthNumber.toString()),
-              ),
+              CustomItemTile(flex: 1, title: 'Partos', content: getData(history?.givenBirthNumber.toString())),
               const SizedBox(width: 10),
-              CustomItemTile(
-                flex: 1,
-                title: 'Abortos',
-                content: getData(history?.abortionsNumber.toString()),
-              ),
+              CustomItemTile(flex: 1, title: 'Abortos', content: getData(history?.abortionsNumber.toString())),
             ],
           ),
           const SizedBox(height: 10),
           const Row(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CustomItemTile(
-                flex: 1,
-                title: 'História das gestações anteriores',
-                content: '',
-              ),
-            ],
+            children: [CustomItemTile(flex: 1, title: 'História das gestações anteriores', content: '')],
           ),
           const SizedBox(height: 16),
           SizedBox(

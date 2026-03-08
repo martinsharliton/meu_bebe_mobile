@@ -1,61 +1,54 @@
-import 'dart:developer';
+import 'package:multiple_result/multiple_result.dart';
+import 'package:sqflite/sqflite.dart';
 
-import 'package:drift/drift.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import '../../core/fp/failure.dart';
+import '../../database/database_sqlite.dart';
+import '../../model/current_pregnancy_data.dart';
 
-import '../../core/exceptions/failure.dart';
-import '../../core/fp/either.dart';
-import '../../database/database.dart';
-import 'current_gestation_repository.dart';
+class CurrentGestationRepositoryImpl {
+  static final CurrentGestationRepositoryImpl _instance = CurrentGestationRepositoryImpl._internal();
+  CurrentGestationRepositoryImpl._internal();
+  factory CurrentGestationRepositoryImpl() => _instance;
 
-class CurrentGestationRepositoryImpl implements CurrentGestationRepository {
-  final db = Modular.get<Database>();
-
-  @override
-  Future<Either<Failure, CurrentPregnancyData>> getGestation() async {
+  Future<Result<CurrentPregnancyData?, Failure>> getGestation() async {
     try {
-      final current = await (db.select(db.currentPregnancy)..where((p) => p.id.equals(1))).getSingle();
-      return Right(current);
-    } catch (e) {
-      return Left(Failure());
-    }
-  }
+      final db = await DB.instance.database;
+      final result = await db.query('current_pregnancy', limit: 1);
 
-  @override
-  Future<Either<Failure, CurrentPregnancyData>> saveGestation(CurrentPregnancyData current) async {
-    try {
-      await db
-          .into(db.currentPregnancy)
-          .insert(
-            CurrentPregnancyCompanion(
-              lastMenstrualPeriod: Value(current.lastMenstrualPeriod),
-              firstUltrasound: Value(current.firstUltrasound),
-            ),
-          );
-      final saved = await (db.select(db.currentPregnancy)..where((p) => p.id.equals(1))).getSingle();
-      return Right(saved);
-    } catch (e) {
-      log(e.toString());
-      return Left(Failure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, CurrentPregnancyData>> updateGestation(CurrentPregnancyData current) async {
-    try {
-      await (db.update(db.currentPregnancy)..where((p) => p.id.equals(1))).write(
-        CurrentPregnancyCompanion(
-          lastMenstrualPeriod: Value(current.lastMenstrualPeriod),
-          firstUltrasound: Value(current.firstUltrasound),
-        ),
-      );
-      final updated = await (db.select(db.currentPregnancy)..where((p) => p.id.equals(1))).getSingle();
-      return Right(updated);
-    } catch (e) {
-      if (e.toString().contains('No element')) {
-        return saveGestation(current);
+      if (result.isEmpty) {
+        return Success(null);
       }
-      return Left(Failure());
+
+      final gestation = CurrentPregnancyData.fromMap(result.first);
+      return Success(gestation);
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao buscar dados da gestação atual: $error'));
     }
+  }
+
+  Future<Result<CurrentPregnancyData, Failure>> saveGestation({required CurrentPregnancyData gestation}) async {
+    try {
+      final db = await DB.instance.database;
+
+      if (gestation.id == 0) {
+        // Inserir nova gestação
+        final id = await db.insert(
+          'current_pregnancy',
+          gestation.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+        return Success(gestation.copyWith(id: id));
+      } else {
+        // Atualizar gestação existente
+        await db.update('current_pregnancy', gestation.toMap(), where: 'id = ?', whereArgs: [gestation.id]);
+        return Success(gestation);
+      }
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao salvar dados da gestação atual: $error'));
+    }
+  }
+
+  Future<Result<CurrentPregnancyData, Failure>> updateGestation({required CurrentPregnancyData gestation}) async {
+    return saveGestation(gestation: gestation);
   }
 }

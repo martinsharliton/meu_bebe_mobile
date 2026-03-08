@@ -1,56 +1,52 @@
-import 'dart:developer';
+import 'package:multiple_result/multiple_result.dart';
+import 'package:sqflite/sqflite.dart';
 
-import 'package:drift/drift.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import '../../core/fp/failure.dart';
+import '../../database/database_sqlite.dart';
+import '../../model/medication.dart';
 
-import '../../core/exceptions/failure.dart';
-import '../../core/fp/either.dart';
-import '../../database/database.dart';
-import 'medication_repository.dart';
+class MedicationRepositoryImpl {
+  static final MedicationRepositoryImpl _instance = MedicationRepositoryImpl._internal();
+  MedicationRepositoryImpl._internal();
+  factory MedicationRepositoryImpl() => _instance;
 
-class MedicationRepositoryImpl implements MedicationRepository {
-  final db = Modular.get<Database>();
-
-  @override
-  Future<Either<Failure, List<Medication>>> getMedications() async {
+  Future<Result<List<Medication>, Failure>> getMedications() async {
     try {
-      final medications = await db.select(db.medications).get();
-      return Right(medications);
-    } catch (e) {
-      return Left(Failure());
+      final db = await DB.instance.database;
+      final List<Map<String, dynamic>> maps = await db.query('medication');
+
+      final medications = maps.map((map) => Medication.fromMap(map)).toList();
+      return Success(medications);
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao buscar medicamentos: $error'));
     }
   }
 
-  @override
-  Future<Either<Failure, List<Medication>>> saveMedication(Medication medication) async {
+  Future<Result<Medication, Failure>> saveMedication({required Medication medication}) async {
     try {
-      await db
-          .into(db.medications)
-          .insert(
-            MedicationsCompanion(
-              name: Value(medication.name),
-              dose: Value(medication.dose),
-              medicationTime: Value(medication.medicationTime),
-            ),
-          );
-      final saved = await db.select(db.medications).get();
-      return Right(saved);
-    } catch (e) {
-      log(e.toString());
-      return Left(Failure());
+      final db = await DB.instance.database;
+
+      if (medication.id == 0) {
+        // Inserir novo medicamento
+        final id = await db.insert('medication', medication.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+        return Success(medication.copyWith(id: id));
+      } else {
+        // Atualizar medicamento existente
+        await db.update('medication', medication.toMap(), where: 'id = ?', whereArgs: [medication.id]);
+        return Success(medication);
+      }
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao salvar medicamento: $error'));
     }
   }
 
-  @override
-  Future<Either<Failure, List<Medication>>> deleteMedication(int id) async {
+  Future<Result<bool, Failure>> deleteMedication({required int id}) async {
     try {
-      await (db.delete(db.medications)..where((medication) => medication.id.equals(id))).go();
-
-      final list = await db.select(db.medications).get();
-      return Right(list);
-    } catch (e) {
-      log(e.toString());
-      return Left(Failure());
+      final db = await DB.instance.database;
+      await db.delete('medication', where: 'id = ?', whereArgs: [id]);
+      return Success(true);
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao deletar medicamento: $error'));
     }
   }
 }

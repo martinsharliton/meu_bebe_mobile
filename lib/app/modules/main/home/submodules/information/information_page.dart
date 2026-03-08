@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_theme.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
 import 'widgets/information_card.dart';
 
 class InformationPage extends StatefulWidget {

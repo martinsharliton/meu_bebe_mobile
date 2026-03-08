@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../database/database.dart';
+import '../../../../../model/previous_pregnancy.dart';
 import 'history_page.dart';
 
 mixin HistoryFormController on State<HistoryPage> {

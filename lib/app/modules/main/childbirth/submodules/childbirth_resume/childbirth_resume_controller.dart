@@ -1,27 +1,44 @@
 import 'dart:developer';
 
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_flutter.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../../core/fp/either.dart';
-import '../../../../../database/database.dart';
-import '../../../../../model/birth_plan/expectations_model.dart';
-import '../../../../../repositories/current_gestation/current_gestation_repository.dart';
-import '../../../../../repositories/expectations/expectations_repository.dart';
-import '../../../../../repositories/gestation/gestation_repository.dart';
-import '../../../../../repositories/history/history_repository.dart';
+import '../../../../../model/current_pregnancy_data.dart';
+import '../../../../../model/expectation.dart';
+import '../../../../../model/pregnant_data.dart';
+import '../../../../../model/previous_pregnancy.dart';
+import '../../../../../repositories/current_gestation/current_gestation_repository_impl.dart';
+import '../../../../../repositories/expectations/expectations_repository_impl.dart';
+import '../../../../../repositories/gestation/gestation_repository_impl.dart';
+import '../../../../../repositories/history/history_repository_impl.dart';
 
-class ChildbirthResumeController {
+part 'childbirth_resume_controller.g.dart';
+
+class ChildbirthResumeController = ChildbirthResumeControllerBase with _$ChildbirthResumeController;
+
+abstract class ChildbirthResumeControllerBase with Store {
+  @observable
   PregnantData? pregnantData;
+
+  @observable
   PreviousPregnancy? historyData;
+
+  @observable
   CurrentPregnancyData? currentPregnancyData;
+
+  @observable
   Expectation? expectationsData;
+
+  @observable
   bool initialized = false;
 
-  final _updated = signal<bool>(false);
-  bool get updated => _updated();
-  void setUpdated(bool value) => _updated.value = value;
+  @observable
+  bool updated = false;
 
+  @action
+  void setUpdated(bool value) => updated = value;
+
+  @action
   Future<void> initialize() async {
     if (!initialized) {
       await getPregnant();
@@ -31,28 +48,27 @@ class ChildbirthResumeController {
     }
   }
 
+  @action
   Future<void> getPregnant() async {
-    final result = await Modular.get<GestationRepository>().getPregnant();
+    final repository = GestationRepositoryImpl();
+    final result = await repository.getPregnant();
 
     switch (result) {
-      case Left():
+      case Error():
         log('Error');
-        pregnantData = const PregnantData(
-          id: 0,
-          name: '',
-          birthDate: '',
-          cpf: '',
-        );
-      case Right(value: final pregnant):
-        pregnantData = pregnant;
+        pregnantData = const PregnantData(id: 0, name: '', birthDate: '', cpf: '');
+      case Success():
+        pregnantData = result.success;
     }
   }
 
+  @action
   Future<void> getHistory() async {
-    final result = await Modular.get<HistoryRepository>().getHistory();
+    final repository = HistoryRepositoryImpl();
+    final result = await repository.getHistory();
 
     switch (result) {
-      case Left():
+      case Error():
         log('Error');
         historyData = const PreviousPregnancy(
           id: 0,
@@ -60,43 +76,45 @@ class ChildbirthResumeController {
           givenBirthNumber: null,
           pregnancyNumber: null,
         );
-      case Right(value: final history):
-        historyData = history;
+      case Success():
+        historyData = result.success;
     }
   }
 
+  @action
   Future<void> getCurrentGestation() async {
-    final result = await Modular.get<CurrentGestationRepository>()
-        .getGestation();
+    final repository = CurrentGestationRepositoryImpl();
+    final result = await repository.getGestation();
 
     switch (result) {
-      case Left():
+      case Error():
         log('Error');
         currentPregnancyData = const CurrentPregnancyData(id: 0);
-      case Right(value: final current):
-        currentPregnancyData = current;
+      case Success():
+        currentPregnancyData = result.success;
     }
   }
 
+  @action
   Future<void> getExpectations() async {
-    final result = await Modular.get<ExpectationsRepository>()
-        .getExpectations();
+    final repository = ExpectationsRepositoryImpl();
+    final result = await repository.getExpectations();
 
     switch (result) {
-      case Left():
+      case Error():
         log('Error');
-        expectationsData = Expectation(
+        expectationsData = const Expectation(
           id: 0,
-          companion: Alternatives.values[1],
-          shaveIntimateHair: Alternatives.values[1],
-          bowelWashOrSuppository: Alternatives.values[1],
-          lowLightEnvironment: Alternatives.values[1],
-          listenToMusic: Alternatives.values[1],
-          drinkLiquids: Alternatives.values[1],
-          recordPhotosOrVideos: Alternatives.values[1],
+          companion: Alternatives.yes,
+          shaveIntimateHair: Alternatives.yes,
+          bowelWashOrSuppository: Alternatives.yes,
+          lowLightEnvironment: Alternatives.yes,
+          listenToMusic: Alternatives.yes,
+          drinkLiquids: Alternatives.yes,
+          recordPhotosOrVideos: Alternatives.yes,
         );
-      case Right(value: final expectations):
-        expectationsData = expectations;
+      case Success():
+        expectationsData = result.success;
     }
   }
 }

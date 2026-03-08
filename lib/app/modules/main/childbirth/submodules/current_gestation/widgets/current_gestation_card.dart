@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/theme/app_theme.dart';
-import '../../../../../../database/database.dart';
+import '../../../../../../core/ui/theme/app_theme.dart';
+import '../../../../../../model/current_pregnancy_data.dart';
 import '../../../../widgets/base_card.dart';
 import '../../../../widgets/custom_item_tile.dart';
 
@@ -20,55 +20,30 @@ class CurrentGestationCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              CustomItemTile(
-                flex: 1,
-                title: 'Última menstruação',
-                content: _getData(current?.lastMenstrualPeriod),
-              ),
+              CustomItemTile(flex: 1, title: 'Última menstruação', content: _getData(current?.lastMenstrualPeriod)),
               const SizedBox(width: 10),
-              CustomItemTile(
-                flex: 1,
-                title: 'Data do ultrassom',
-                content: _getData(current?.firstUltrasound),
-              ),
+              CustomItemTile(flex: 1, title: 'Data do ultrassom', content: _getData(current?.firstUltrasound)),
             ],
           ),
           const SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              CustomItemTile(
-                flex: 1,
-                title: 'Idade Gestacional aproximada',
-                content: _getGestationalAge(),
-              ),
+              CustomItemTile(flex: 1, title: 'Idade Gestacional aproximada', content: _getGestationalAge()),
               const SizedBox(width: 10),
-              CustomItemTile(
-                flex: 1,
-                title: 'Data provável do parto',
-                content: _getChildbirthDate(),
-              ),
+              CustomItemTile(flex: 1, title: 'Data provável do parto', content: _getChildbirthDate()),
             ],
           ),
           const SizedBox(height: 10),
           const Row(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CustomItemTile(
-                flex: 1,
-                title: 'Sobre a minha gravidez atual',
-                content: '',
-              ),
-            ],
+            children: [CustomItemTile(flex: 1, title: 'Sobre a minha gravidez atual', content: '')],
           ),
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             height: 48,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Editar'),
-            ),
+            child: ElevatedButton(onPressed: () {}, child: const Text('Editar')),
           ),
         ],
       ),
@@ -86,9 +61,7 @@ class CurrentGestationCard extends StatelessWidget {
   String _getGestationalAge() {
     if (current?.lastMenstrualPeriod != null) {
       final now = DateTime.now();
-      final menstrualDay = DateTime.parse(
-        _transformDate(current!.lastMenstrualPeriod!),
-      );
+      final menstrualDay = DateTime.parse(_transformDate(current!.lastMenstrualPeriod!));
       final gestationalDays = now.difference(menstrualDay).inDays;
       return '${gestationalDays ~/ 7} semanas e ${gestationalDays % 7} dias';
     }
@@ -97,9 +70,7 @@ class CurrentGestationCard extends StatelessWidget {
 
   String _getChildbirthDate() {
     if (current?.lastMenstrualPeriod != null) {
-      final menstrualDay = DateTime.parse(
-        _transformDate(current!.lastMenstrualPeriod!),
-      );
+      final menstrualDay = DateTime.parse(_transformDate(current!.lastMenstrualPeriod!));
       final birth = menstrualDay.add(const Duration(days: 280));
       return _dateTimeToString(birth);
     }
@@ -108,8 +79,7 @@ class CurrentGestationCard extends StatelessWidget {
   }
 
   String _transformDate(String date) {
-    final formatted =
-        '${date.substring(6, 10)}-${date.substring(3, 5)}-${date.substring(0, 2)}';
+    final formatted = '${date.substring(6, 10)}-${date.substring(3, 5)}-${date.substring(0, 2)}';
     return formatted;
   }
 

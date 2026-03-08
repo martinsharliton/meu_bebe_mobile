@@ -1,56 +1,63 @@
 import 'dart:developer';
 
-import 'package:signals_flutter/signals_core.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
-import '../../../../../database/database.dart';
-import '../../../../../repositories/vaccines/vaccines_repository.dart';
+import '../../../../../model/vaccine_data.dart';
+import '../../../../../repositories/vaccines/vaccines_repository_impl.dart';
 
-class VaccinesController {
-  final VaccinesRepository repository;
+part 'vaccines_controller.g.dart';
 
-  VaccinesController(this.repository);
+class VaccinesController = VaccinesControllerBase with _$VaccinesController;
 
-  final List<VaccineData> _vaccines = [];
-  List<VaccineData> get vaccines => _vaccines;
+abstract class VaccinesControllerBase with Store {
+  final VaccinesRepositoryImpl repository;
 
-  final _updated = signal<bool>(false);
-  bool get updated => _updated();
-  void resetUpdated() => _updated.value = false;
+  @observable
+  var vaccines = ObservableList<VaccineData>();
+
+  @observable
+  bool updated = false;
+
+  @action
+  void resetUpdated() => updated = false;
 
   Future<void> initialize() async {
     await getVaccines();
   }
 
+  VaccinesControllerBase(this.repository);
+
+  @action
   Future<void> getVaccines() async {
     final result = await repository.getVaccines();
 
     switch (result) {
-      case Left():
-        Messages.showError('Erro ao buscar as vacinas');
-      case Right(value: final vaccines):
-        if (vaccines.isEmpty) {
-          _setVaccines();
-        } else {
-          _vaccines.clear();
-          _vaccines.addAll(vaccines);
-          _sortVaccines();
-        }
+      case Success():
+        if (result.success.isEmpty) return _setVaccines();
+
+        vaccines.clear();
+        vaccines.addAll(vaccines);
+        _sortVaccines();
+        return;
+      case Error():
+        Messages.showError(result.error.message);
     }
   }
 
   Future<void> _saveVaccine(VaccineData vaccine) async {
-    final result = await repository.saveVaccine(vaccine);
+    final result = await repository.saveVaccine(vaccine: vaccine);
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao salvar a vacina');
-      case Right():
-        log('Vacina ${vaccine.name} salva');
+      case Success():
+        log('Vacina ${result.success.name} salva');
+      case Error(error: final failure):
+        Messages.showError(failure.message);
     }
   }
 
+  @action
   Future<void> _setVaccines() async {
     await _saveVaccine(const VaccineData(id: 0, name: 'HB_1', used: false));
     await _saveVaccine(const VaccineData(id: 1, name: 'HB_2', used: false));
@@ -60,70 +67,97 @@ class VaccinesController {
     await _saveVaccine(const VaccineData(id: 5, name: 'dT_3', used: false));
     await _saveVaccine(const VaccineData(id: 6, name: 'dTpa', used: false));
     await getVaccines();
-    _updated.value = true;
+    updated = true;
   }
 
+  @action
   Future<void> updateVaccine(VaccineData vaccine) async {
-    final result = await repository.updateVaccine(vaccine);
+    final result = await repository.saveVaccine(vaccine: vaccine);
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao atualizar a vacina');
-      case Right(value: final vaccines):
-        _vaccines.clear();
-        _vaccines.addAll(vaccines);
+      case Success():
+        final updatedVaccine = result.success;
+        final index = vaccines.indexWhere((v) => v.id == updatedVaccine.id);
+        if (index != -1) {
+          vaccines[index] = updatedVaccine;
+        }
         _sortVaccines();
-        _updated.value = true;
+        updated = true;
+      case Error(error: final failure):
+        Messages.showError(failure.message);
     }
   }
 
+  @action
   void _sortVaccines() {
-    _vaccines.sort((a, b) => a.id.compareTo(b.id));
+    vaccines.sort((a, b) => a.id.compareTo(b.id));
   }
 
-  final _checkHepatitis1 = signal<bool>(false);
-  bool get checkHepatitis1 => _checkHepatitis1();
+  @observable
+  bool _checkHepatitis1 = false;
 
-  final _checkHepatitis2 = signal<bool>(false);
-  bool get checkHepatitis2 => _checkHepatitis2();
+  @computed
+  bool get checkHepatitis1 => _checkHepatitis1;
 
-  final _checkHepatitis3 = signal<bool>(false);
-  bool get checkHepatitis3 => _checkHepatitis3();
+  @observable
+  bool _checkHepatitis2 = false;
 
-  final _checkDT1 = signal<bool>(false);
-  bool get checkDT1 => _checkDT1();
+  @computed
+  bool get checkHepatitis2 => _checkHepatitis2;
 
-  final _checkDT2 = signal<bool>(false);
-  bool get checkDT2 => _checkDT2();
+  @observable
+  bool _checkHepatitis3 = false;
 
-  final _checkDT3 = signal<bool>(false);
-  bool get checkDT3 => _checkDT3();
+  @computed
+  bool get checkHepatitis3 => _checkHepatitis3;
 
-  final _checkDTpa = signal<bool>(false);
-  bool get checkDTpa => _checkDTpa();
+  @observable
+  bool _checkDT1 = false;
 
+  @computed
+  bool get checkDT1 => _checkDT1;
+
+  @observable
+  bool _checkDT2 = false;
+
+  @computed
+  bool get checkDT2 => _checkDT2;
+
+  @observable
+  bool _checkDT3 = false;
+
+  @computed
+  bool get checkDT3 => _checkDT3;
+
+  @observable
+  bool _checkDTpa = false;
+
+  @computed
+  bool get checkDTpa => _checkDTpa;
+
+  @action
   void setCheck(bool checked, int index) {
     switch (index) {
       case 0:
-        _checkHepatitis1.value = checked;
+        _checkHepatitis1 = checked;
         break;
       case 1:
-        _checkHepatitis2.value = checked;
+        _checkHepatitis2 = checked;
         break;
       case 2:
-        _checkHepatitis3.value = checked;
+        _checkHepatitis3 = checked;
         break;
       case 3:
-        _checkDT1.value = checked;
+        _checkDT1 = checked;
         break;
       case 4:
-        _checkDT2.value = checked;
+        _checkDT2 = checked;
         break;
       case 5:
-        _checkDT3.value = checked;
+        _checkDT3 = checked;
         break;
       case 6:
-        _checkDTpa.value = checked;
+        _checkDTpa = checked;
         break;
     }
   }

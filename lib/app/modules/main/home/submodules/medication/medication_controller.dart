@@ -1,71 +1,81 @@
-import 'package:signals_flutter/signals_core.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
-import '../../../../../database/database.dart';
-import '../../../../../repositories/medication/medication_repository.dart';
+import '../../../../../model/medication.dart';
+import '../../../../../repositories/medication/medication_repository_impl.dart';
 
-class MedicationController {
-  final MedicationRepository repository;
+part 'medication_controller.g.dart';
 
-  MedicationController(this.repository);
+class MedicationController = MedicationControllerBase with _$MedicationController;
 
-  final List<Medication> _medications = [];
-  List<Medication> get medication => _medications;
+abstract class MedicationControllerBase with Store {
+  final MedicationRepositoryImpl repository;
 
-  final _updated = signal<bool>(false);
-  bool get updated => _updated();
-  void resetUpdated() => _updated.value = false;
+  @observable
+  var medications = ObservableList<Medication>();
+
+  @observable
+  bool updated = false;
+
+  @action
+  void resetUpdated() => updated = false;
 
   Future<void> initialize() async {
     await _getMedications();
   }
 
+  MedicationControllerBase(this.repository);
+
+  @action
   Future<void> _getMedications() async {
     final result = await repository.getMedications();
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao buscar as medicações');
-      case Right(value: final medications):
-        _medications.clear();
-        _medications.addAll(medications);
+      case Success():
+        medications.clear();
+        medications.addAll(result.success);
         _sortMedications();
+      case Error():
+        Messages.showError(result.error.message);
     }
   }
 
+  @action
   Future<void> saveMedication(Medication medication) async {
-    final result = await repository.saveMedication(medication);
+    final result = await repository.saveMedication(medication: medication);
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao salvar o medicamento');
-      case Right(value: final medication):
-        _medications.clear();
-        _medications.addAll(medication);
+      case Success():
+        medications.add(result.success);
         _sortMedications();
-        _updated.value = true;
+        updated = true;
         Messages.showSuccess('Medicamento salvo');
+      case Error(error: final failure):
+        Messages.showError(failure.message);
     }
   }
 
+  @action
   Future<void> deleteMedication(int id) async {
-    final result = await repository.deleteMedication(id);
+    final result = await repository.deleteMedication(id: id);
 
     switch (result) {
-      case Left():
-        Messages.showError('Falha ao remover o medicamento');
-      case Right(value: final medication):
-        _medications.clear();
-        _medications.addAll(medication);
-        _sortMedications();
-        _updated.value = true;
-        Messages.showSuccess('Medicamento deletado');
+      case Success():
+        if (result.success) {
+          medications.removeWhere((medication) => medication.id == id);
+          _sortMedications();
+          updated = true;
+          Messages.showSuccess('Medicamento deletado');
+        }
+      case Error(error: final failure):
+        Messages.showError(failure.message);
     }
   }
 
+  @action
   void _sortMedications() {
-    _medications.sort((a, b) {
+    medications.sort((a, b) {
       return a.name.compareTo(b.name);
     });
   }

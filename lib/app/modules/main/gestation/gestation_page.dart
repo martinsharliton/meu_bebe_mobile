@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/extensions/size_extension.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/ui/theme/app_theme.dart';
 import 'submodules/baby_data/baby_data_card.dart';
 import 'submodules/maternity/maternity_card.dart';
 import 'submodules/pregnancy_history/pregnancy_history_card.dart';
@@ -23,6 +23,7 @@ class _GestationPageState extends State<GestationPage> with SingleTickerProvider
       color: AppTheme.secondaryColor,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 10),
         child: Column(
           spacing: 16,
           children: [
@@ -30,7 +31,7 @@ class _GestationPageState extends State<GestationPage> with SingleTickerProvider
             MaternityCard(),
             PrenatalAppointmentCard(list: ['20/12/2025', '22/12/2025', '23/12/2025', '24/12/2025']),
             BabyDataCard(list: ['Luan Henrique Cardoso', 'Fernanda Silva', 'Laura Santos']),
-            PregnancyHistoryCard(list: ['01/05/2023']),
+            PregnancyHistoryCard(list: ['01/05/2023', '01/05/2023']),
           ],
         ),
       ),

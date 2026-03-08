@@ -1,43 +1,49 @@
-import 'package:signals_flutter/signals_core.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
-import '../../../../../database/database.dart';
-import '../../../../../repositories/current_gestation/current_gestation_repository.dart';
+import '../../../../../model/current_pregnancy_data.dart';
+import '../../../../../repositories/current_gestation/current_gestation_repository_impl.dart';
 
-class CurrentGestationController {
-  final CurrentGestationRepository repository;
+part 'current_gestation_controller.g.dart';
 
-  CurrentGestationController(this.repository);
+class CurrentGestationController = CurrentGestationControllerBase with _$CurrentGestationController;
 
-  final _saved = signal<bool>(false);
-  bool get saved => _saved();
+abstract class CurrentGestationControllerBase with Store {
+  final CurrentGestationRepositoryImpl repository;
 
-  CurrentPregnancyData? _model;
-  CurrentPregnancyData? get model => _model;
+  @observable
+  bool saved = false;
 
+  @observable
+  CurrentPregnancyData? model;
+
+  CurrentGestationControllerBase(this.repository);
+
+  @action
   Future<void> initialize() async {
     final result = await repository.getGestation();
 
     switch (result) {
-      case Left():
+      case Error():
         Messages.showError('Erro ao pegar os dados da gravidez atual');
-      case Right(value: final current):
-        _model = current;
+      case Success():
+        model = result.success;
     }
 
-    _model ??= const CurrentPregnancyData(id: 0);
+    model ??= const CurrentPregnancyData(id: 0);
   }
 
+  @action
   Future<void> saveGestation(CurrentPregnancyData current) async {
-    final result = await repository.updateGestation(current);
+    final result = await repository.updateGestation(gestation: current);
 
     switch (result) {
-      case Left():
+      case Error():
         Messages.showError('Erro ao salvar os dados');
-      case Right(value: final updated):
-        _model = updated;
-        _saved.value = true;
+      case Success():
+        model = result.success;
+        saved = true;
     }
   }
 }

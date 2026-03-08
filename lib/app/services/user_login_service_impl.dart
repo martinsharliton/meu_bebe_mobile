@@ -7,11 +7,11 @@ import '../core/exceptions/auth_exception.dart';
 import '../core/exceptions/failure.dart';
 import '../core/fp/either.dart';
 import '../core/fp/unit.dart';
-import '../repositories/user/user_repository.dart';
+import '../repositories/user/user_repository_impl.dart';
 import 'user_login_service.dart';
 
 class UserLoginServiceImpl implements UserLoginService {
-  final UserRepository userRepository;
+  final UserRepositoryImpl userRepository;
 
   UserLoginServiceImpl({required this.userRepository});
 
@@ -28,8 +28,6 @@ class UserLoginServiceImpl implements UserLoginService {
         final sp = await SharedPreferences.getInstance();
         sp.setString(LocalStorageConstants.accessToken, accessToken);
         return Right(unit);
-      default:
-        return Left(Failure(message: 'Erro ao realizar login'));
     }
   }
 }

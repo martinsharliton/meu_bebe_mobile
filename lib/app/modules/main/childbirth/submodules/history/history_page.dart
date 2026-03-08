@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_core.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../../../../core/theme/app_theme.dart';
-import '../../../../../database/database.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
+import '../../../../../model/previous_pregnancy.dart';
 import '../../../widgets/base_card.dart';
 import 'history_controller.dart';
 import 'history_form_controller.dart';
@@ -26,12 +26,6 @@ class _HistoryPageState extends State<HistoryPage> with HistoryFormController {
     _controller.initialize().then((_) {
       initializeForm(_controller.model!);
     });
-
-    effect(() {
-      if (_controller.saved) {
-        Navigator.pop(context);
-      }
-    });
   }
 
   @override
@@ -42,7 +36,16 @@ class _HistoryPageState extends State<HistoryPage> with HistoryFormController {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar, body: _buildBody);
+    return Observer(
+      builder: (_) {
+        if (_controller.saved) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pop(context);
+          });
+        }
+        return Scaffold(appBar: _buildAppBar, body: _buildBody);
+      },
+    );
   }
 
   AppBar get _buildAppBar {

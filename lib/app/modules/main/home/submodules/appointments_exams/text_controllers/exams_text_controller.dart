@@ -3,9 +3,17 @@ import 'package:flutter/material.dart';
 import '../widgets/exams_page.dart';
 
 mixin ExamsTextController on State<ExamsPage> {
-  final nameEC = TextEditingController();
-  final dateEC = TextEditingController();
-  final descriptionEC = TextEditingController();
+  late final TextEditingController nameEC;
+  late final TextEditingController dateEC;
+  late final TextEditingController descriptionEC;
+
+  @override
+  void initState() {
+    super.initState();
+    nameEC = TextEditingController();
+    dateEC = TextEditingController();
+    descriptionEC = TextEditingController();
+  }
 
   void disposeControllers() {
     nameEC.dispose();

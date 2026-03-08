@@ -1,45 +1,51 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:signals_flutter/signals_core.dart';
+import 'package:mobx/mobx.dart';
+import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../../core/fp/either.dart';
 import '../../../../../core/helpers/messages.dart';
-import '../../../../../database/database.dart';
-import '../../../../../repositories/history/history_repository.dart';
+import '../../../../../model/previous_pregnancy.dart';
+import '../../../../../repositories/history/history_repository_impl.dart';
 
-class HistoryController {
-  final HistoryRepository repository;
+part 'history_controller.g.dart';
 
-  HistoryController(this.repository);
+class HistoryController = HistoryControllerBase with _$HistoryController;
 
-  final _saved = signal<bool>(false);
-  bool get saved => _saved();
+abstract class HistoryControllerBase with Store {
+  final HistoryRepositoryImpl repository;
 
-  PreviousPregnancy? _model;
-  PreviousPregnancy? get model => _model;
+  @observable
+  bool saved = false;
 
+  @observable
+  PreviousPregnancy? model;
+
+  HistoryControllerBase(this.repository);
+
+  @action
   Future<void> initialize() async {
     final result = await repository.getHistory();
 
     switch (result) {
-      case Left():
+      case Error():
         Messages.showError('Erro ao pegar dados de gravidez anteriores');
-      case Right(value: final history):
-        _model = history;
+      case Success():
+        model = result.success;
     }
 
-    _model ??= const PreviousPregnancy(id: 0);
+    model ??= const PreviousPregnancy(id: 0);
   }
 
+  @action
   Future<void> saveHistory(PreviousPregnancy history) async {
-    final result = await repository.updateHistory(history);
+    final result = await repository.updateHistory(history: history);
 
     switch (result) {
-      case Left():
+      case Error():
         Messages.showError('Erro ao salvar os dados');
-      case Right(value: final updated):
+      case Success():
         Messages.showSuccess('Dados salvos com sucesso');
-        _model = updated;
-        _saved.value = true;
+        model = result.success;
+        saved = true;
     }
   }
 }

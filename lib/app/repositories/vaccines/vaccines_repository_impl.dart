@@ -1,54 +1,60 @@
-import 'dart:developer';
+import 'package:multiple_result/multiple_result.dart';
+import 'package:sqflite/sqflite.dart';
 
-import 'package:drift/drift.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import '../../core/fp/failure.dart';
+import '../../database/database_sqlite.dart';
+import '../../model/vaccine_data.dart';
 
-import '../../core/exceptions/failure.dart';
-import '../../core/fp/either.dart';
-import '../../database/database.dart';
-import 'vaccines_repository.dart';
+class VaccinesRepositoryImpl {
+  static final VaccinesRepositoryImpl _instance = VaccinesRepositoryImpl._internal();
+  VaccinesRepositoryImpl._internal();
+  factory VaccinesRepositoryImpl() => _instance;
 
-class VaccinesRepositoryImpl implements VaccinesRepository {
-  final db = Modular.get<Database>();
-
-  @override
-  Future<Either<Failure, List<VaccineData>>> getVaccines() async {
+  Future<Result<List<VaccineData>, Failure>> getVaccines() async {
     try {
-      final vaccines = await db.select(db.vaccine).get();
-      return Right(vaccines);
-    } catch (e) {
-      log(e.toString());
-      return Left(Failure(message: e.toString()));
+      final db = await DB.instance.database;
+      final List<Map<String, dynamic>> maps = await db.query('vaccine');
+
+      final vaccines = maps.map((map) => VaccineData.fromMap(map)).toList();
+      return Success(vaccines);
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao buscar vacinas: $error'));
     }
   }
 
-  @override
-  Future<Either<Failure, List<VaccineData>>> saveVaccine(VaccineData vaccine) async {
+  Future<Result<VaccineData, Failure>> saveVaccine({required VaccineData vaccine}) async {
     try {
-      await db
-          .into(db.vaccine)
-          .insert(VaccineCompanion(id: Value(vaccine.id), name: Value(vaccine.name), used: Value(vaccine.used)));
+      final db = await DB.instance.database;
 
-      final vaccines = await db.select(db.vaccine).get();
-      return Right(vaccines);
-    } catch (e) {
-      log(e.toString());
-      return Left(Failure());
+      if (vaccine.id == 0) {
+        // Inserir nova vacina
+        final id = await db.insert('vaccine', vaccine.toMap());
+        return Success(vaccine.copyWith(id: id));
+      } else {
+        // Atualizar vacina existente
+        await db.update(
+          'vaccine',
+          vaccine.toMap(),
+          where: 'id = ?',
+          whereArgs: [vaccine.id],
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+        return Success(vaccine);
+      }
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao salvar vacina: $error'));
     }
   }
 
-  @override
-  Future<Either<Failure, List<VaccineData>>> updateVaccine(VaccineData vaccine) async {
+  Future<Result<bool, Failure>> deleteVaccine({required int id}) async {
     try {
-      await (db.update(db.vaccine)..where((v) => v.id.equals(vaccine.id))).write(
-        VaccineCompanion(name: Value(vaccine.name), used: Value(vaccine.used)),
-      );
+      final db = await DB.instance.database;
 
-      final vaccines = await db.select(db.vaccine).get();
-      return Right(vaccines);
-    } catch (e) {
-      log(e.toString());
-      return Left(Failure());
+      await db.delete('vaccine', where: 'id = ?', whereArgs: [id]);
+
+      return Success(true);
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao deletar vacina: $error'));
     }
   }
 }

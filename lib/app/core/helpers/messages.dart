@@ -8,9 +8,9 @@ class Messages {
       message: message,
       textAlign: TextAlign.justify,
       padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-      foregroundColor: const Color(0xFF721c24),
-      backgroundColor: const Color(0xFFf8d7da),
-      borderColor: const Color(0xFFf5c6cb),
+      foregroundColor: const Color(0xFFB42318),
+      backgroundColor: const Color(0xFFFEE4E2),
+      borderColor: const Color(0xFFFDA29B),
       duration: const Duration(seconds: 25),
       closeButton: true,
       fixed: fixed ?? false,
@@ -20,9 +20,9 @@ class Messages {
   static void showError(String message, {bool? fixed}) {
     _showSnackbarCustom(
       message: message,
-      foregroundColor: const Color(0xFF721c24),
-      backgroundColor: const Color(0xFFf8d7da),
-      borderColor: const Color(0xFFf5c6cb),
+      foregroundColor: const Color(0xFFB42318),
+      backgroundColor: const Color(0xFFFEE4E2),
+      borderColor: const Color(0xFFFDA29B),
       fixed: fixed ?? false,
     );
   }
@@ -30,9 +30,9 @@ class Messages {
   static void showWarning(String message, {bool? fixed}) {
     _showSnackbarCustom(
       message: message,
-      foregroundColor: const Color(0xFF856404),
-      backgroundColor: const Color(0xFFfff3cd),
-      borderColor: const Color(0xFFffeeba),
+      foregroundColor: const Color(0xFFB54708),
+      backgroundColor: const Color(0xFFFEF0C7),
+      borderColor: const Color(0xFFFEC84B),
       fixed: fixed ?? false,
     );
   }
@@ -40,9 +40,9 @@ class Messages {
   static void showInfo(String message, {bool? fixed}) {
     _showSnackbarCustom(
       message: message,
-      foregroundColor: const Color(0xFF0c5460),
-      backgroundColor: const Color(0xFFd1ecf1),
-      borderColor: const Color(0xFFbee5eb),
+      foregroundColor: const Color(0xFF175CD3),
+      backgroundColor: const Color(0xFFE0EAFF),
+      borderColor: const Color(0xFF84ADFF),
       fixed: fixed ?? false,
     );
   }
@@ -50,9 +50,9 @@ class Messages {
   static void showSuccess(String message, {bool? fixed}) {
     _showSnackbarCustom(
       message: message,
-      foregroundColor: const Color(0xFF155724),
-      backgroundColor: const Color(0xFFd4edda),
-      borderColor: const Color(0xFFc3e6cb),
+      foregroundColor: const Color(0xFF067647),
+      backgroundColor: const Color(0xFFD1FADF),
+      borderColor: const Color(0xFF6CE9A6),
       fixed: fixed ?? false,
     );
   }
@@ -71,13 +71,13 @@ class Messages {
     final messenger = messengerKey.currentState;
     if (messenger == null) return;
 
-    messenger.removeCurrentSnackBar();
+    //messenger.removeCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
         dismissDirection: DismissDirection.horizontal,
         elevation: 5,
         behavior: fixed ? SnackBarBehavior.fixed : SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
         duration: duration,
         backgroundColor: backgroundColor,
         content: Padding(
@@ -100,11 +100,7 @@ class Messages {
                   onTap: () => messenger.hideCurrentSnackBar(),
                   child: Text(
                     'Fechar',
-                    style: TextStyle(
-                      color: foregroundColor,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 13,
-                    ),
+                    style: TextStyle(color: foregroundColor, fontWeight: FontWeight.w800, fontSize: 13),
                   ),
                 ),
               ),

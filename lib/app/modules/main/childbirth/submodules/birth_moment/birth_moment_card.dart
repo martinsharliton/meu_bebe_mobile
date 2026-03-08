@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_theme.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
 import '../../../widgets/base_card.dart';
 import '../../../widgets/custom_item_tile.dart';
 

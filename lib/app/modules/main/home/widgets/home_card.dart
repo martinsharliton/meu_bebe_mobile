@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_theme.dart';
+import '../../../../core/ui/theme/app_theme.dart';
 
 class HomeCard extends StatelessWidget {
   final IconData icon;
@@ -23,7 +23,7 @@ class HomeCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(icon, size: 40, color: AppTheme.darkTextColor),
+            Icon(icon, size: 26, color: AppTheme.darkTextColor),
             Text(title, style: AppTheme.subTitleStyle),
           ],
         ),

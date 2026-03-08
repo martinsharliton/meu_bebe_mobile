@@ -9,14 +9,13 @@ import '../../core/fp/either.dart';
 import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final DioForNative restClient;
-
-  UserRepositoryImpl({required this.restClient});
+  final DioForNative client;
+  UserRepositoryImpl({required this.client});
 
   @override
   Future<Either<AuthException, String>> login(String email, String password) async {
     try {
-      final Response(data: {'access_token': accessToken}) = await restClient.post(
+      final Response(data: {'access_token': accessToken}) = await client.post(
         '/auth',
         data: {'email': email, 'password': password},
       );

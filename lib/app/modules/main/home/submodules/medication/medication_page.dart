@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_flutter.dart';
 
-import '../../../../../core/theme/app_theme.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
 import 'medication_controller.dart';
 import 'widgets/medication_dialog.dart';
 import 'widgets/medicine_card.dart';
@@ -23,11 +23,9 @@ class _MedicationPageState extends State<MedicationPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      effect(() {
-        if (controller.updated == true) {
-          controller.resetUpdated();
-        }
-      });
+      if (controller.updated) {
+        controller.resetUpdated();
+      }
     });
   }
 
@@ -45,15 +43,13 @@ class _MedicationPageState extends State<MedicationPage> {
     );
   }
 
-  AppBar get _buildAppBar => AppBar(
-    title: const Text('Meus Medicamentos', style: AppTheme.titleSmallStyle),
-    centerTitle: true,
-  );
+  AppBar get _buildAppBar =>
+      AppBar(title: const Text('Meus Medicamentos', style: AppTheme.titleSmallStyle), centerTitle: true);
 
   Widget get _buildBody => Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-    child: Watch(
-      (_) => Visibility(
+    child: Observer(
+      builder: (_) => Visibility(
         visible: !controller.updated,
         child: Column(
           children: [
@@ -66,10 +62,10 @@ class _MedicationPageState extends State<MedicationPage> {
               ),
             ),
             const SizedBox(height: 16),
-            controller.medication.isNotEmpty
+            controller.medications.isNotEmpty
                 ? Expanded(
                     child: ListView(
-                      children: controller.medication
+                      children: controller.medications
                           .map(
                             (medication) => MedicineCard(
                               name: medication.name,
@@ -84,11 +80,7 @@ class _MedicationPageState extends State<MedicationPage> {
                     ),
                   )
                 : const Expanded(
-                    child: SizedBox(
-                      child: Center(
-                        child: Text('Não foram encontrados medicamentos'),
-                      ),
-                    ),
+                    child: SizedBox(child: Center(child: Text('Não foram encontrados medicamentos'))),
                   ),
           ],
         ),

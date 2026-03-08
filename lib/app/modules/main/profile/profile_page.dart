@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_flutter.dart';
 
 import '../../../app_module.dart';
 import '../../../core/extensions/size_extension.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/ui/theme/app_theme.dart';
 import '../main_controller.dart';
 import 'widgets/tile_button.dart';
 
@@ -28,8 +28,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void dispose() {
-    // 🔥 se o controller NÃO for singleton, pode forçar descarte aqui também:
-    // controller.dispose();
     super.dispose();
   }
 
@@ -39,83 +37,108 @@ class _ProfilePageState extends State<ProfilePage> {
       future: controller.initialize(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Watch((_) {
-            if (!mounted) return const SizedBox.shrink();
+          return Observer(
+            builder: (context) {
+              final name = controller.name;
+              final firstLetter = name.isNotEmpty ? name[0].toUpperCase() : '';
 
-            final name = controller.name;
-            final firstLetter = name.isNotEmpty ? name[0].toUpperCase() : '';
-
-            return ListView(
-              children: [
-                Column(
+              return Container(
+                width: context.screenWidth,
+                color: AppTheme.secondaryColor,
+                child: ListView(
                   children: [
-                    InkWell(
-                      onTap: _abrirDadosPerfil,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(height: 100, width: context.screenWidth, color: Colors.white70),
-                          Positioned(
-                            bottom: -40,
-                            child: Stack(
-                              alignment: Alignment.bottomRight,
-                              children: [
-                                InkWell(
-                                  onTap: _abrirDadosPerfil,
-                                  child: CircleAvatar(
-                                    radius: 55,
-                                    backgroundColor: Colors.white,
-                                    child: CircleAvatar(
-                                      radius: 51,
-                                      child: Text(
-                                        firstLetter,
-                                        style: const TextStyle(
-                                          fontSize: 50,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                    Column(
+                      children: [
+                        /// HEADER
+                        Container(height: 100, width: context.screenWidth, color: AppTheme.primaryColor),
+
+                        /// AVATAR
+                        Transform.translate(
+                          offset: const Offset(0, -50),
+                          child: CircleAvatar(
+                            radius: 55,
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                              radius: 51,
+                              child: Text(
+                                firstLetter,
+                                style: const TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        /// NAME
+                        Text(
+                          name.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 28, color: Colors.black, fontWeight: FontWeight.w600),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.08),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 10),
                                 ),
-                                Positioned(
-                                  bottom: 4,
-                                  right: 4,
-                                  child: CircleAvatar(
-                                    radius: 14,
-                                    backgroundColor: AppTheme.textColor, // 🔵 cor de fundo do botão
-                                    child: const Icon(
-                                      Icons.edit,
-                                      size: 14,
-                                      color: Colors.white, // ⚪ ícone branco
-                                    ),
-                                  ),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                TileButton(
+                                  icon: Icons.person,
+                                  iconColor: AppTheme.darkTextColor,
+                                  text: 'Meus Dados',
+                                  onTap: _abrirDadosPerfil,
+                                ),
+
+                                const Divider(height: 1),
+
+                                TileButton(
+                                  icon: Icons.notifications,
+                                  iconColor: AppTheme.darkTextColor,
+                                  text: 'Notificações',
+                                  onTap: () {},
+                                ),
+
+                                const Divider(height: 1),
+
+                                TileButton(
+                                  icon: Icons.settings,
+                                  iconColor: AppTheme.darkTextColor,
+                                  text: 'Configurações',
+                                  onTap: () {},
+                                ),
+                                const Divider(height: 1),
+
+                                TileButton(
+                                  icon: Icons.logout,
+                                  iconColor: AppTheme.darkTextColor,
+                                  text: 'Sair',
+                                  onTap: () {
+                                    Modular.to.navigate(routeLogin);
+                                  },
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 65, left: 15, right: 15),
-                      child: Text(
-                        name,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: TileButton(icon: Icons.notifications, text: 'Notificações', onTap: () {}),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            );
-          });
+              );
+            },
+          );
         }
 
         return const Center(child: CircularProgressIndicator());

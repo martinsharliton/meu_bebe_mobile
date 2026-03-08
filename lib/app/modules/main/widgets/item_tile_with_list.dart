@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/extensions/size_extension.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/ui/theme/app_theme.dart';
 
 class ItemTileWithList extends StatelessWidget {
   const ItemTileWithList({super.key, required this.title, required this.list});

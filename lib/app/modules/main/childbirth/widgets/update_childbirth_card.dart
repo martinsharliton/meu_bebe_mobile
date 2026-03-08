@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../app_module.dart';
-import '../../../../core/theme/app_theme.dart';
+import '../../../../core/ui/theme/app_theme.dart';
 import '../../widgets/base_card.dart';
 
 class UpdateChildbirthCard extends StatelessWidget {

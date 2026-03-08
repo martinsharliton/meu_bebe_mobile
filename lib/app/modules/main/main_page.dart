@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_flutter.dart';
 
-import '../../core/theme/app_theme.dart';
+import '../../core/ui/theme/app_theme.dart';
 import 'childbirth/childbirth_page.dart';
 import 'gestation/gestation_page.dart';
 import 'home/home_page.dart';
@@ -20,16 +20,15 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final controller = Modular.get<MainController>();
 
-  List<Widget> get _tabs => [
-    const Tab(icon: Icon(CupertinoIcons.house_fill, size: 32), text: 'Home'),
-    const Tab(icon: Icon(CupertinoIcons.heart_fill, size: 32), text: 'Gestação'),
-    const Tab(icon: Icon(CupertinoIcons.doc_text_fill, size: 32), text: 'Parto'),
-    const Tab(icon: Icon(Icons.person_rounded, size: 40), text: 'Perfil'),
+  List<Tab> get _tabs => [
+    const Tab(icon: Icon(CupertinoIcons.home, size: 26), text: 'Home'),
+    const Tab(icon: Icon(CupertinoIcons.heart, size: 26), text: 'Gestação'),
+    const Tab(icon: Icon(CupertinoIcons.doc_text, size: 26), text: 'Parto'),
+    const Tab(icon: Icon(Icons.person_outline_rounded, size: 28), text: 'Perfil'),
   ];
 
-  String nome = 'Home';
   List<String> get nomes {
-    return _tabs.whereType<Tab>().map((tab) => tab.text ?? '').toList();
+    return _tabs.map((tab) => tab.text ?? '').toList();
   }
 
   @override
@@ -43,30 +42,26 @@ class _MainPageState extends State<MainPage> {
       length: _tabs.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Watch((_) {
-            return Text(controller.tabName(), style: AppTheme.titleStyle);
-          }),
+          title: Observer(builder: (context) => Text(controller.tabName, style: AppTheme.titleStyle)),
         ),
         body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
           children: const [HomePage(), GestationPage(), ChildbirthPage(), ProfilePage()],
         ),
         bottomNavigationBar: SafeArea(
-          child: Container(
-            height: 72,
-            decoration: BoxDecoration(
-              color: AppTheme.primaryColor,
-              boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.5), offset: const Offset(0, -1), blurRadius: 4),
-              ],
-            ),
+          child: SizedBox(
             child: TabBar(
-              labelColor: AppTheme.textColor,
+              labelColor: AppTheme.darkTextColor,
               onTap: (value) {
                 controller.setTabName(nomes[value]);
               },
+              indicator: const BoxDecoration(
+                border: Border(top: BorderSide(width: 2.5, color: AppTheme.darkTextColor)),
+              ),
               indicatorSize: TabBarIndicatorSize.tab,
-              unselectedLabelColor: AppTheme.darkTextColor,
+              indicatorColor: AppTheme.darkTextColor,
+              labelStyle: const TextStyle(fontWeight: FontWeight.w600),
+              unselectedLabelColor: AppTheme.darkTextColor.withValues(alpha: .5),
               tabAlignment: TabAlignment.fill,
               tabs: _tabs,
             ),

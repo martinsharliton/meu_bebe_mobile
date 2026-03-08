@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/extensions/size_extension.dart';
 import '../../core/helpers/messages.dart';
-import '../../core/theme/app_theme.dart';
+import '../../core/ui/theme/app_theme.dart';
+import '../../core/ui/widgets/stepper_header/stepper_header.dart';
+import 'widgets/item_tab_page/item_tab_page.dart';
 
 class FormularioPage extends StatefulWidget {
   const FormularioPage({super.key});
@@ -108,119 +110,83 @@ class FormularioPageState extends State<FormularioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Formulário')),
+      appBar: AppBar(
+        title: Text('Formulário', style: TextStyle(color: AppTheme.darkTextColor)),
+        centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: InkWell(
+            child: StepperHeader(
+              currentStep: _currentStep,
+              stepTitles: ['Educação', 'Trabalho', 'Saneamento', 'Saúde', 'Habitação', 'Alimentação'],
+            ),
+          ),
+        ),
+      ),
       body: Form(
         key: _formKey,
         child: Column(
           children: [
-            // Stepper horizontal personalizado
-            Container(
-              height: 80,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(6, (index) {
-                    final isActive = index == _currentStep;
-                    final isCompleted = index < _currentStep;
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12), // espaçamento entre passos
-                      child: InkWell(
-                        onTap: () {
-                          setState(() => _currentStep = index);
-                        },
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                color: isCompleted
-                                    ? AppTheme.textColor
-                                    : isActive
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.grey.shade300,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: isActive ? Theme.of(context).primaryColor : Colors.grey.shade400,
-                                ),
-                              ),
-                              child: isCompleted ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _getStepTitle(index),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: isActive ? Theme.of(context).primaryColor : Colors.black54,
-                                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ),
-            ),
-
-            const Divider(height: 1, thickness: 1),
-
-            // Conteúdo do passo atual
+            // Conteúdo das páginas
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: const BoxDecoration(
-                  //color: context.colors.background,
                   image: DecorationImage(
                     opacity: .05,
                     fit: BoxFit.contain,
-                    image: AssetImage('assets/images/logo_app.png'),
+                    image: AssetImage('assets/images/mother.png'),
                   ),
                 ),
-                child: SingleChildScrollView(padding: const EdgeInsets.all(16), child: _buildCurrentStepContent()),
+                child: _buildCurrentStepContent(),
               ),
             ),
 
             // Botões de navegação
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                spacing: 20,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  if (_currentStep > 0)
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => setState(() => _currentStep--),
-                        child: const Text('Voltar'),
+            Container(
+              color: AppTheme.secondaryColor.withValues(alpha: .3),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16.0, right: 16, left: 16, bottom: 20),
+                child: Row(
+                  spacing: 20,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    if (_currentStep > 0)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => setState(() => _currentStep--),
+                          icon: Icon(Icons.navigate_before),
+                          label: const Text('Voltar'),
+                        ),
                       ),
-                    ),
-                  if (_currentStep < 5)
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          //if (_formKey.currentState!.validate()) {
-                          setState(() => _currentStep++);
-                          //}
-                        },
-                        child: const Text('Próximo'),
+                    if (_currentStep < 5)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            //if (_formKey.currentState!.validate()) {
+                            setState(() => _currentStep++);
+                            //}
+                          },
+                          icon: Icon(Icons.navigate_next),
+                          iconAlignment: .end,
+                          label: const Text('Próximo'),
+                        ),
                       ),
-                    ),
-                  if (_currentStep == 5)
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _submitForm();
-                        }
-                      },
-                      child: const Text('Enviar'),
-                    ),
-                ],
+                    if (_currentStep == 5)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _submitForm();
+                            }
+                          },
+                          iconAlignment: .end,
+                          icon: Icon(Icons.check_circle),
+                          label: const Text('Enviar'),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -229,37 +195,29 @@ class FormularioPageState extends State<FormularioPage> {
     );
   }
 
-  String _getStepTitle(int index) {
-    final titles = ['Educação', 'Trabalho', 'Saneamento', 'Saúde', 'Habitação', 'Alimentação'];
-    return titles[index];
-  }
-
   Widget _buildCurrentStepContent() {
     switch (_currentStep) {
       case 0:
-        return _educacaoStep();
+        return educacaoPage();
       case 1:
-        return _trabalhoStep();
+        return trabalhoPage();
       case 2:
-        return _saneamentoStep();
+        return saneamentoPage();
       case 3:
-        return _saudeStep();
+        return saudePage();
       case 4:
-        return _habitacaoStep();
+        return habitacaoPage();
       case 5:
-        return _alimentacaoStep();
+        return alimentacaoPage();
       default:
-        return Container();
+        return SizedBox.shrink();
     }
   }
 
-  Widget _educacaoStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  ItemTabPage educacaoPage() {
+    return ItemTabPage(
+      title: 'Educação',
       children: [
-        _buildSectionTitle('Educação'),
-        const SizedBox(height: 16),
-
         // Dados básicos de escolaridade
         SwitchListTile(
           title: const Text('Está estudando atualmente?'),
@@ -331,13 +289,10 @@ class FormularioPageState extends State<FormularioPage> {
     );
   }
 
-  Widget _trabalhoStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  ItemTabPage trabalhoPage() {
+    return ItemTabPage(
+      title: 'Trabalho e Renda',
       children: [
-        _buildSectionTitle('Trabalho e Renda'),
-        const SizedBox(height: 16),
-
         // Situação atual de trabalho
         SwitchListTile(
           title: const Text('Você está trabalhando atualmente?'),
@@ -471,13 +426,10 @@ class FormularioPageState extends State<FormularioPage> {
     );
   }
 
-  Widget _saneamentoStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  ItemTabPage saneamentoPage() {
+    return ItemTabPage(
+      title: 'Saneamento Básico',
       children: [
-        _buildSectionTitle('Saneamento Básico'),
-        const SizedBox(height: 16),
-
         // Fonte de água (Dropdown)
         DropdownButtonFormField<String>(
           decoration: const InputDecoration(
@@ -584,13 +536,10 @@ class FormularioPageState extends State<FormularioPage> {
     );
   }
 
-  Widget _saudeStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  ItemTabPage saudePage() {
+    return ItemTabPage(
+      title: 'Saúde',
       children: [
-        _buildSectionTitle('Saúde'),
-        const SizedBox(height: 16),
-
         // Tipo de moradia (Dropdown)
         DropdownButtonFormField<String>(
           decoration: const InputDecoration(labelText: 'Há uma UBS próxima da sua casa?', border: OutlineInputBorder()),
@@ -724,13 +673,10 @@ class FormularioPageState extends State<FormularioPage> {
     );
   }
 
-  Widget _habitacaoStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  ItemTabPage habitacaoPage() {
+    return ItemTabPage(
+      title: 'Habitação',
       children: [
-        _buildSectionTitle('Habitação'),
-        const SizedBox(height: 16),
-
         // Tipo de moradia (Dropdown)
         DropdownButtonFormField<String>(
           decoration: const InputDecoration(
@@ -842,14 +788,10 @@ class FormularioPageState extends State<FormularioPage> {
     );
   }
 
-  Widget _alimentacaoStep() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  ItemTabPage alimentacaoPage() {
+    return ItemTabPage(
+      title: 'Alimentação',
       children: [
-        _buildSectionTitle('Alimentação'),
-        const SizedBox(height: 16),
-
-        // Número de refeições (Radio)
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -859,26 +801,18 @@ class FormularioPageState extends State<FormularioPage> {
             ),
             Column(
               children: [
-                RadioGroup(
+                RadioGroup<int>(
                   groupValue: refeicoesPorDia,
-                  onChanged: (val) {
-                    setState(() => refeicoesPorDia = val ?? 0);
+                  onChanged: (value) {
+                    setState(() => refeicoesPorDia = value ?? 0);
                   },
-                  child: Text('1-2 refeições'),
-                ),
-                RadioGroup(
-                  groupValue: refeicoesPorDia,
-                  onChanged: (val) {
-                    setState(() => refeicoesPorDia = val ?? 0);
-                  },
-                  child: Text('3 refeições'),
-                ),
-                RadioGroup(
-                  groupValue: refeicoesPorDia,
-                  onChanged: (val) {
-                    setState(() => refeicoesPorDia = val ?? 0);
-                  },
-                  child: Text('4 ou mais refeições'),
+                  child: Column(
+                    children: const [
+                      RadioListTile(value: 1, title: Text('1-2 refeições')),
+                      RadioListTile(value: 2, title: Text('3 refeições')),
+                      RadioListTile(value: 3, title: Text('4 ou mais refeições')),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -1008,13 +942,6 @@ class FormularioPageState extends State<FormularioPage> {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
-    );
-  }
-
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       Messages.showSuccess('Formulário enviado com sucesso!');
@@ -1028,22 +955,19 @@ class FormularioPageState extends State<FormularioPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Resumo do Formulário'),
-        content: SingleChildScrollView(
-          child: SizedBox(
-            width: context.screenWidth,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildSummaryItem('Escolaridade', escolaridade),
-                _buildSummaryItem('Estuda atualmente', estuda ? 'Sim' : 'Não'),
-                _buildSummaryItem('Profissão', profissao),
-                _buildSummaryItem('Empregado', empregado ? 'Sim' : 'Não'),
-                _buildSummaryItem('Fonte de água', fonteAgua),
-                _buildSummaryItem('Tipo de moradia', tipoMoradia),
-                _buildSummaryItem('Refeições por dia', refeicoesPorDia.toString()),
-              ],
-            ),
+        content: SizedBox(
+          width: context.screenWidth,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              _buildSummaryItem('Escolaridade', escolaridade),
+              _buildSummaryItem('Estuda atualmente', estuda ? 'Sim' : 'Não'),
+              _buildSummaryItem('Profissão', profissao),
+              _buildSummaryItem('Empregado', empregado ? 'Sim' : 'Não'),
+              _buildSummaryItem('Fonte de água', fonteAgua),
+              _buildSummaryItem('Tipo de moradia', tipoMoradia),
+              _buildSummaryItem('Refeições por dia', refeicoesPorDia.toString()),
+            ],
           ),
         ),
         actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK'))],
@@ -1056,13 +980,16 @@ class FormularioPageState extends State<FormularioPage> {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: RichText(
         text: TextSpan(
-          style: DefaultTextStyle.of(context).style,
+          style: TextStyle(fontWeight: .normal, color: Colors.black, fontFamily: 'Cabin', fontSize: 20),
           children: [
             TextSpan(
               text: '$label: ',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.black, fontFamily: 'Cabin'),
             ),
-            TextSpan(text: value.isNotEmpty ? value : 'Não informado'),
+            TextSpan(
+              text: value.isNotEmpty ? value : 'Não informado',
+              style: TextStyle(fontWeight: .normal, color: Colors.black, fontFamily: 'Cabin'),
+            ),
           ],
         ),
       ),

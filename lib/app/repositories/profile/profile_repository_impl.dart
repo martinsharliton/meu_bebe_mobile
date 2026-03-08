@@ -1,66 +1,85 @@
-import 'dart:developer';
+import 'package:multiple_result/multiple_result.dart';
+import 'package:sqflite/sqflite.dart';
 
-import 'package:drift/drift.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import '../../core/fp/failure.dart';
+import '../../database/database_sqlite.dart';
+import '../../model/user_data.dart';
 
-import '../../core/exceptions/failure.dart';
-import '../../core/fp/either.dart';
-import '../../database/database.dart';
-import 'profile_repository.dart';
+class ProfileRepositoryImpl {
+  static final ProfileRepositoryImpl _instance = ProfileRepositoryImpl._internal();
+  ProfileRepositoryImpl._internal();
+  factory ProfileRepositoryImpl() => _instance;
 
-class ProfileRepositoryImpl implements ProfileRepository {
-  final db = Modular.get<Database>();
-
-  @override
-  Future<Either<Failure, UserData>> getUser() async {
+  Future<Result<UserData?, Failure>> getUser() async {
     try {
-      final user = await (db.select(db.user)..where((p) => p.id.equals(1))).getSingle();
-      return Right(user);
-    } catch (e) {
-      return Left(Failure());
-    }
-  }
+      final db = await DB.instance.database;
+      final List<Map<String, dynamic>> maps = await db.query('user', limit: 1);
 
-  @override
-  Future<Either<Failure, UserData>> saveUser(UserData user) async {
-    try {
-      await db
-          .into(db.user)
-          .insert(
-            UserCompanion(
-              id: const Value(1),
-              education: Value(user.education),
-              maritalStatus: Value(user.maritalStatus),
-              email: Value(user.email),
-              familyIncome: Value(user.familyIncome),
-            ),
-          );
-      final saved = await (db.select(db.user)..where((p) => p.id.equals(1))).getSingle();
-      return Right(saved);
-    } catch (e) {
-      log(e.toString());
-      return Left(Failure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, UserData>> updateUser(UserData user) async {
-    try {
-      await (db.update(db.user)..where((p) => p.id.equals(1))).write(
-        UserCompanion(
-          education: Value(user.education),
-          maritalStatus: Value(user.maritalStatus),
-          email: Value(user.email),
-          familyIncome: Value(user.familyIncome),
-        ),
-      );
-      final updated = await (db.select(db.user)..where((p) => p.id.equals(1))).getSingle();
-      return Right(updated);
-    } catch (e) {
-      if (e.toString().contains('No element')) {
-        return saveUser(user);
+      if (maps.isEmpty) {
+        return Success(null);
       }
-      return Left(Failure());
+
+      final user = UserData.fromMap(maps.first);
+      return Success(user);
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao buscar dados do usuário: $error'));
     }
+  }
+
+  Future<Result<UserData, Failure>> saveUser({required UserData user}) async {
+    try {
+      final db = await DB.instance.database;
+
+      // 1. Verifica se já existe algum usuário cadastrado
+      final existing = await db.query('user', where: 'id = ?', whereArgs: [user.id], limit: 1);
+
+      if (user.id == 0) {
+        if (existing.isNotEmpty) {
+          // Já existe usuário -> atualizar o existente
+          final existingUser = UserData.fromMap(existing.first);
+
+          final updatedUser = user.copyWith(id: existingUser.id);
+
+          await db.update(
+            'user',
+            updatedUser.toMap(),
+            where: 'id = ?',
+            whereArgs: [existingUser.id],
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+
+          return Success(updatedUser);
+        } else {
+          // Não existe -> criar novo
+          final id = await db.insert('user', user.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+
+          return Success(user.copyWith(id: id));
+        }
+      }
+
+      // 2. Se user.id != 0, tentamos atualizar
+      final affected = await db.update(
+        'user',
+        user.toMap(),
+        where: 'id = ?',
+        whereArgs: [user.id],
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      if (affected == 0) {
+        // Não existia -> criar novo
+        final id = await db.insert('user', user.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+        return Success(user.copyWith(id: id));
+      }
+
+      // Atualização deu certo
+      return Success(user);
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao salvar dados do usuário: $error'));
+    }
+  }
+
+  Future<Result<UserData, Failure>> updateUser({required UserData user}) async {
+    return saveUser(user: user);
   }
 }

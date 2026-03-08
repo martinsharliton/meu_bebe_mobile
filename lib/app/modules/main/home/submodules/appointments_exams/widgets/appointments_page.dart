@@ -1,12 +1,12 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:signals_flutter/signals_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../../../../core/extensions/size_extension.dart';
-import '../../../../../../core/theme/app_theme.dart';
-import '../../../../../../database/database.dart';
+import '../../../../../../core/ui/theme/app_theme.dart';
+import '../../../../../../model/appointment.dart';
 import '../appointments_exams_controller.dart';
 import '../text_controllers/appointments_text_controller.dart';
 import 'card_with_date.dart';
@@ -28,11 +28,9 @@ class _AppointmentsPageState extends State<AppointmentsPage> with AppointmentsTe
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      effect(() {
-        if (_controller.updated == true) {
-          _controller.resetUpdated();
-        }
-      });
+      if (_controller.updated) {
+        _controller.resetUpdated();
+      }
     });
   }
 
@@ -46,8 +44,8 @@ class _AppointmentsPageState extends State<AppointmentsPage> with AppointmentsTe
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      child: Watch(
-        (_) => Visibility(
+      child: Observer(
+        builder: (_) => Visibility(
           visible: !_controller.updated,
           child: Column(
             children: [

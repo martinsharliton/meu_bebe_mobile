@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../database/database.dart';
+import '../../../../../model/pregnant_data.dart';
+import '../../../../../model/user_data.dart';
 import 'profile_data_page.dart';
 
 mixin ProfileFormController on State<ProfileDataPage> {
@@ -14,6 +15,11 @@ mixin ProfileFormController on State<ProfileDataPage> {
   final maritalStatusEC = TextEditingController();
   final incomeEC = TextEditingController();
   final educationEC = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void disposeControllers() {
     nameEC.dispose();
@@ -32,13 +38,13 @@ mixin ProfileFormController on State<ProfileDataPage> {
     if (pregnant != null) {
       nameEC.text = pregnant.name;
       socialNameEC.text = pregnant.socialName ?? '';
-      birthdayEC.text = pregnant.birthDate.toString();
-      cpfEC.text = pregnant.cpf;
-      nationalHealthCardEC.text = pregnant.nationalHealthCardNumber ?? '';
-      prenatalPlaceEC.text = pregnant.preNatalPlace ?? '';
+      birthdayEC.text = pregnant.birthDate ?? '';
+      cpfEC.text = pregnant.cpf ?? '';
+      nationalHealthCardEC.text = pregnant.nationalHealthCard ?? '';
+      prenatalPlaceEC.text = pregnant.prenatalPlace ?? '';
     }
     if (profile != null) {
-      emailEC.text = profile.email;
+      emailEC.text = profile.email ?? '';
     }
   }
 }

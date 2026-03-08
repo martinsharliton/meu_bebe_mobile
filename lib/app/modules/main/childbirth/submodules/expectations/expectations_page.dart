@@ -1,12 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_flutter.dart';
 
-import '../../../../../core/theme/app_theme.dart';
-import '../../../../../database/database.dart';
-import '../../../../../model/birth_plan/expectations_model.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
+import '../../../../../model/expectation.dart';
 import '../../../widgets/base_card.dart';
 import 'expectations_controller.dart';
 import 'expectations_form_controller.dart';
@@ -18,8 +17,7 @@ class ExpectationsPage extends StatefulWidget {
   State<ExpectationsPage> createState() => _ExpectationsPageState();
 }
 
-class _ExpectationsPageState extends State<ExpectationsPage>
-    with ExpectationsFormController {
+class _ExpectationsPageState extends State<ExpectationsPage> with ExpectationsFormController {
   final formKey = GlobalKey<FormState>();
   final _controller = Modular.get<ExpectationsController>();
 
@@ -32,17 +30,9 @@ class _ExpectationsPageState extends State<ExpectationsPage>
     _controller.initialize().then((_) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          setState(() {
-            initializeForm(_controller.expectation);
-          });
+          initializeForm(_controller.expectations);
         }
       });
-    });
-
-    effect(() {
-      if (_controller.saved) {
-        Modular.to.pop();
-      }
     });
   }
 
@@ -54,17 +44,20 @@ class _ExpectationsPageState extends State<ExpectationsPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar, body: _buildBody);
+    return Observer(
+      builder: (_) {
+        if (_controller.saved) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Modular.to.pop();
+          });
+        }
+        return Scaffold(appBar: _buildAppBar, body: _buildBody);
+      },
+    );
   }
 
   AppBar get _buildAppBar {
-    return AppBar(
-      title: const Text(
-        'Expectativas para o Parto',
-        style: AppTheme.titleSmallStyle,
-      ),
-      centerTitle: true,
-    );
+    return AppBar(title: const Text('Expectativas para o Parto', style: AppTheme.titleSmallStyle), centerTitle: true);
   }
 
   Widget get _buildBody {
@@ -76,30 +69,18 @@ class _ExpectationsPageState extends State<ExpectationsPage>
             key: formKey,
             child: Column(
               children: [
-                const Text(
-                  'Você gostaria de ...',
-                  style: AppTheme.titleSmallStyle,
-                ),
+                const Text('Você gostaria de ...', style: AppTheme.titleSmallStyle),
                 const SizedBox(height: 16),
                 const Text('Ter um acompanhante?', style: AppTheme.textStyle),
                 _customTabBar(companionEC),
                 const SizedBox(height: 10),
-                const Text(
-                  'Raspar os pelos íntimos?',
-                  style: AppTheme.textStyle,
-                ),
+                const Text('Raspar os pelos íntimos?', style: AppTheme.textStyle),
                 _customTabBar(shaveIntimateHairEC),
                 const SizedBox(height: 10),
-                const Text(
-                  'Fazer lavagem intestinal?',
-                  style: AppTheme.textStyle,
-                ),
+                const Text('Fazer lavagem intestinal?', style: AppTheme.textStyle),
                 _customTabBar(bowelWashOrSuppositoryEC),
                 const SizedBox(height: 10),
-                const Text(
-                  'Ter um ambiente com pouca luminosidade?',
-                  style: AppTheme.textStyle,
-                ),
+                const Text('Ter um ambiente com pouca luminosidade?', style: AppTheme.textStyle),
                 _customTabBar(lowLightEnvironmentEC),
                 const SizedBox(height: 10),
                 const Text('Ouvir música?', style: AppTheme.textStyle),
@@ -108,10 +89,7 @@ class _ExpectationsPageState extends State<ExpectationsPage>
                 const Text('Beber líquidos', style: AppTheme.textStyle),
                 _customTabBar(drinkLiquidsEC),
                 const SizedBox(height: 10),
-                const Text(
-                  'Registar com fotos ou filmagens?',
-                  style: AppTheme.textStyle,
-                ),
+                const Text('Registar com fotos ou filmagens?', style: AppTheme.textStyle),
                 _customTabBar(recordPhotosOrVideosEC),
                 const SizedBox(height: 16),
                 _saveButton(),
@@ -126,11 +104,7 @@ class _ExpectationsPageState extends State<ExpectationsPage>
   Widget _customTabBar(TextEditingController controllerEC) {
     log('Controlador: ${controllerEC.text}');
     return Row(
-      children: [
-        _tab('Sim', 0, controllerEC),
-        _tab('Não', 1, controllerEC),
-        _tab('Não sei', 2, controllerEC),
-      ],
+      children: [_tab('Sim', 0, controllerEC), _tab('Não', 1, controllerEC), _tab('Não sei', 2, controllerEC)],
     );
   }
 
@@ -142,9 +116,7 @@ class _ExpectationsPageState extends State<ExpectationsPage>
           decoration: BoxDecoration(
             borderRadius: _getBorderRadius(index),
             border: Border.all(color: AppTheme.darkTextColor),
-            color: controllerEC.text == index.toString()
-                ? AppTheme.secondaryColor
-                : null,
+            color: controllerEC.text == index.toString() ? AppTheme.secondaryColor : null,
           ),
           child: Center(child: Text(content)),
         ),
@@ -160,17 +132,11 @@ class _ExpectationsPageState extends State<ExpectationsPage>
   BorderRadiusGeometry? _getBorderRadius(int index) {
     switch (index) {
       case 0:
-        return const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          bottomLeft: Radius.circular(16),
-        );
+        return const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16));
       case 1:
         return null;
       case 2:
-        return const BorderRadius.only(
-          topRight: Radius.circular(16),
-          bottomRight: Radius.circular(16),
-        );
+        return const BorderRadius.only(topRight: Radius.circular(16), bottomRight: Radius.circular(16));
     }
 
     return null;
@@ -190,18 +156,12 @@ class _ExpectationsPageState extends State<ExpectationsPage>
               Expectation(
                 id: 1,
                 companion: Alternatives.values[int.parse(companionEC.text)],
-                shaveIntimateHair:
-                    Alternatives.values[int.parse(shaveIntimateHairEC.text)],
-                bowelWashOrSuppository: Alternatives
-                    .values[int.parse(bowelWashOrSuppositoryEC.text)],
-                lowLightEnvironment:
-                    Alternatives.values[int.parse(lowLightEnvironmentEC.text)],
-                listenToMusic:
-                    Alternatives.values[int.parse(listenToMusicEC.text)],
-                drinkLiquids:
-                    Alternatives.values[int.parse(drinkLiquidsEC.text)],
-                recordPhotosOrVideos:
-                    Alternatives.values[int.parse(recordPhotosOrVideosEC.text)],
+                shaveIntimateHair: Alternatives.values[int.parse(shaveIntimateHairEC.text)],
+                bowelWashOrSuppository: Alternatives.values[int.parse(bowelWashOrSuppositoryEC.text)],
+                lowLightEnvironment: Alternatives.values[int.parse(lowLightEnvironmentEC.text)],
+                listenToMusic: Alternatives.values[int.parse(listenToMusicEC.text)],
+                drinkLiquids: Alternatives.values[int.parse(drinkLiquidsEC.text)],
+                recordPhotosOrVideos: Alternatives.values[int.parse(recordPhotosOrVideosEC.text)],
               ),
             );
           }

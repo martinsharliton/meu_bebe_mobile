@@ -1,71 +1,50 @@
-import 'dart:developer';
+import 'package:multiple_result/multiple_result.dart';
+import 'package:sqflite/sqflite.dart';
 
-import 'package:drift/drift.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import '../../core/fp/failure.dart';
+import '../../database/database_sqlite.dart';
+import '../../model/expectation.dart';
 
-import '../../core/exceptions/failure.dart';
-import '../../core/fp/either.dart';
-import '../../database/database.dart';
-import 'expectations_repository.dart';
+class ExpectationsRepositoryImpl {
+  static final ExpectationsRepositoryImpl _instance = ExpectationsRepositoryImpl._internal();
+  ExpectationsRepositoryImpl._internal();
+  factory ExpectationsRepositoryImpl() => _instance;
 
-class ExpectationsRepositoryImpl implements ExpectationsRepository {
-  final db = Modular.get<Database>();
-
-  @override
-  Future<Either<Failure, Expectation>> getExpectations() async {
+  Future<Result<Expectation?, Failure>> getExpectations() async {
     try {
-      final expectations = await (db.select(db.expectations)..where((p) => p.id.equals(1))).getSingle();
-      return Right(expectations);
-    } catch (e) {
-      return Left(Failure());
-    }
-  }
+      final db = await DB.instance.database;
+      final List<Map<String, dynamic>> maps = await db.query('expectation', limit: 1);
 
-  @override
-  Future<Either<Failure, Expectation>> saveExpectations(Expectation expectations) async {
-    try {
-      await db
-          .into(db.expectations)
-          .insert(
-            ExpectationsCompanion(
-              companion: Value(expectations.companion),
-              shaveIntimateHair: Value(expectations.shaveIntimateHair),
-              bowelWashOrSuppository: Value(expectations.bowelWashOrSuppository),
-              lowLightEnvironment: Value(expectations.lowLightEnvironment),
-              listenToMusic: Value(expectations.listenToMusic),
-              drinkLiquids: Value(expectations.drinkLiquids),
-              recordPhotosOrVideos: Value(expectations.recordPhotosOrVideos),
-            ),
-          );
-      final saved = await (db.select(db.expectations)..where((p) => p.id.equals(1))).getSingle();
-      return Right(saved);
-    } catch (e) {
-      log(e.toString());
-      return Left(Failure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, Expectation>> updateExpectations(Expectation expectations) async {
-    try {
-      await (db.update(db.expectations)..where((p) => p.id.equals(1))).write(
-        ExpectationsCompanion(
-          companion: Value(expectations.companion),
-          shaveIntimateHair: Value(expectations.shaveIntimateHair),
-          bowelWashOrSuppository: Value(expectations.bowelWashOrSuppository),
-          lowLightEnvironment: Value(expectations.lowLightEnvironment),
-          listenToMusic: Value(expectations.listenToMusic),
-          drinkLiquids: Value(expectations.drinkLiquids),
-          recordPhotosOrVideos: Value(expectations.recordPhotosOrVideos),
-        ),
-      );
-      final updated = await (db.select(db.expectations)..where((p) => p.id.equals(1))).getSingle();
-      return Right(updated);
-    } catch (e) {
-      if (e.toString().contains('No element')) {
-        return saveExpectations(expectations);
+      if (maps.isEmpty) {
+        return Success(null);
       }
-      return Left(Failure());
+
+      final expectation = Expectation.fromMap(maps.first);
+      return Success(expectation);
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao buscar expectativas: $error'));
     }
+  }
+
+  Future<Result<Expectation, Failure>> saveExpectations({required Expectation expectation}) async {
+    try {
+      final db = await DB.instance.database;
+
+      if (expectation.id == 0) {
+        // Inserir nova expectativa
+        final id = await db.insert('expectation', expectation.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+        return Success(expectation.copyWith(id: id));
+      } else {
+        // Atualizar expectativa existente
+        await db.update('expectation', expectation.toMap(), where: 'id = ?', whereArgs: [expectation.id]);
+        return Success(expectation);
+      }
+    } catch (error) {
+      return Error(CustomMessageError.getMessage('Erro ao salvar expectativas: $error'));
+    }
+  }
+
+  Future<Result<Expectation, Failure>> updateExpectations({required Expectation expectation}) async {
+    return saveExpectations(expectation: expectation);
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import 'core/global_context.dart';
 import 'core/helpers/messages.dart';
-import 'core/theme/app_theme.dart';
+import 'core/ui/theme/app_theme.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({super.key});

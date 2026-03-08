@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../../../../core/theme/app_theme.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
 import '../birth_expectations/birth_expectations_card.dart';
 import '../birth_moment/birth_moment_card.dart';
 import '../current_gestation/widgets/current_gestation_card.dart';
@@ -26,13 +26,11 @@ class _ChildbirthResumePageState extends State<ChildbirthResumePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      effect(() async {
-        if (_controller.updated == true) {
-          await _controller.initialize().then(
-            (value) => _controller.setUpdated(false),
-          );
-        }
-      });
+      if (_controller.updated) {
+        await _controller.initialize().then(
+          (value) => _controller.setUpdated(false),
+        );
+      }
     });
   }
 
@@ -56,8 +54,8 @@ class _ChildbirthResumePageState extends State<ChildbirthResumePage> {
       future: _controller.initialize(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Watch(
-            (_) => Visibility(
+          return Observer(
+            builder: (_) => Visibility(
               visible: !_controller.updated,
               replacement: const Center(child: CircularProgressIndicator()),
               child: Container(

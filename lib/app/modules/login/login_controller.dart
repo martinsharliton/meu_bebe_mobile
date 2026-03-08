@@ -1,25 +1,31 @@
 // ignore_for_file: unreachable_switch_default
 
-import 'package:signals_flutter/signals_core.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../core/exceptions/failure.dart';
 import '../../core/fp/either.dart';
 import '../../core/helpers/messages.dart';
 import '../../services/user_login_service.dart';
 
-class LoginController {
+part 'login_controller.g.dart';
+
+class LoginController = LoginControllerBase with _$LoginController;
+
+abstract class LoginControllerBase with Store {
   final UserLoginService loginService;
 
-  LoginController(this.loginService);
+  @observable
+  bool obscurePassword = true;
 
-  final _obscurePassword = signal(true);
-  final _logged = signal(false);
+  @observable
+  bool logged = false;
 
-  bool get obscurePassword => _obscurePassword();
-  bool get logged => _logged();
+  @action
+  void passwordToggle() => obscurePassword = !obscurePassword;
 
-  void passwordToggle() => _obscurePassword.value = !_obscurePassword.value;
+  LoginControllerBase(this.loginService);
 
+  @action
   Future<void> login(String email, String password) async {
     final loginResult = await loginService.execute(email, password);
 
@@ -27,14 +33,15 @@ class LoginController {
       case Left(value: Failure(:final message)):
         Messages.showError(message);
       case Right(value: _):
-        _logged.value = true;
+        logged = true;
       default:
         Messages.showError('Erro ao realizar login');
     }
   }
 
+  @action
   void debug() {
-    _logged.value = true;
+    logged = true;
   }
 
   void forgotMyPassword() {

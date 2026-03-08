@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/theme/app_theme.dart';
-import '../../../../../../database/database.dart';
-import '../../../../../../model/birth_plan/expectations_model.dart';
+import '../../../../../../core/ui/theme/app_theme.dart';
+import '../../../../../../model/expectation.dart';
 import '../../../../widgets/base_card.dart';
 import '../../../../widgets/custom_item_tile.dart';
 
@@ -21,11 +20,7 @@ class ExpectationsCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              CustomItemTile(
-                flex: 1,
-                title: 'Acompanhante',
-                content: _getData(expectations!.companion),
-              ),
+              CustomItemTile(flex: 1, title: 'Acompanhante', content: _getData(expectations!.companion)),
               const SizedBox(width: 10),
               CustomItemTile(
                 flex: 1,
@@ -55,17 +50,9 @@ class ExpectationsCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              CustomItemTile(
-                flex: 1,
-                title: 'Música',
-                content: _getData(expectations!.listenToMusic),
-              ),
+              CustomItemTile(flex: 1, title: 'Música', content: _getData(expectations!.listenToMusic)),
               const SizedBox(width: 10),
-              CustomItemTile(
-                flex: 1,
-                title: 'Beber líquidos',
-                content: _getData(expectations!.drinkLiquids),
-              ),
+              CustomItemTile(flex: 1, title: 'Beber líquidos', content: _getData(expectations!.drinkLiquids)),
               const SizedBox(width: 10),
               CustomItemTile(
                 flex: 1,
@@ -78,10 +65,7 @@ class ExpectationsCard extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 48,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Editar'),
-            ),
+            child: ElevatedButton(onPressed: () {}, child: const Text('Editar')),
           ),
         ],
       ),

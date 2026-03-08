@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../../../core/theme/app_theme.dart';
+import '../../../../../../core/ui/theme/app_theme.dart';
 import '../profile_data_controller.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -28,12 +28,10 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: textController,
-      style: controller.formEnabled
-          ? null
-          : const TextStyle(color: AppTheme.textColor),
+      style: controller.formEnabled ? null : const TextStyle(color: AppTheme.textColor),
       enabled: controller.formEnabled,
       validator: validator,
-      decoration: InputDecoration(label: Text(label)),
+      decoration: InputDecoration(fillColor: AppTheme.primaryColor, label: Text(label)),
       keyboardType: keyboardType,
       textCapitalization: textCapitalization,
       inputFormatters: inputFormatters,

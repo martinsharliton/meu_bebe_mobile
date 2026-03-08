@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../database/database.dart';
+import '../../../../../model/birth_moment.dart';
 import 'birth_moment_page.dart';
 
 mixin BirthMomentFormController on State<BirthMomentPage> {
@@ -18,7 +18,7 @@ mixin BirthMomentFormController on State<BirthMomentPage> {
     otherPositionEC.dispose();
   }
 
-  void initializeForm(BirthMomentData birthMoment) {
+  void initializeForm(BirthMoment birthMoment) {
     birthWayEC.text = birthMoment.birthWay.index.toString();
     anesthesiaEC.text = birthMoment.anesthesia.index.toString();
     vaginalCutEC.text = birthMoment.vaginalCut.index.toString();

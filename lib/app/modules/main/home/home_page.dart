@@ -3,7 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../app_module.dart';
 import '../../../core/extensions/size_extension.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/ui/theme/app_theme.dart';
 import 'widgets/home_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final double spacing = 7.5;
+  final double spacing = 10;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +22,7 @@ class _HomePageState extends State<HomePage> {
       width: context.screenWidth,
       color: AppTheme.secondaryColor,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      child: Column(
-        spacing: spacing,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: ListView(
         children: [
           Row(
             spacing: spacing,
@@ -50,6 +47,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+          SizedBox(height: spacing),
           Row(
             spacing: spacing,
             children: [

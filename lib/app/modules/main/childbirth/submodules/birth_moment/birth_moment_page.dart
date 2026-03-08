@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:signals_flutter/signals_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../../../../core/theme/app_theme.dart';
+import '../../../../../core/ui/theme/app_theme.dart';
 import '../../../widgets/base_card.dart';
 import '../expectations/expectations_controller.dart';
 import 'birth_moment_form_controller.dart';
@@ -26,12 +26,6 @@ class _BirthMomentPageState extends State<BirthMomentPage>
   @override
   void initState() {
     super.initState();
-
-    effect(() {
-      if (_controller.saved) {
-        Navigator.pop(context);
-      }
-    });
   }
 
   @override
@@ -42,7 +36,16 @@ class _BirthMomentPageState extends State<BirthMomentPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar, body: _buildBody);
+    return Observer(
+      builder: (_) {
+        if (_controller.saved) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pop(context);
+          });
+        }
+        return Scaffold(appBar: _buildAppBar, body: _buildBody);
+      },
+    );
   }
 
   AppBar get _buildAppBar {
