@@ -2,7 +2,7 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../core/fp/failure.dart';
-import '../../database/database_sqlite.dart';
+import '../../database/database.dart';
 import '../../model/previous_pregnancy.dart';
 
 class HistoryRepositoryImpl {

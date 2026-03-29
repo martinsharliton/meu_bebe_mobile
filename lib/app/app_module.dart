@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import 'modules/core/core_module.dart';
 import 'modules/formulario/formulario_module.dart';
+import 'modules/inicializar_app/inicializar_app_module.dart';
 import 'modules/login/login_module.dart';
 import 'modules/main/childbirth/submodules/childbirth_resume/childbirth_resume_module.dart';
 import 'modules/main/childbirth/submodules/current_gestation/current_gestation_module.dart';
@@ -14,7 +15,6 @@ import 'modules/main/home/submodules/medication/medication_module.dart';
 import 'modules/main/home/submodules/vaccines/vaccines_module.dart';
 import 'modules/main/main_module.dart';
 import 'modules/main/profile/submodules/profile_data/profile_data_module.dart';
-import 'modules/splash/splash_module.dart';
 
 class AppModule extends Module {
   @override
@@ -22,7 +22,7 @@ class AppModule extends Module {
 
   @override
   void routes(r) {
-    r.module(Modular.initialRoute, module: SplashModule());
+    r.module(Modular.initialRoute, module: InicializarAppModule());
     r.module(routeLogin, module: LoginModule());
     r.module(routeForm, module: FormularioModule());
     r.module(routeTab, module: MainModule());

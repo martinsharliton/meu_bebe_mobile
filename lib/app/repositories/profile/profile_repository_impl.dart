@@ -2,7 +2,7 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../core/fp/failure.dart';
-import '../../database/database_sqlite.dart';
+import '../../database/database.dart';
 import '../../model/user_data.dart';
 
 class ProfileRepositoryImpl {

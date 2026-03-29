@@ -16,10 +16,10 @@ class AppointmentsExamsPage extends StatefulWidget {
 class _AppointmentsExamsPageState extends State<AppointmentsExamsPage> {
   final _controller = Modular.get<AppointmentsExamsController>();
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  List<Tab> get _tabs => [
+    Tab(icon: Icon(Icons.content_paste_search_outlined), text: 'Consultas'),
+    Tab(icon: Icon(Icons.local_hospital), text: 'Exames'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +28,10 @@ class _AppointmentsExamsPageState extends State<AppointmentsExamsPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return DefaultTabController(
-            length: 2,
+            length: _tabs.length,
             child: Scaffold(
               appBar: AppBar(
-                title: const Text(
-                  'Consultas e Exames',
-                  style: AppTheme.titleSmallStyle,
-                ),
+                title: const Text('Consultas e Exames', style: AppTheme.titleSmallStyle),
                 centerTitle: true,
               ),
               body: TabBarView(
@@ -46,14 +43,18 @@ class _AppointmentsExamsPageState extends State<AppointmentsExamsPage> {
               ),
               bottomNavigationBar: Container(
                 color: Colors.white,
-                child: const TabBar(
-                  tabs: [
-                    Tab(
-                      icon: Icon(Icons.content_paste_search_outlined),
-                      text: 'Consultas',
-                    ),
-                    Tab(icon: Icon(Icons.local_hospital), text: 'Exames'),
-                  ],
+                child: TabBar(
+                  tabs: _tabs,
+                  labelColor: AppTheme.darkTextColor,
+
+                  indicator: const BoxDecoration(
+                    border: Border(top: BorderSide(width: 2.5, color: AppTheme.darkTextColor)),
+                  ),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: AppTheme.darkTextColor,
+                  labelStyle: const TextStyle(fontWeight: FontWeight.w600),
+                  unselectedLabelColor: AppTheme.darkTextColor.withValues(alpha: .5),
+                  tabAlignment: TabAlignment.fill,
                 ),
               ),
             ),

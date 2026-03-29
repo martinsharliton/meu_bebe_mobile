@@ -141,54 +141,57 @@ class FormularioPageState extends State<FormularioPage> {
                 child: _buildCurrentStepContent(),
               ),
             ),
-
-            // Botões de navegação
-            Container(
-              color: AppTheme.secondaryColor.withValues(alpha: .3),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16.0, right: 16, left: 16, bottom: 20),
-                child: Row(
-                  spacing: 20,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    if (_currentStep > 0)
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () => setState(() => _currentStep--),
-                          icon: Icon(Icons.navigate_before),
-                          label: const Text('Voltar'),
-                        ),
-                      ),
-                    if (_currentStep < 5)
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            //if (_formKey.currentState!.validate()) {
-                            setState(() => _currentStep++);
-                            //}
-                          },
-                          icon: Icon(Icons.navigate_next),
-                          iconAlignment: .end,
-                          label: const Text('Próximo'),
-                        ),
-                      ),
-                    if (_currentStep == 5)
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _submitForm();
-                            }
-                          },
-                          iconAlignment: .end,
-                          icon: Icon(Icons.check_circle),
-                          label: const Text('Enviar'),
-                        ),
-                      ),
-                  ],
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          spacing: 20,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            if (_currentStep > 0)
+              Expanded(
+                child: SizedBox(
+                  height: 50,
+                  child: ElevatedButton.icon(
+                    onPressed: () => setState(() => _currentStep--),
+                    icon: Icon(Icons.navigate_before),
+                    label: const Text('Voltar'),
+                  ),
                 ),
               ),
-            ),
+            if (_currentStep < 5)
+              Expanded(
+                child: SizedBox(
+                  height: 50,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      //if (_formKey.currentState!.validate()) {
+                      setState(() => _currentStep++);
+                      //}
+                    },
+                    icon: Icon(Icons.navigate_next),
+                    iconAlignment: .end,
+                    label: const Text('Próximo'),
+                  ),
+                ),
+              ),
+            if (_currentStep == 5)
+              Expanded(
+                child: SizedBox(
+                  height: 50,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _submitForm();
+                      }
+                    },
+                    iconAlignment: .end,
+                    icon: Icon(Icons.check_circle),
+                    label: const Text('Enviar'),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -42,7 +42,7 @@ class LoginPageState extends State<LoginPage> {
   InputDecoration inputDecoration({required String label, required IconData icon, Widget? suffix}) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, color: AppTheme.darkTextColor),
+      prefixIcon: Icon(icon, color: AppTheme.darkTextColor, size: 20),
       suffixIcon: suffix,
       filled: true,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
@@ -63,9 +63,9 @@ class LoginPageState extends State<LoginPage> {
           backgroundColor: AppTheme.secondaryColor,
           body: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               child: Container(
-                padding: const EdgeInsets.all(28),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(28),
@@ -123,6 +123,7 @@ class LoginPageState extends State<LoginPage> {
                             onPressed: controller.passwordToggle,
                             icon: Observer(
                               builder: (_) => Icon(
+                                size: 20,
                                 controller.obscurePassword ? Icons.visibility : Icons.visibility_off,
                                 color: AppTheme.darkTextColor,
                               ),
@@ -146,7 +147,7 @@ class LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 15),
 
                       SizedBox(
-                        height: 52,
+                        height: 50,
                         child: ElevatedButton.icon(
                           icon: const Icon(Icons.login),
                           style: ElevatedButton.styleFrom(

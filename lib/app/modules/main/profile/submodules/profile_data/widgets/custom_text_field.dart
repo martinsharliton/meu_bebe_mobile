@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../../../../core/ui/theme/app_theme.dart';
 import '../profile_data_controller.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final ProfileDataController controller;
   final TextEditingController textController;
   final String label;
@@ -25,16 +26,24 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: textController,
-      style: controller.formEnabled ? null : const TextStyle(color: AppTheme.textColor),
-      enabled: controller.formEnabled,
-      validator: validator,
-      decoration: InputDecoration(fillColor: AppTheme.primaryColor, label: Text(label)),
-      keyboardType: keyboardType,
-      textCapitalization: textCapitalization,
-      inputFormatters: inputFormatters,
+    return Observer(
+      builder: (context) {
+        return TextFormField(
+          style: TextStyle(color: AppTheme.darkTextColor),
+          controller: widget.textController,
+          validator: widget.validator,
+          decoration: InputDecoration(fillColor: AppTheme.primaryColor, label: Text(widget.label)),
+          keyboardType: widget.keyboardType,
+          textCapitalization: widget.textCapitalization,
+          inputFormatters: widget.inputFormatters,
+        );
+      },
     );
   }
 }

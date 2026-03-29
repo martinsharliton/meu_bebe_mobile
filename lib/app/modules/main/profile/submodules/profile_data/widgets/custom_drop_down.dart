@@ -21,7 +21,6 @@ class CustomDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownMenu<int>(
       dropdownMenuEntries: _chooseDropList(type),
-      enabled: controller.formEnabled,
       initialSelection: int.tryParse(textController.text),
       expandedInsets: EdgeInsets.zero,
       textStyle: AppTheme.textStyle,

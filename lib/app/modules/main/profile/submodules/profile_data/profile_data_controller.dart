@@ -27,16 +27,25 @@ abstract class ProfileDataControllerBase with Store {
   UserData? user;
 
   @observable
-  bool formEnabled = false;
+  bool loading = true;
+
+  @observable
+  bool formEnabled = true;
 
   @action
   void setFormEnabled(bool enabled) {
     formEnabled = enabled;
   }
 
+  @action
   Future<void> initialize() async {
-    await getGestationElements();
-    await getUserElements();
+    try {
+      loading = true;
+
+      await Future.wait([getGestationElements(), getUserElements()]);
+    } finally {
+      loading = false;
+    }
   }
 
   @action
@@ -44,10 +53,11 @@ abstract class ProfileDataControllerBase with Store {
     final result = await gestationRepository.getPregnant();
 
     switch (result) {
-      case Error():
-        log('Falha ao buscar dados');
       case Success():
         pregnant = result.success;
+
+      case Error():
+        log('Falha ao buscar dados de gestação');
     }
   }
 
@@ -56,28 +66,28 @@ abstract class ProfileDataControllerBase with Store {
     final result = await profileRepository.getUser();
 
     switch (result) {
-      case Error():
-        log('Falha ao buscar dados');
       case Success():
         user = result.success;
+
+      case Error():
+        log('Falha ao buscar usuário');
     }
   }
 
   Future<bool> saveProfile(PregnantData pregnant, UserData user) async {
-    final hasSucessGestacion = await _saveGestation(pregnant);
-    final hasSucessUser = await _saveUser(user);
+    final results = await Future.wait([_saveGestation(pregnant), _saveUser(user)]);
 
-    log('G: $hasSucessGestacion');
-    log('U: $hasSucessUser');
+    final gestationSuccess = results[0];
+    final userSuccess = results[1];
 
-    if (hasSucessGestacion && hasSucessUser) {
+    if (gestationSuccess && userSuccess) {
       Messages.showSuccess('Dados salvos');
       Modular.to.pop();
       return true;
-    } else {
-      Messages.showError('Falha ao salvar os dados');
-      return false;
     }
+
+    Messages.showError('Falha ao salvar os dados');
+    return false;
   }
 
   Future<bool> _saveGestation(PregnantData pregnant) async {
@@ -87,6 +97,7 @@ abstract class ProfileDataControllerBase with Store {
       case Success():
         log('${result.success.name} salvo');
         return true;
+
       case Error():
         log(result.error.message);
         return false;
@@ -99,8 +110,8 @@ abstract class ProfileDataControllerBase with Store {
     switch (result) {
       case Success():
         log(result.success.name);
-
         return true;
+
       case Error():
         log(result.error.message);
         return false;

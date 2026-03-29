@@ -4,24 +4,24 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../app_module.dart';
 import '../../core/ui/theme/app_theme.dart';
 
-class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
+class InicializarAppPage extends StatefulWidget {
+  const InicializarAppPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  State<InicializarAppPage> createState() => _InicializarAppPageState();
 }
 
-class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _animation;
+class _InicializarAppPageState extends State<InicializarAppPage> with SingleTickerProviderStateMixin {
+  late final AnimationController controller;
+  late final Animation<double> animation;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
-    _controller.forward();
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    controller.forward();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(milliseconds: 2000));
@@ -31,7 +31,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -53,11 +53,10 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                /// Logo / Ilustração
                 FadeTransition(
-                  opacity: _animation,
+                  opacity: animation,
                   child: ScaleTransition(
-                    scale: _animation,
+                    scale: animation,
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -78,7 +77,6 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
                 const SizedBox(height: 20),
 
-                /// Loading
                 SizedBox(
                   width: 30,
                   height: 30,
@@ -90,7 +88,6 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
                 const SizedBox(height: 18),
 
-                /// Texto
                 Text(
                   'Preparando tudo para você...',
                   textAlign: TextAlign.center,

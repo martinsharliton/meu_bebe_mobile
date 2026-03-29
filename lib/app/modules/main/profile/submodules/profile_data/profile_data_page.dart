@@ -1,3 +1,5 @@
+// lib/modules/profile/ui/pages/profile_data_page.dart
+
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,17 +25,18 @@ class ProfileDataPage extends StatefulWidget {
 
 class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormController {
   late final ProfileDataController controller;
-  late final GlobalKey<FormState> formKey;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    formKey = GlobalKey<FormState>();
     controller = Modular.get<ProfileDataController>();
+    _init();
+  }
 
-    controller.initialize().then((_) {
-      initializeForm(controller.pregnant, controller.user);
-    });
+  Future<void> _init() async {
+    await controller.initialize();
+    initializeForm(controller.pregnant, controller.user);
   }
 
   @override
@@ -47,67 +50,90 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        elevation: 0,
         title: Observer(
-          builder: (_) {
-            return Text(controller.formEnabled ? 'Alterar Dados' : 'Meus Dados', style: AppTheme.titleSmallStyle);
-          },
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              width: context.screenWidth,
-              alignment: Alignment.topCenter,
-              color: AppTheme.secondaryColor,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                      child: SingleChildScrollView(
-                        child: Form(
-                          key: formKey,
-                          child: Column(
-                            spacing: 12.5,
-                            children: [
-                              _nameField(),
-                              _socialNameField(),
-                              _birthDateField(),
-                              _cpfField(),
-                              _emailField(),
-                              _cnsField(),
-                              _prenatalPlaceField(),
-                              _maritalStatusField(),
-                              _educationField(),
-                              _incomeField(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Observer(
-                    builder: (context) {
-                      return Container(
-                        color: AppTheme.secondaryColor,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-                          child: controller.formEnabled ? _saveButton() : _editButton(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+          builder: (_) => AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: Text(
+              controller.formEnabled ? 'Alterar Dados' : 'Meus Dados',
+              key: ValueKey(controller.formEnabled),
+              style: AppTheme.titleSmallStyle,
             ),
           ),
+        ),
+      ),
+      body: Observer(
+        builder: (_) {
+          if (controller.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return _body();
+        },
+      ),
+    );
+  }
+
+  Widget _body() {
+    return Container(
+      width: context.screenWidth,
+      color: AppTheme.secondaryColor,
+      child: Column(
+        children: [
+          Expanded(child: _form()),
+          _bottomButton(),
         ],
       ),
     );
   }
 
+  Widget _form() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      child: SingleChildScrollView(
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              _nameField(),
+              const SizedBox(height: 12),
+              _socialNameField(),
+              const SizedBox(height: 12),
+              _birthDateField(),
+              const SizedBox(height: 12),
+              _cpfField(),
+              const SizedBox(height: 12),
+              _emailField(),
+              const SizedBox(height: 12),
+              _cnsField(),
+              const SizedBox(height: 12),
+              _prenatalPlaceField(),
+              const SizedBox(height: 12),
+              _maritalStatusField(),
+              const SizedBox(height: 12),
+              _educationField(),
+              const SizedBox(height: 12),
+              _incomeField(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _bottomButton() {
+    return Observer(
+      builder: (_) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+          color: AppTheme.secondaryColor,
+          child: controller.formEnabled ? _saveButton() : _editButton(),
+        );
+      },
+    );
+  }
+
   // -------- Fields ----------
+
   Widget _nameField() => CustomTextField(
     controller: controller,
     textController: nameEC,
@@ -127,7 +153,7 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
     controller: controller,
     textController: birthdayEC,
     label: 'Data de nascimento',
-    validator: Validatorless.required('Data de nascimento obrigatória'),
+    validator: Validatorless.required('Data obrigatória'),
     keyboardType: TextInputType.datetime,
     inputFormatters: [FilteringTextInputFormatter.digitsOnly, DataInputFormatter()],
   );
@@ -147,7 +173,7 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
     label: 'E-mail',
     validator: Validatorless.multiple([
       Validatorless.required('E-mail obrigatório'),
-      Validatorless.email('O conteúdo não é um e-mail'),
+      Validatorless.email('E-mail inválido'),
     ]),
     keyboardType: TextInputType.emailAddress,
   );
@@ -172,10 +198,12 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
       CustomDropDown(label: 'Renda familiar', textController: incomeEC, type: 2, controller: controller);
 
   // -------- Buttons ----------
+
   SizedBox _saveButton() => _actionButton(
     label: 'Salvar',
     onPressed: () async {
       FocusScope.of(context).unfocus();
+
       final valid = formKey.currentState?.validate() ?? false;
       if (!valid) return;
 
@@ -208,8 +236,12 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
   SizedBox _actionButton({required String label, required VoidCallback onPressed}) {
     return SizedBox(
       width: double.infinity,
-      height: 48,
-      child: ElevatedButton(onPressed: onPressed, child: Text(label)),
+      height: 52,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
+        onPressed: onPressed,
+        child: Text(label),
+      ),
     );
   }
 }
