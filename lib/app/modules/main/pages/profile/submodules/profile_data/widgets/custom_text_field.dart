@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../../../../../core/ui/theme/styles/colors_app.dart';
 import '../profile_data_controller.dart';
@@ -34,18 +33,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    return Observer(
-      builder: (context) {
-        return TextFormField(
-          style: TextStyle(color: colors.darkText),
-          controller: widget.textController,
-          validator: widget.validator,
-          decoration: InputDecoration(fillColor: colors.primary, label: Text(widget.label)),
-          keyboardType: widget.keyboardType,
-          textCapitalization: widget.textCapitalization,
-          inputFormatters: widget.inputFormatters,
-        );
-      },
+    return TextFormField(
+      style: TextStyle(color: colors.darkText),
+      controller: widget.textController,
+      validator: widget.validator,
+      decoration: InputDecoration(fillColor: colors.primary, label: Text(widget.label)),
+      keyboardType: widget.keyboardType,
+      textCapitalization: widget.textCapitalization,
+      inputFormatters: widget.inputFormatters,
     );
   }
 }

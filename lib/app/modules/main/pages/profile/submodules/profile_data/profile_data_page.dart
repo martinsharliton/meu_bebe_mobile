@@ -74,22 +74,16 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
           return Container(
             width: context.screenWidth,
             color: colors.secondary,
-            child: Column(
-              children: [
-                Expanded(child: _form()),
-                Observer(
-                  builder: (_) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-                      color: colors.secondary,
-                      child: controller.formEnabled ? _saveButton() : _editButton(),
-                    );
-                  },
-                ),
-              ],
-            ),
+            child: ListView(children: [_form()]),
           );
         },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Observer(
+          builder: (_) {
+            return controller.formEnabled ? _saveButton() : _editButton();
+          },
+        ),
       ),
     );
   }
@@ -230,7 +224,7 @@ class _ProfileDataPageState extends State<ProfileDataPage> with ProfileFormContr
   SizedBox _actionButton({required String label, required VoidCallback onPressed}) {
     return SizedBox(
       width: double.infinity,
-      height: 52,
+      height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
         onPressed: onPressed,
