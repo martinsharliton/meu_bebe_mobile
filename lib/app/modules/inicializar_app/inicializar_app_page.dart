@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../app_module.dart';
-import '../../core/ui/theme/app_theme.dart';
+import '../../core/ui/theme/styles/colors_app.dart';
 
 class InicializarAppPage extends StatefulWidget {
   const InicializarAppPage({super.key});
@@ -37,14 +37,16 @@ class _InicializarAppPageState extends State<InicializarAppPage> with SingleTick
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: colors.primary,
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppTheme.primaryColor, AppTheme.primaryColor.withValues(alpha: 0.85)],
+              colors: [colors.primary, colors.primary.withValues(alpha: 0.85)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -81,8 +83,8 @@ class _InicializarAppPageState extends State<InicializarAppPage> with SingleTick
                   width: 30,
                   height: 30,
                   child: CircularProgressIndicator.adaptive(
-                    backgroundColor: AppTheme.secondaryColor,
-                    valueColor: AlwaysStoppedAnimation(AppTheme.darkTextColor),
+                    backgroundColor: colors.secondary,
+                    valueColor: AlwaysStoppedAnimation(colors.darkText),
                   ),
                 ),
 
@@ -91,14 +93,14 @@ class _InicializarAppPageState extends State<InicializarAppPage> with SingleTick
                 Text(
                   'Preparando tudo para você...',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: AppTheme.darkTextColor),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: colors.darkText),
                 ),
 
                 const SizedBox(height: 6),
 
                 Text(
                   'Carregando informações do bebê',
-                  style: TextStyle(fontSize: 14, color: AppTheme.darkTextColor.withValues(alpha: 0.85)),
+                  style: TextStyle(fontSize: 14, color: colors.darkText.withValues(alpha: 0.85)),
                 ),
               ],
             ),

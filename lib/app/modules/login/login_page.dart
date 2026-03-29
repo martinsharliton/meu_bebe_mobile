@@ -7,7 +7,8 @@ import 'package:validatorless/validatorless.dart';
 
 import '../../app_module.dart';
 import '../../core/helpers/messages.dart';
-import '../../core/ui/theme/app_theme.dart';
+import '../../core/ui/theme/styles/colors_app.dart';
+import '../../core/ui/theme/styles/text_styles.dart';
 import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,10 +19,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  late final LoginController controller;
+
   late final GlobalKey<FormState> formKey;
   late final TextEditingController emailTEC;
   late final TextEditingController passwordTEC;
-  late final LoginController controller;
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class LoginPageState extends State<LoginPage> {
   InputDecoration inputDecoration({required String label, required IconData icon, Widget? suffix}) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, color: AppTheme.darkTextColor, size: 20),
+      prefixIcon: Icon(icon, color: ColorsApp.instance.darkText, size: 20),
       suffixIcon: suffix,
       filled: true,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
@@ -51,6 +53,9 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textStyles = context.textStyles;
+
     return Observer(
       builder: (_) {
         if (controller.logged) {
@@ -60,7 +65,7 @@ class LoginPageState extends State<LoginPage> {
         }
 
         return Scaffold(
-          backgroundColor: AppTheme.secondaryColor,
+          backgroundColor: colors.secondary,
           body: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
@@ -84,13 +89,13 @@ class LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 10),
                           Text(
                             'Bem-vinda',
-                            style: AppTheme.titleStyle.copyWith(fontSize: 26),
+                            style: textStyles.titleStyle.copyWith(fontSize: 26),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 5),
                           Text(
                             'Cuide dos momentos do seu bebê',
-                            style: TextStyle(color: AppTheme.darkTextColor.withValues(alpha: 0.7), fontSize: 14),
+                            style: TextStyle(color: colors.darkText.withValues(alpha: 0.7), fontSize: 14),
                           ),
                         ],
                       ),
@@ -99,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
 
                       TextFormField(
                         controller: emailTEC,
-                        style: TextStyle(color: AppTheme.darkTextColor),
+                        style: TextStyle(color: colors.darkText),
                         onTapOutside: (_) => FocusScope.of(context).unfocus(),
                         validator: Validatorless.multiple([
                           Validatorless.required('E-mail obrigatório'),
@@ -115,7 +120,7 @@ class LoginPageState extends State<LoginPage> {
                         obscureText: controller.obscurePassword,
                         onTapOutside: (_) => FocusScope.of(context).unfocus(),
                         validator: Validatorless.required('Senha obrigatória'),
-                        style: TextStyle(color: AppTheme.darkTextColor),
+                        style: TextStyle(color: colors.darkText),
                         decoration: inputDecoration(
                           label: 'Senha',
                           icon: Icons.lock_outline,
@@ -125,7 +130,7 @@ class LoginPageState extends State<LoginPage> {
                               builder: (_) => Icon(
                                 size: 20,
                                 controller.obscurePassword ? Icons.visibility : Icons.visibility_off,
-                                color: AppTheme.darkTextColor,
+                                color: colors.darkText,
                               ),
                             ),
                           ),
@@ -151,7 +156,7 @@ class LoginPageState extends State<LoginPage> {
                         child: ElevatedButton.icon(
                           icon: const Icon(Icons.login),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.titleStyle.color,
+                            backgroundColor: colors.darkText,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                           ),
                           onPressed: () {
@@ -172,7 +177,7 @@ class LoginPageState extends State<LoginPage> {
                           const Expanded(child: Divider()),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text('ou', style: TextStyle(color: AppTheme.darkTextColor.withValues(alpha: 0.6))),
+                            child: Text('ou', style: TextStyle(color: colors.darkText.withValues(alpha: 0.6))),
                           ),
                           const Expanded(child: Divider()),
                         ],

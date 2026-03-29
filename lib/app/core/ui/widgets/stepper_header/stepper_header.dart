@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_theme.dart';
+import '../../theme/styles/colors_app.dart';
 
 class StepperHeader extends StatelessWidget {
   final int currentStep;
@@ -9,6 +9,8 @@ class StepperHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Row(
       spacing: 5,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -18,7 +20,7 @@ class StepperHeader extends StatelessWidget {
           spacing: 5,
           children: [
             CircleAvatar(
-              backgroundColor: isActive ? AppTheme.darkTextColor : Colors.grey.shade500,
+              backgroundColor: isActive ? colors.darkText : Colors.grey.shade500,
               radius: 12,
               child: Text('${index + 1}', style: const TextStyle(fontSize: 12, color: Colors.white)),
             ),
@@ -26,7 +28,7 @@ class StepperHeader extends StatelessWidget {
               stepTitles[index],
               style: TextStyle(
                 fontWeight: .w600,
-                color: isActive ? AppTheme.darkTextColor : Colors.grey.shade500,
+                color: isActive ? colors.darkText : Colors.grey.shade500,
                 fontSize: 12,
               ),
             ),

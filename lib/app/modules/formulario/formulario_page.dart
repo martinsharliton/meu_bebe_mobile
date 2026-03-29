@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../core/extensions/size_extension.dart';
 import '../../core/helpers/messages.dart';
-import '../../core/ui/theme/app_theme.dart';
 import '../../core/ui/widgets/stepper_header/stepper_header.dart';
 import 'widgets/item_tab_page/item_tab_page.dart';
 
@@ -111,7 +110,7 @@ class FormularioPageState extends State<FormularioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formulário', style: TextStyle(color: AppTheme.darkTextColor)),
+        title: Text('Formulário'),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),

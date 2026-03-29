@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/ui/theme/app_theme.dart';
+import '../../../core/ui/theme/styles/colors_app.dart';
+import '../../../core/ui/theme/styles/text_styles.dart';
 
 class CustomItemTile extends StatelessWidget {
-  const CustomItemTile({
-    super.key,
-    required this.flex,
-    required this.title,
-    required this.content,
-  });
+  const CustomItemTile({super.key, required this.flex, required this.title, required this.content});
 
   final int flex;
   final String title;
@@ -16,6 +12,9 @@ class CustomItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textStyles = context.textStyles;
+
     return Flexible(
       fit: FlexFit.tight,
       flex: flex,
@@ -23,26 +22,14 @@ class CustomItemTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: AppTheme.subTitleStyle.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Text(title, style: textStyles.subTitleStyle.copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
           Container(
             width: double.infinity,
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: AppTheme.secondaryColor,
-              borderRadius: BorderRadius.circular(7),
-            ),
-            child: Text(
-              content,
-              style: AppTheme.textStyle.copyWith(fontWeight: FontWeight.w500),
-            ),
+            decoration: BoxDecoration(color: colors.secondary, borderRadius: BorderRadius.circular(7)),
+            child: Text(content, style: textStyles.textStyle.copyWith(fontWeight: FontWeight.w500)),
           ),
         ],
       ),

@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../core/ui/theme/app_theme.dart';
-import 'childbirth/childbirth_page.dart';
-import 'gestation/gestation_page.dart';
-import 'home/home_page.dart';
 import 'main_controller.dart';
-import 'profile/profile_page.dart';
+import 'pages/childbirth/childbirth_page.dart';
+import 'pages/gestation/gestation_page.dart';
+import 'pages/home/home_page.dart';
+import 'pages/profile/profile_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -41,30 +40,17 @@ class _MainPageState extends State<MainPage> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        appBar: AppBar(
-          title: Observer(builder: (context) => Text(controller.tabName, style: AppTheme.titleStyle)),
-        ),
+        appBar: AppBar(title: Observer(builder: (context) => Text(controller.tabName))),
         body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
           children: const [HomePage(), GestationPage(), ChildbirthPage(), ProfilePage()],
         ),
         bottomNavigationBar: SafeArea(
-          child: SizedBox(
-            child: TabBar(
-              labelColor: AppTheme.darkTextColor,
-              onTap: (value) {
-                controller.setTabName(nomes[value]);
-              },
-              indicator: const BoxDecoration(
-                border: Border(top: BorderSide(width: 2.5, color: AppTheme.darkTextColor)),
-              ),
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: AppTheme.darkTextColor,
-              labelStyle: const TextStyle(fontWeight: FontWeight.w600),
-              unselectedLabelColor: AppTheme.darkTextColor.withValues(alpha: .5),
-              tabAlignment: TabAlignment.fill,
-              tabs: _tabs,
-            ),
+          child: TabBar(
+            onTap: (value) {
+              controller.setTabName(nomes[value]);
+            },
+            tabs: _tabs,
           ),
         ),
       ),

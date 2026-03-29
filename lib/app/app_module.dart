@@ -4,17 +4,17 @@ import 'modules/core/core_module.dart';
 import 'modules/formulario/formulario_module.dart';
 import 'modules/inicializar_app/inicializar_app_module.dart';
 import 'modules/login/login_module.dart';
-import 'modules/main/childbirth/submodules/childbirth_resume/childbirth_resume_module.dart';
-import 'modules/main/childbirth/submodules/current_gestation/current_gestation_module.dart';
-import 'modules/main/childbirth/submodules/expectations/expectations_module.dart';
-import 'modules/main/childbirth/submodules/history/history_module.dart';
-import 'modules/main/childbirth/submodules/identification/identification_module.dart';
-import 'modules/main/home/submodules/appointments_exams/appointments_exams_module.dart';
-import 'modules/main/home/submodules/information/information_module.dart';
-import 'modules/main/home/submodules/medication/medication_module.dart';
-import 'modules/main/home/submodules/vaccines/vaccines_module.dart';
+import 'modules/main/pages/childbirth/submodules/childbirth_resume/childbirth_resume_module.dart';
+import 'modules/main/pages/childbirth/submodules/current_gestation/current_gestation_module.dart';
+import 'modules/main/pages/childbirth/submodules/expectations/expectations_module.dart';
+import 'modules/main/pages/childbirth/submodules/history/history_module.dart';
+import 'modules/main/pages/childbirth/submodules/identification/identification_module.dart';
+import 'modules/main/pages/home/submodules/appointments_exams/appointments_exams_module.dart';
+import 'modules/main/pages/home/submodules/information/information_module.dart';
+import 'modules/main/pages/home/submodules/medication/medication_module.dart';
+import 'modules/main/pages/home/submodules/vaccines/vaccines_module.dart';
 import 'modules/main/main_module.dart';
-import 'modules/main/profile/submodules/profile_data/profile_data_module.dart';
+import 'modules/main/pages/profile/submodules/profile_data/profile_data_module.dart';
 
 class AppModule extends Module {
   @override

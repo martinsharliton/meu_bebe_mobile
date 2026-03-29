@@ -6,14 +6,14 @@ import '../../repositories/history/history_repository_impl.dart';
 import '../../repositories/medication/medication_repository_impl.dart';
 import '../../repositories/profile/profile_repository_impl.dart';
 import '../../repositories/vaccines/vaccines_repository_impl.dart';
-import 'childbirth/submodules/expectations/expectations_controller.dart';
-import 'childbirth/submodules/history/history_controller.dart';
-import 'childbirth/submodules/identification/identification_controller.dart';
-import 'home/submodules/medication/medication_controller.dart';
-import 'home/submodules/vaccines/vaccines_controller.dart';
+import 'pages/childbirth/submodules/expectations/expectations_controller.dart';
+import 'pages/childbirth/submodules/history/history_controller.dart';
+import 'pages/childbirth/submodules/identification/identification_controller.dart';
+import 'pages/home/submodules/medication/medication_controller.dart';
+import 'pages/home/submodules/vaccines/vaccines_controller.dart';
 import 'main_controller.dart';
 import 'main_page.dart';
-import 'profile/submodules/profile_data/profile_data_controller.dart';
+import 'pages/profile/submodules/profile_data/profile_data_controller.dart';
 
 class MainModule extends Module {
   @override
