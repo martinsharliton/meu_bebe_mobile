@@ -42,8 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
           return Observer(
             builder: (context) {
-              final name = controller.name;
-              final firstLetter = name.isNotEmpty ? name[0].toUpperCase() : '';
+              final name = controller.name.trim();
+              final names = controller.name.trim().split(' ');
+              final firstLetter = names.isNotEmpty
+                  ? (names.length == 1 ? names.first[0] : names.first[0] + names.last[0])
+                  : '';
               final displayName = name.isNotEmpty ? name.toUpperCase() : 'SEM NOME';
 
               return SingleChildScrollView(
@@ -56,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         // Fundo do Cabeçalho
                         Container(
-                          height: 150,
+                          height: 125,
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: colors.primary,
@@ -69,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                         // Avatar
                         Positioned(
-                          bottom: -40,
+                          bottom: -45,
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -85,12 +88,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             child: CircleAvatar(
                               radius: 50,
-                              backgroundColor: colors.secondary.withValues(alpha: 0.5),
+                              backgroundColor: colors.darkText,
                               child: Text(
                                 firstLetter,
-                                style: const TextStyle(
-                                  fontSize: 40,
-                                  color: Colors.black87,
+                                style: TextStyle(
+                                  fontSize: 50,
+                                  color: context.colors.primary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -105,12 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Text(
                       displayName,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.5,
-                      ),
+                      style: TextStyle(fontSize: 24, color: context.colors.darkText, fontWeight: FontWeight.w900),
                     ),
 
                     const SizedBox(height: 32),

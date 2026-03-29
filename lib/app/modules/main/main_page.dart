@@ -20,10 +20,10 @@ class _MainPageState extends State<MainPage> {
   final controller = Modular.get<MainController>();
 
   List<Tab> get _tabs => [
-    const Tab(icon: Icon(CupertinoIcons.home, size: 26), text: 'Home'),
-    const Tab(icon: Icon(CupertinoIcons.heart, size: 26), text: 'Gestação'),
-    const Tab(icon: Icon(CupertinoIcons.doc_text, size: 26), text: 'Parto'),
-    const Tab(icon: Icon(Icons.person_outline_rounded, size: 28), text: 'Perfil'),
+    const Tab(icon: Icon(CupertinoIcons.house_fill, size: 26), text: 'Home'),
+    const Tab(icon: Icon(CupertinoIcons.heart_fill, size: 26), text: 'Gestação'),
+    const Tab(icon: Icon(CupertinoIcons.doc_text_fill, size: 26), text: 'Parto'),
+    const Tab(icon: Icon(CupertinoIcons.person_fill, size: 26), text: 'Perfil'),
   ];
 
   List<String> get nomes {

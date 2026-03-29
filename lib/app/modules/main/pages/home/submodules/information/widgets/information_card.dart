@@ -7,9 +7,8 @@ class InformationCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final VoidCallback onTap;
-  final bool spacer;
 
-  const InformationCard({super.key, required this.icon, required this.title, required this.onTap, this.spacer = true});
+  const InformationCard({super.key, required this.icon, required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +22,18 @@ class InformationCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             width: double.infinity,
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14)),
+            child: Column(
+              mainAxisAlignment: .center,
+              crossAxisAlignment: .center,
+              spacing: 15,
               children: [
-                const SizedBox(width: 10),
-                Icon(icon, size: 48, color: colors.darkText),
-                const SizedBox(width: 16),
+                Icon(icon, size: 40, color: colors.darkText),
                 Text(title, style: textStyles.subTitleStyle),
               ],
             ),
           ),
         ),
-        if (spacer) const SizedBox(height: 16),
       ],
     );
   }
