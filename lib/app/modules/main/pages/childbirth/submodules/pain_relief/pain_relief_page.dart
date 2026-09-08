@@ -91,22 +91,15 @@ class _PainReliefPageState extends State<PainReliefPage> {
 
   Widget _buildTabBar(TriState selected, ValueChanged<TriState> onSelect) {
     return Row(
-      spacing: 5,
-      children: TriState.values.map((v) {
+      spacing: Spacing.sm,
+      children: TriState.values.map((value) {
         return Expanded(
-          child: InkWell(
-            onTap: () => onSelect(v),
-            child: Container(
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: RadiusTokens.mdAll,
-                border: Border.all(color: context.colors.darkText),
-                color: selected == v ? context.colors.secondary : context.colors.surface,
-                boxShadow: [ElevationTokens.subtleShadow(Theme.of(context).colorScheme.onSurface)],
-              ),
-              child: Text(v.label, textAlign: TextAlign.center),
-            ),
+          child: DssMultiOption<TriState>(
+            option: value,
+            label: value.label,
+            selected: selected == value,
+            exclusive: false,
+            onTap: () => onSelect(value),
           ),
         );
       }).toList(),

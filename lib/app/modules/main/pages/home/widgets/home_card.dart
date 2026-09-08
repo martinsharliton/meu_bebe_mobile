@@ -22,13 +22,25 @@ class HomeCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(Spacing.md),
         width: double.infinity,
-        decoration: BoxDecoration(color: colors.surface, borderRadius: RadiusTokens.lgAll, boxShadow: [ElevationTokens.subtleShadow(Theme.of(context).colorScheme.onSurface)]),
+        decoration: BoxDecoration(
+          color: colors.surface,
+          borderRadius: RadiusTokens.lgAll,
+          boxShadow: [ElevationTokens.subtleShadow(Theme.of(context).colorScheme.onSurface)],
+        ),
         child: Column(
           spacing: Spacing.sm,
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(icon, size: 26, color: colors.darkText),
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: colors.primary300.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Icon(icon, size: 25, color: colors.darkText),
+            ),
             Text(title, style: textStyles.subTitleStyle),
           ],
         ),

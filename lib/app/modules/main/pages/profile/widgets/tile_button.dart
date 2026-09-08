@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/ui/theme/styles/design_tokens.dart';
 import '../../../../../core/ui/theme/styles/colors_app.dart';
+import '../../../../../core/ui/theme/styles/design_tokens.dart';
 
 class TileButton extends StatelessWidget {
   final IconData icon;
@@ -24,25 +24,31 @@ class TileButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Spacing.sm, vertical: Spacing.lg),
-          child: Row(
-            children: [
-              Icon(icon, size: 25, color: iconColor ?? colors.onSurface),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  text,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: textColor ?? colors.onSurface),
-                ),
+    return InkWell(
+      splashColor: Colors.red,
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Spacing.sm, vertical: Spacing.md),
+        child: Row(
+          children: [
+            Container(
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                color: colors.primary300.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(15),
               ),
-              Icon(Icons.chevron_right, color: (textColor ?? colors.onSurface).withValues(alpha: 0.6)),
-            ],
-          ),
+              child: Icon(icon, size: 23, color: colors.darkText),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: textColor ?? colors.onSurface),
+              ),
+            ),
+            Icon(Icons.chevron_right, color: (textColor ?? colors.onSurface).withValues(alpha: 0.6)),
+          ],
         ),
       ),
     );

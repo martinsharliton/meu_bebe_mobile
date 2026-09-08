@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../../../../../core/ui/theme/styles/colors_app.dart';
 import '../../../../../../core/ui/theme/styles/design_tokens.dart';
 import '../../../../../../core/ui/theme/styles/text_styles.dart';
 import '../../../../../../model/plano_parto/plano_parto_enums.dart';
@@ -154,24 +153,16 @@ class _BirthMomentPageState extends State<BirthMomentPage> {
   }
 
   Widget _buildViaPartoTabBar(ViaParto selected, ValueChanged<ViaParto> onSelect) {
-    return Row(
-      spacing: 5,
-      children: ViaParto.values.map((v) {
-        return Expanded(
-          child: InkWell(
-            onTap: () => onSelect(v),
-            child: Container(
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: RadiusTokens.mdAll,
-                border: Border.all(color: context.colors.darkText),
-                color: selected == v ? context.colors.secondary : context.colors.surface,
-                boxShadow: [ElevationTokens.subtleShadow(Theme.of(context).colorScheme.onSurface)],
-              ),
-              child: Text(v.label, style: context.textStyles.caption, textAlign: TextAlign.center),
-            ),
-          ),
+    return Wrap(
+      spacing: Spacing.sm,
+      runSpacing: Spacing.sm,
+      children: ViaParto.values.map((value) {
+        return DssMultiOption<ViaParto>(
+          option: value,
+          label: value.label,
+          selected: selected == value,
+          exclusive: false,
+          onTap: () => onSelect(value),
         );
       }).toList(),
     );
@@ -179,22 +170,15 @@ class _BirthMomentPageState extends State<BirthMomentPage> {
 
   Widget _buildTriTabBar(TriState selected, ValueChanged<TriState> onSelect) {
     return Row(
-      spacing: 5,
-      children: TriState.values.map((v) {
+      spacing: Spacing.sm,
+      children: TriState.values.map((value) {
         return Expanded(
-          child: InkWell(
-            onTap: () => onSelect(v),
-            child: Container(
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: RadiusTokens.mdAll,
-                border: Border.all(color: context.colors.darkText),
-                color: selected == v ? context.colors.secondary : context.colors.surface,
-                boxShadow: [ElevationTokens.subtleShadow(Theme.of(context).colorScheme.onSurface)],
-              ),
-              child: Text(v.label, style: context.textStyles.caption, textAlign: TextAlign.center),
-            ),
+          child: DssMultiOption<TriState>(
+            option: value,
+            label: value.label,
+            selected: selected == value,
+            exclusive: false,
+            onTap: () => onSelect(value),
           ),
         );
       }).toList(),
@@ -202,17 +186,12 @@ class _BirthMomentPageState extends State<BirthMomentPage> {
   }
 
   Widget _buildPositionTab(PosicaoParto value) {
-    return InkWell(
+    return DssMultiOption<PosicaoParto>(
+      option: value,
+      label: value.label,
+      selected: _controller.posicaoPreferida == value,
+      exclusive: false,
       onTap: () => _controller.setPosicaoPreferida(value),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: Spacing.md, vertical: Spacing.sm),
-        decoration: BoxDecoration(
-          borderRadius: RadiusTokens.lgAll,
-          border: Border.all(color: context.colors.darkText),
-          color: _controller.posicaoPreferida == value ? context.colors.secondary : context.colors.surface,
-        ),
-        child: Text(value.label, style: context.textStyles.caption),
-      ),
     );
   }
 

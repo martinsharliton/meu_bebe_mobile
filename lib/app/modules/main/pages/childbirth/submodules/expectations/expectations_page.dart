@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../../../core/ui/theme/styles/colors_app.dart';
 import '../../../../../../core/ui/theme/styles/design_tokens.dart';
 import '../../../../../../core/ui/theme/styles/text_styles.dart';
 import '../../../../../../model/plano_parto/plano_parto_enums.dart';
@@ -169,30 +168,18 @@ class _ExpectationsPageState extends State<ExpectationsPage> {
 
   Widget _customTabBar(TriState selected, ValueChanged<TriState> onSelect) {
     return Row(
-      spacing: 5,
-      children: [
-        _tab(TriState.sim.label, TriState.sim, selected, onSelect),
-        _tab(TriState.nao.label, TriState.nao, selected, onSelect),
-        _tab(TriState.naoSei.label, TriState.naoSei, selected, onSelect),
-      ],
-    );
-  }
-
-  Widget _tab(String content, TriState value, TriState selected, ValueChanged<TriState> onSelect) {
-    return Expanded(
-      child: InkWell(
-        child: Container(
-          height: 40,
-          decoration: BoxDecoration(
-            borderRadius: RadiusTokens.mdAll,
-            border: Border.all(color: context.colors.darkText),
-            color: selected == value ? context.colors.secondary : context.colors.surface,
-            boxShadow: [ElevationTokens.subtleShadow(Theme.of(context).colorScheme.onSurface)],
+      spacing: Spacing.sm,
+      children: TriState.values.map((value) {
+        return Expanded(
+          child: DssMultiOption<TriState>(
+            option: value,
+            label: value.label,
+            selected: selected == value,
+            exclusive: false,
+            onTap: () => onSelect(value),
           ),
-          child: Center(child: Text(content)),
-        ),
-        onTap: () => onSelect(value),
-      ),
+        );
+      }).toList(),
     );
   }
 

@@ -146,7 +146,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           boxShadow: [ElevationTokens.raisedShadow(colors.onSurface)],
                         ),
                         child: Column(
-                          spacing: 5,
                           children: [
                             TileButton(
                               icon: Icons.person_outline,
@@ -154,28 +153,24 @@ class _ProfilePageState extends State<ProfilePage> {
                               text: 'Meus Dados',
                               onTap: _abrirDadosPerfil,
                             ),
-                            Divider(height: 1, color: colors.divider),
                             TileButton(
                               icon: Icons.notifications_none_outlined,
                               iconColor: colors.darkText,
                               text: 'Notificações',
                               onTap: () => Modular.to.pushNamed(routeNotificacoes),
                             ),
-                            Divider(height: 1, color: colors.divider),
                             TileButton(
                               icon: Icons.settings_outlined,
                               iconColor: colors.darkText,
                               text: 'Configurações',
                               onTap: () => Modular.to.pushNamed(routeConfiguracoes),
                             ),
-                            Divider(height: 1, color: colors.divider),
                             TileButton(
                               icon: Icons.info_outline,
                               iconColor: colors.darkText,
                               text: 'Sobre o app',
                               onTap: () => Modular.to.pushNamed(routeSobreApp),
                             ),
-                            Divider(height: 1, color: colors.divider),
                             TileButton(
                               icon: Icons.logout_rounded,
                               iconColor: colors.error,
@@ -301,7 +296,6 @@ class _ProfilePageState extends State<ProfilePage> {
               text: 'Ver avaliações',
               onTap: _abrirHistoricoDss,
             ),
-            Divider(height: 1, color: colors.divider),
             TileButton(
               icon: Icons.edit_note,
               iconColor: colors.darkText,
